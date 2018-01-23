@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_network_title"
+        android:key="pref_key_network">
+
+        <EditTextPreference
+            android:key="pref_key_url"
+            android:title="@string/pref_url_title"
+            android:summary="@string/pref_url_summary"
+            android:defaultValue="@string/pref_url_default" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_network_advanced_title"
+        android:key="pref_key_network_advanced">
+
+        <CheckBoxPreference
+            android:key="pref_key_use_redirection_service"
+            android:title="@string/pref_title_use_redirection_service"
+            android:summary="@string/pref_summary_use_redirection_service" />
+
+        <EditTextPreference
+            android:key="pref_key_token"
+            android:title="@string/pref_token_title"
+            android:summary="@string/pref_token_summary"
+            android:defaultValue="@string/pref_token_default" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

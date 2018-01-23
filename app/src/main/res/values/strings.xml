@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Toon</string>
+    <string name="pref_network_title">Netwerk instellingen</string>
+    <string name="pref_url_title">Toon url</string>
+    <string name="pref_url_summary">Vul hier de url in die naar de Toon verwijst, bijv 192.168.0.0:8888</string>
+    <string name="pref_url_default">192.168.0.0:8080</string>
+    <string name="pref_token_title">Api token</string>
+    <string name="pref_token_summary">Vul hier, indien nodig, een api token in. Deze wordt meegestuurd in de http header</string>
+    <string name="pref_token_default"></string>
+    <string name="pref_network_advanced_title">Geavanceerde instellingen</string>
+    <string name="pref_title_use_redirection_service">Gebruik redirection service</string>
+    <string name="pref_summary_use_redirection_service">Maak gebruik van een redirect script om portforwarding in de router naar de Toon thermostaat te voorkomen</string>
+</resources>
