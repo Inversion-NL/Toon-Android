@@ -24,9 +24,7 @@ Todo
 
 To use the app outside of your internal network you can use the following methods:
 1. Use port forwarding to Toon in router settings (not recommended).
-2a. Host a webservice within your network that accepts only requests that contains the Api-Key.
-2b. Use a port forwarding rule to forward to the script created in step 2a.
-
+2. Host a webservice within your network that accepts only requests that contains the Api-Key. Use a port forwarding rule to forward to the script.
 
 ## License
 MIT License. 
