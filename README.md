@@ -13,7 +13,7 @@ Toon Android app for rooted Toon devices. This app lets your control your rooted
 - View current gas usage
 
 ## Installation
-Todo
+Install apk which can be found in the install directory
 
 ## How to use?
 1. Install the apk file (make sure you can install apps from unknown sources). 
