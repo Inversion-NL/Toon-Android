@@ -6,6 +6,7 @@ Toon Android app for rooted Toon devices. This app lets your control your rooted
 
 ## Features
 - View current temperature
+- Set temperature higher or lower
 - Select a scene (Home, Sleep, Away, Comfort)
 - Turn program on/off
 - View current watt usage
