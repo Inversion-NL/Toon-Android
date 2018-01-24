@@ -25,7 +25,8 @@ Install apk which can be found in the install directory
 
 To use the app outside of your internal network you can use the following methods:
 1. Use port forwarding to Toon in router settings (not recommended).
-2. Host a webservice within your network that accepts only requests that contains the Api-Key. Use a port forwarding rule to forward to the script.
+2. Use VPN
+3. Host a webservice within your network that accepts only requests that contains the Api-Key. Use a port forwarding rule to forward to the script.
 
 ## License
 MIT License. 
