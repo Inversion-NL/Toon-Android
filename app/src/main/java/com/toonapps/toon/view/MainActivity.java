@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
 
     private AlphaAnimation animButtonClick = new AlphaAnimation(1F, 0.8F);
-    //prevent toggle executing oncheckedchanged
+    //prevent toggle executing onCheckedChanged
     private boolean isUpdatingUI = false;
 
     @Override
@@ -92,12 +92,11 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     }
 
     private void updateData(){
-        try
-        {
+        try {
             TemperatureController.getInstance().updateThermostatInfo();
             DeviceController.getInstance().updateDeviceInfo();
-        }
-        catch(Exception e){
+        } catch(Exception e){
+            // TODO Notify user there was a problem fetching data
         }
     }
 
@@ -110,8 +109,8 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         btnHomeMode.setOnClickListener(onButtonClicked);
         btnCozyMode = ((Button)findViewById(R.id.btnCozyMode));
         btnCozyMode.setOnClickListener(onButtonClicked);
-        ((Button)findViewById(R.id.btnPlus)).setOnClickListener(onButtonClicked);
-        ((Button)findViewById(R.id.btnMin)).setOnClickListener(onButtonClicked);
+        findViewById(R.id.btnPlus).setOnClickListener(onButtonClicked);
+        findViewById(R.id.btnMin).setOnClickListener(onButtonClicked);
 
         txtvTemperature = (TextView)findViewById(R.id.txtvTemperature);
         txtvSetPoint = (TextView)findViewById(R.id.txtvSetPoint);
@@ -156,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(isUpdatingUI == false) {
+            if(!isUpdatingUI) {
                 TemperatureController.getInstance().setTemperatureProgram(isChecked);
             }
         }
@@ -170,10 +169,10 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         txtvSetPoint.setText(decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°");
 
         if(aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint()){
-            ((ImageView)findViewById(R.id.imgFire)).setVisibility(View.INVISIBLE);
+            findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
         }
         else{
-            ((ImageView)findViewById(R.id.imgFire)).setVisibility(View.VISIBLE);
+            findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
         }
 
         Object[] args = {
