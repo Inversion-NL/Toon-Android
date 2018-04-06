@@ -1,13 +1,26 @@
 <resources>
     <string name="app_name">Toon</string>
-    <string name="pref_network_title">Netwerk instellingen</string>
+    <string name="pref_network_title">Network settings</string>
     <string name="pref_url_title">Toon url</string>
-    <string name="pref_url_summary">Vul hier de url in die naar de Toon verwijst, bijv 192.168.0.0:8888</string>
+    <string name="pref_url_summary">Enter Toon url here, eg 192.168.0.0:8888</string>
     <string name="pref_url_default">192.168.0.0:8080</string>
     <string name="pref_token_title">Api token</string>
-    <string name="pref_token_summary">Vul hier, indien nodig, een api token in. Deze wordt meegestuurd in de http header</string>
-    <string name="pref_token_default"></string>
-    <string name="pref_network_advanced_title">Geavanceerde instellingen</string>
-    <string name="pref_title_use_redirection_service">Gebruik redirection service</string>
-    <string name="pref_summary_use_redirection_service">Maak gebruik van een redirect script om portforwarding in de router naar de Toon thermostaat te voorkomen</string>
+    <string name="pref_token_summary">Enter, if used, the api token. this is send within the http header</string>
+    <string name="pref_token_default" translatable="false"/>
+    <string name="pref_network_advanced_title">Advanced settings</string>
+    <string name="pref_title_use_redirection_service">Use redirection service</string>
+    <string name="pref_summary_use_redirection_service">Use redirect script to prevent the use of a port forward in your router to the Toon thermostat</string>
+    <string name="temperature_setting_away">Away</string>
+    <string name="temperature_setting_home">Home</string>
+    <string name="temperature_setting_sleeping">Sleep</string>
+    <string name="temperature_setting_comfort">Comfort</string>
+    <string name="temperature_setting_sign_plus" translatable="false">+</string>
+    <string name="temperature_setting_sign_min" translatable="false">-</string>
+    <string name="temperature_setting_followProgram">Follow program</string>
+    <string name="temperature_setting_dontFollowProgram">Don\'t follow program</string>
+    <string name="powerUsage_title">Power usage</string>
+    <string name="powerUsage_value">0.0 watt</string>
+    <string name="gasUsage_title">Gas usage</string>
+    <string name="gasUsage_value">0.0 m3</string>
+    <string name="nextProgramText">No data</string>
 </resources>

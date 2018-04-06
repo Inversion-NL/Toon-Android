@@ -165,8 +165,11 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     public void onTemperatureChanged(ThermostatInfo aThermostatInfo) {
         isUpdatingUI = true;
 
-        txtvTemperature.setText(decimalFormat.format(aThermostatInfo.getCurrentTemp() / 100) + "°");
-        txtvSetPoint.setText(decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°");
+        String tempText = decimalFormat.format(aThermostatInfo.getCurrentTemp() / 100) + "°";
+        txtvTemperature.setText(tempText);
+
+        String setPointText = decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°";
+        txtvSetPoint.setText(setPointText);
 
         if(aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint()){
             findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
@@ -179,11 +182,13 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
                 simpleDateFormat.format(aThermostatInfo.getNextProgram()),
                 decimalFormat.format(aThermostatInfo.getNextSetpoint() / 100)
         };
-        MessageFormat fmt = new MessageFormat("Om {0} uur \n op {1}° graden");
+        MessageFormat fmt = new MessageFormat("Om {0} uur \n op {1}°");
         txtvNextProgram.setText(fmt.format(args));
 
         swIsProgramOn.setChecked(aThermostatInfo.getProgramState());
-        swIsProgramOn.setText((aThermostatInfo.getProgramState() ? "Programma aan " : "Programma uit "));
+        String followProgramText = getString(R.string.temperature_setting_followProgram);
+        String dontFollowProgramText = getString(R.string.temperature_setting_dontFollowProgram);
+        swIsProgramOn.setText((aThermostatInfo.getProgramState() ? followProgramText : dontFollowProgramText));
 
         clearButtonColors();
         switch(aThermostatInfo.getCurrentTempMode()){

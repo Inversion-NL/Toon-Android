@@ -27,7 +27,7 @@
                 android:id="@+id/txtvTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.0"
+                tools:text="0.0"
                 android:textSize="32sp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
@@ -38,7 +38,7 @@
                 android:id="@+id/txtvSetPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.0"
+                tools:text="0.0"
                 android:layout_marginTop="4dp"
                 android:textSize="16sp"
                 android:layout_centerHorizontal="true"
@@ -52,7 +52,8 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:src="@drawable/fire"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            tools:visibility="visible"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtvNextProgram"
                 android:layout_centerInParent="true"
-                android:text="No data"
+                android:text="@string/nextProgramText"
                 android:textSize="16sp"
                 android:gravity="center"
                 />
@@ -94,35 +95,35 @@
             android:id="@+id/btnAwayMode"
             style="@style/btnMode"
             android:layout_gravity="left|top"
-            android:text="Weg"
+            android:text="@string/temperature_setting_away"
              />
 
         <Button
             android:id="@+id/btnHomeMode"
             style="@style/btnMode"
             android:layout_gravity="left|top"
-            android:text="Thuis"
+            android:text="@string/temperature_setting_home"
             />
 
         <Button
             android:id="@+id/btnSleepMode"
             style="@style/btnMode"
             android:layout_gravity="left|top"
-            android:text="Slapen"
+            android:text="@string/temperature_setting_sleeping"
             />
 
         <Button
             android:id="@+id/btnCozyMode"
             style="@style/btnMode"
             android:layout_gravity="left|top"
-            android:text="Comfort"
+            android:text="@string/temperature_setting_comfort"
             />
 
         <Button
             android:id="@+id/btnPlus"
             style="@style/btnChangeTemp"
             android:layout_gravity="left|top"
-            android:text="+"
+            android:text="@string/temperature_setting_sign_plus"
 
             />
 
@@ -131,7 +132,7 @@
             android:id="@+id/btnMin"
             style="@style/btnChangeTemp"
             android:layout_gravity="left|top"
-            android:text="-"
+            android:text="@string/temperature_setting_sign_min"
             />
     </GridLayout>
 
@@ -150,13 +151,14 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
             android:textSize="16sp"
-            android:text="Programma aan"/>
+            android:text="@string/temperature_setting_followProgram"/>
 
     </RelativeLayout>
 
     <GridLayout
-        android:id="@+id/glPowerGassUse"
+        android:id="@+id/glPowerGasUse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="2"
@@ -179,7 +181,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stroom nu"
+                android:text="@string/powerUsage_title"
                 style="@style/txtvPowerGasTitle"
                 />
 
@@ -194,7 +196,7 @@
                 android:id="@+id/txtvCurrentPowerUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.0 watt"
+                android:text="@string/powerUsage_value"
                 style="@style/txtvPowerGasDescription"
                 />
 
@@ -207,7 +209,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gas nu"
+                android:text="@string/gasUsage_title"
                 style="@style/txtvPowerGasTitle"
                 />
 
@@ -222,7 +224,7 @@
                 android:id="@+id/txtvCurrentGasUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.0 m3"
+                android:text="@string/gasUsage_value"
                 style="@style/txtvPowerGasDescription"
                 />
 
@@ -237,7 +239,7 @@
                 android:id="@+id/txtvTotalPowerUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                tools:text="0"
                 style="@style/txtvPowerGasDescription"
                 />
 
@@ -252,7 +254,7 @@
                 android:id="@+id/txtvTotalGasUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                tools:text="0"
                 style="@style/txtvPowerGasDescription"
                 />
 
