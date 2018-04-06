@@ -8,41 +8,41 @@
     android:background="@color/colorBackground">
 
     <RelativeLayout
-        android:background="@android:color/white"
         android:id="@+id/tlTemperature"
-        android:layout_width="368dp"
+        android:layout_width="350dp"
         android:layout_height="90dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentLeft="true">
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/txtvTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="0.0"
-                android:textSize="32sp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textColor="@android:color/black"
-                />
+                android:textSize="32sp"
+                tools:text="0.0" />
 
             <TextView
                 android:id="@+id/txtvSetPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="0.0"
+                android:layout_below="@+id/txtvTemperature"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="4dp"
                 android:textSize="16sp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txtvTemperature"/>
+                tools:text="0.0" />
         </RelativeLayout>
 
         <ImageView
@@ -53,24 +53,23 @@
             android:layout_centerVertical="true"
             android:src="@drawable/fire"
             android:visibility="invisible"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true">
+            android:layout_marginTop="10dp">
 
             <TextView
+                android:id="@+id/txtvNextProgram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtvNextProgram"
                 android:layout_centerInParent="true"
-                android:text="@string/nextProgramText"
-                android:textSize="16sp"
                 android:gravity="center"
-                />
+                android:text="@string/nextProgramText"
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
@@ -151,7 +150,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:paddingLeft="10dp"
             android:textSize="16sp"
             android:text="@string/temperature_setting_followProgram"/>
 
