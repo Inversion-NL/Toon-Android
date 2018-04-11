@@ -36,23 +36,30 @@ public class TemperatureController implements IRestClientResponseHandler {
     public void updateThermostatInfo(){
         try {
             restClient.getThermostatInfo();
-        }catch(Exception e){
-            Log.d("Exception occured", e.getMessage());
+        } catch(Exception e){
+            //TODO Notify user something went wrong
+            Log.d("Exception occurred", e.getMessage());
         }
     }
 
     public void setTemperatureHigher(double anAmount){
-        double setpoint = currentThermostatInfo.getCurrentSetpoint();
-        setpoint += (anAmount * 100);
 
-        setTemperature(setpoint);
+        if (currentThermostatInfo != null) {
+            double setpoint = currentThermostatInfo.getCurrentSetpoint();
+            setpoint += (anAmount * 100);
+
+            setTemperature(setpoint);
+        }
     }
 
     public void setTemperatureLower(double anAmount){
-        double setpoint = currentThermostatInfo.getCurrentSetpoint();
-        setpoint -= (anAmount * 100);
 
-        setTemperature(setpoint);
+        if (currentThermostatInfo != null) {
+            double setPoint = currentThermostatInfo.getCurrentSetpoint();
+            setPoint -= (anAmount * 100);
+
+            setTemperature(setPoint);
+        }
     }
 
     private void setTemperature(double anAmount){
@@ -73,7 +80,7 @@ public class TemperatureController implements IRestClientResponseHandler {
         try {
             restClient.setSchemeTemperatureState(mode);
         }catch(Exception e){
-            Log.d("Exception occured", e.getMessage());
+            Log.d("Exception occurred", e.getMessage());
         }
 
         updateThermostatInfo();

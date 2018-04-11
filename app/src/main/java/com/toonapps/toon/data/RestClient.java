@@ -42,12 +42,17 @@ public class RestClient {
 
         int isProgramOn = (anIsProgramOn) ? 1 : 0;
 
+        try {
         Request request = new Request.Builder()
                 .url(url + seperator + "happ_thermstat?action=changeSchemeState&state=" + isProgramOn)
                 .addHeader("Api-Key", token)
                 .build();
 
         new RestClientExecutor(request, "setschemestate").execute();
+        } catch (Exception e) {
+            //TODO Notify users something went wrong
+            e.printStackTrace();
+        }
     }
 
     public void setSetpoint(int aTemperature){
