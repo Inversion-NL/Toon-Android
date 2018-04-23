@@ -8,7 +8,7 @@ public class ResponseData {
     private ThermostatInfo thermostatInfo;
     private DeviceInfo deviceInfo;
 
-    public ResponseData(){
+    ResponseData(){
     }
 
     public void setThermostatInfo(ThermostatInfo aThermostatInfo){

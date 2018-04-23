@@ -2,9 +2,8 @@ package com.toonapps.toon.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-
-public class DeviceInfo
-{
+@SuppressWarnings("unused")
+public class DeviceInfo {
     @SerializedName("dev_settings_device")
     private DeviceSettings devSettings;
 
@@ -41,7 +40,7 @@ public class DeviceInfo
         return powerDevice4.CurrentElectricityFlow;
     }
 
-    public double getElecUsageFlowLowQuantity(){
+    public double getElecUsageFlowLowQuantity() {
         return powerDevice4.CurrentElectricityQuantity / 1000;
     }
 
@@ -69,9 +68,7 @@ public class DeviceInfo
         return powerDevice3.CurrentElectricityQuantity / 1000;
     }
 
-
-    public class DeviceSettings
-    {
+    public class DeviceSettings {
         protected String uuid;
         protected String name;
         protected String internalAddress;
@@ -80,8 +77,7 @@ public class DeviceInfo
         protected String location;
     }
 
-    public class Device extends DeviceSettings
-    {
+    private class Device extends DeviceSettings {
         private String ccList;
         private String supportedCC;
         private int IsConnected;
@@ -89,14 +85,13 @@ public class DeviceInfo
         private int HealthValue;
     }
 
-    public class GasDevice extends DeviceSettings{
+    private class GasDevice extends DeviceSettings {
         private double CurrentGasFlow;
         private double  CurrentGasQuantity;
     }
 
-    public class PowerDevice extends DeviceSettings{
+    private class PowerDevice extends DeviceSettings {
         private double CurrentElectricityFlow;
         private double  CurrentElectricityQuantity;
     }
 }
-

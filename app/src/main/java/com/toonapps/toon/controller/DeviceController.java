@@ -15,7 +15,7 @@ public class DeviceController implements IRestClientResponseHandler {
 
     private static DeviceController instance = null;
 
-    protected DeviceController() {
+    private DeviceController() {
         restClient = new RestClient(this);
         devicesListenerList = new ArrayList<>();
     }
@@ -27,13 +27,21 @@ public class DeviceController implements IRestClientResponseHandler {
         return instance;
     }
 
-    public void updateDeviceInfo(){
-        restClient.getZWaveDevices();
+    public void updateDeviceInfo() {
+        try {
+            restClient.getZWaveDevices();
+        } catch (Exception e) {
+            onError(e);
+        }
     }
 
 
     public void subscribe(IDeviceListener aListener){
         devicesListenerList.add(aListener);
+    }
+
+    public void unsubscribe(IDeviceListener aListener){
+        devicesListenerList.remove(aListener);
     }
 
     private void onDevicesUpdated(DeviceInfo aDeviceInfo){
@@ -42,8 +50,20 @@ public class DeviceController implements IRestClientResponseHandler {
         }
     }
 
+    private void onError(Exception e){
+        for(IDeviceListener aListener : devicesListenerList){
+            aListener.onDeviceError(e);
+        }
+    }
+
     @Override
     public void onResponse(ResponseData aResponse) {
-        onDevicesUpdated(aResponse.getDevicesInfo());
+        if (aResponse != null) onDevicesUpdated(aResponse.getDevicesInfo());
+        else onError(new NullPointerException("Device data response is null"));
+    }
+
+    @Override
+    public void onResponseError(Exception e) {
+        onError(e);
     }
 }

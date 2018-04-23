@@ -11,15 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.toonapps.toon.view.MainActivity"
+        <activity
+            android:name=".view.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.toonapps.toon.view.SettingsActivity"
-                android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ConnectionWizardActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Intro"/>
     </application>
 
 </manifest>

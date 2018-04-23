@@ -1,9 +1,10 @@
 package com.toonapps.toon.view;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,8 +14,8 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.toonapps.toon.R;
 import com.toonapps.toon.controller.DeviceController;
@@ -24,6 +25,7 @@ import com.toonapps.toon.controller.TemperatureController;
 import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 import com.toonapps.toon.helper.AppSettings;
+import com.toonapps.toon.helper.ErrorMessage;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -42,15 +44,16 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private Button btnSleepMode;
     private Button btnCozyMode;
     private Button btnHomeMode;
-    private Switch swIsProgramOn;
+    private SwitchCompat swIsProgramOn;
     private ImageView imgvCurrentPower;
     private ImageView imgvCurrentGas;
     private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm"); // TODO internationalize date and time
 
     private AlphaAnimation animButtonClick = new AlphaAnimation(1F, 0.8F);
     //prevent toggle executing onCheckedChanged
     private boolean isUpdatingUI = false;
+    private int REQUEST_CODE_INTRO = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +63,27 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         setResources();
         AppSettings.getInstance().initialize(this.getApplicationContext());
 
-        TemperatureController.getInstance().subscribe(this);
-        DeviceController.getInstance().subscribe(this);
+        if (AppSettings.getInstance().isFirstStart()) {
+            Intent intent = new Intent(this, ConnectionWizardActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_INTRO);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateData();
+        if (!AppSettings.getInstance().isFirstStart()) {
+            TemperatureController.getInstance().subscribe(this);
+            DeviceController.getInstance().subscribe(this);
+            updateData();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        TemperatureController.getInstance().unsubscribe(this);
+        DeviceController.getInstance().unsubscribe(this);
     }
 
     @Override
@@ -92,37 +108,33 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     }
 
     private void updateData(){
-        try {
-            TemperatureController.getInstance().updateThermostatInfo();
-            DeviceController.getInstance().updateDeviceInfo();
-        } catch(Exception e){
-            // TODO Notify user there was a problem fetching data
-        }
+        TemperatureController.getInstance().updateThermostatInfo();
+        DeviceController.getInstance().updateDeviceInfo();
     }
 
     private void setResources(){
-        btnAwayMode = ((Button)findViewById(R.id.btnAwayMode));
+        btnAwayMode = findViewById(R.id.btnAwayMode);
         btnAwayMode.setOnClickListener(onButtonClicked);
-        btnSleepMode = ((Button)findViewById(R.id.btnSleepMode));
+        btnSleepMode = findViewById(R.id.btnSleepMode);
         btnSleepMode.setOnClickListener(onButtonClicked);
-        btnHomeMode = ((Button)findViewById(R.id.btnHomeMode));
+        btnHomeMode = findViewById(R.id.btnHomeMode);
         btnHomeMode.setOnClickListener(onButtonClicked);
-        btnCozyMode = ((Button)findViewById(R.id.btnCozyMode));
+        btnCozyMode = findViewById(R.id.btnCozyMode);
         btnCozyMode.setOnClickListener(onButtonClicked);
         findViewById(R.id.btnPlus).setOnClickListener(onButtonClicked);
         findViewById(R.id.btnMin).setOnClickListener(onButtonClicked);
 
-        txtvTemperature = (TextView)findViewById(R.id.txtvTemperature);
-        txtvSetPoint = (TextView)findViewById(R.id.txtvSetPoint);
-        txtvNextProgram = (TextView)findViewById(R.id.txtvNextProgram);
-        txtvCurrentPowerUse = (TextView)findViewById(R.id.txtvCurrentPowerUse);
-        txtvCurrentGasUse = (TextView)findViewById(R.id.txtvCurrentGasUse);
-        txtvTotalPowerUse = (TextView)findViewById(R.id.txtvTotalPowerUse);
-        txtvTotalGasUse = (TextView)findViewById(R.id.txtvTotalGasUse);
-        imgvCurrentPower = (ImageView)findViewById(R.id.imgvCurrentPower);
-        imgvCurrentGas = (ImageView)findViewById(R.id.imgvCurrentGas);
+        txtvTemperature = findViewById(R.id.txtvTemperature);
+        txtvSetPoint = findViewById(R.id.txtvSetPoint);
+        txtvNextProgram = findViewById(R.id.txtvNextProgram);
+        txtvCurrentPowerUse = findViewById(R.id.txtvCurrentPowerUse);
+        txtvCurrentGasUse = findViewById(R.id.txtvCurrentGasUse);
+        txtvTotalGasUse = findViewById(R.id.txtvTotalGasUse);
+        txtvTotalPowerUse =  findViewById(R.id.txtvTotalPowerUse);
+        imgvCurrentPower = findViewById(R.id.imgvCurrentPower);
+        imgvCurrentGas = findViewById(R.id.imgvCurrentGas);
 
-        swIsProgramOn = (Switch)findViewById(R.id.swIsProgramOn);
+        swIsProgramOn = findViewById(R.id.swIsProgramOn);
         swIsProgramOn.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
@@ -155,9 +167,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(!isUpdatingUI) {
-                TemperatureController.getInstance().setTemperatureProgram(isChecked);
-            }
+            if(!isUpdatingUI) TemperatureController.getInstance().setTemperatureProgram(isChecked);
         }
     };
 
@@ -171,18 +181,15 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         String setPointText = decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°";
         txtvSetPoint.setText(setPointText);
 
-        if(aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint()){
+        if(aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint())
             findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
-        }
-        else{
-            findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
-        }
+        else findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
 
         Object[] args = {
                 simpleDateFormat.format(aThermostatInfo.getNextProgram()),
-                decimalFormat.format(aThermostatInfo.getNextSetpoint() / 100)
+                decimalFormat.format(aThermostatInfo.getNextSetPoint() / 100)
         };
-        MessageFormat fmt = new MessageFormat("Om {0} uur \n op {1}°");
+        MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue));
         txtvNextProgram.setText(fmt.format(args));
 
         swIsProgramOn.setChecked(aThermostatInfo.getProgramState());
@@ -209,6 +216,18 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         isUpdatingUI = false;
     }
 
+    @Override
+    public void onTemperatureError(Exception e) {
+        String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
+        Toast.makeText(this, getString(R.string.temperature_update_error_txt) + ": " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeviceError(Exception e) {
+        String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
+        Toast.makeText(this, getString(R.string.device_update_error_txt) + ": " +  message, Toast.LENGTH_SHORT).show();
+    }
+
     private void clearButtonColors(){
         btnAwayMode.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
         btnSleepMode.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -223,11 +242,12 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
 
         if(aDevicesInfo.getElecUsageFlowHigh() > 0){
             currentElecUsage = aDevicesInfo.getElecUsageFlowHigh();
-            txtvCurrentPowerUse.setText(decimalFormat.format(aDevicesInfo.getElecUsageFlowHigh()) + " watt");
-        }
-        else{
+            String text = decimalFormat.format(aDevicesInfo.getElecUsageFlowHigh()) + " watt";
+            txtvCurrentPowerUse.setText(text);
+        } else {
             currentElecUsage = aDevicesInfo.getElecUsageFlowLow();
-            txtvCurrentPowerUse.setText(decimalFormat.format(aDevicesInfo.getElecUsageFlowLow()) + " watt");
+            String text = decimalFormat.format(aDevicesInfo.getElecUsageFlowLow()) + " watt";
+            txtvCurrentPowerUse.setText(text);
         }
 
         if(currentElecUsage >= 0 && currentElecUsage < 50){
@@ -247,7 +267,8 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         }
 
         currentGasUsage = aDevicesInfo.getGasUsed();
-        txtvCurrentGasUse.setText(decimalFormat.format(currentGasUsage) + " m3");
+        String text = decimalFormat.format(currentGasUsage) + " m3";
+        txtvCurrentGasUse.setText(text);
 
         if(currentGasUsage >= 0.0 && currentGasUsage < 0.50){
             imgvCurrentGas.setImageResource(R.drawable.gas1_10);
@@ -263,6 +284,20 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         }
         else if(currentGasUsage >= 5.0){
             imgvCurrentGas.setImageResource(R.drawable.gas9_10);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_INTRO) {
+            if (resultCode == RESULT_OK) {
+                AppSettings.getInstance().setFirstStart(false);
+                updateData();
+            } else {
+                // Cancelled the intro. You can then e.g. finish this activity too.
+                finish();
+            }
         }
     }
 }

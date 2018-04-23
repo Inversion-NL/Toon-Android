@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.toonapps.toon.view.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.toonapps.toon.view.MainActivity"
     android:background="@color/colorBackground">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/tlTemperature"
-        android:layout_width="350dp"
-        android:layout_height="90dp"
+        style="@style/cardTemperature"
         android:layout_marginTop="16dp"
-        android:background="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardCornerRadius="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/txtvTemperature"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp">
+
+                <TextView
+                    android:id="@+id/txtvTemperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="0.0"
+                    android:textColor="@android:color/black"
+                    android:textSize="32sp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtvSetPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtvTemperature"
+                    android:layout_centerHorizontal="true"
+                    android:text="0.0"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgFire"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:textColor="@android:color/black"
-                android:textSize="32sp"
-                android:text="0.0"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/txtvSetPoint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtvTemperature"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="4dp"
-                android:textSize="16sp"
-                android:text="0.0"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/imgFire"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/fire"
-            android:visibility="invisible"
-            tools:visibility="visible" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp">
+                android:src="@drawable/fire"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:contentDescription="@string/img_description_fire" />
 
             <TextView
                 android:id="@+id/txtvNextProgram"
-                android:layout_width="wrap_content"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@string/nextProgramText"
-                android:textSize="16sp" />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/nextProgramText_noData"
+                android:textSize="16sp"
+                android:maxLength="20"
+                android:maxLines="2"
+                android:textColor="@android:color/black"/>
 
         </RelativeLayout>
-
-    </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <GridLayout
         android:id="@+id/glChangeTemperature"
@@ -92,49 +92,37 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp">
+
         <Button
             android:id="@+id/btnAwayMode"
             style="@style/btnMode"
-            android:layout_gravity="left|top"
-            android:text="@string/temperature_setting_away"
-             />
+            android:text="@string/temperature_setting_away"/>
 
         <Button
             android:id="@+id/btnHomeMode"
             style="@style/btnMode"
-            android:layout_gravity="left|top"
-            android:text="@string/temperature_setting_home"
-            />
+            android:text="@string/temperature_setting_home"/>
 
         <Button
             android:id="@+id/btnSleepMode"
             style="@style/btnMode"
-            android:layout_gravity="left|top"
-            android:text="@string/temperature_setting_sleeping"
-            />
+            android:text="@string/temperature_setting_sleeping"/>
 
         <Button
             android:id="@+id/btnCozyMode"
             style="@style/btnMode"
-            android:layout_gravity="left|top"
-            android:text="@string/temperature_setting_comfort"
-            />
+            android:text="@string/temperature_setting_comfort"/>
 
         <Button
             android:id="@+id/btnPlus"
             style="@style/btnChangeTemp"
-            android:layout_gravity="left|top"
-            android:text="@string/temperature_setting_sign_plus"
-
-            />
-
+            android:text="@string/temperature_setting_sign_plus"/>
 
         <Button
             android:id="@+id/btnMin"
             style="@style/btnChangeTemp"
-            android:layout_gravity="left|top"
-            android:text="@string/temperature_setting_sign_min"
-            />
+            android:text="@string/temperature_setting_sign_min"/>
+
     </GridLayout>
 
     <RelativeLayout
@@ -143,16 +131,16 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/glChangeTemperature"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/glChangeTemperature">
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/swIsProgramOn"
-            android:layout_width="170dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            app:switchPadding="10dp"
             android:textSize="16sp"
             android:text="@string/temperature_setting_followProgram"/>
 
@@ -182,23 +170,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/powerUsage_title"
-                style="@style/txtvPowerGasTitle"
-                />
+                style="@style/txtvPowerGasTitle"/>
 
             <ImageView
                 android:id="@+id/imgvCurrentPower"
                 android:layout_width="47dp"
                 android:layout_height="89dp"
                 android:src="@drawable/power1_10"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:contentDescription="@string/img_current_power"/>
 
             <TextView
                 android:id="@+id/txtvCurrentPowerUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/powerUsage_value"
-                style="@style/txtvPowerGasDescription"
-                />
+                style="@style/txtvPowerGasDescription"/>
 
         </android.support.v7.widget.CardView>
 
@@ -210,23 +197,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/gasUsage_title"
-                style="@style/txtvPowerGasTitle"
-                />
+                style="@style/txtvPowerGasTitle"/>
 
             <ImageView
                 android:id="@+id/imgvCurrentGas"
                 android:layout_width="47dp"
                 android:layout_height="89dp"
                 android:src="@drawable/gas1_10"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:contentDescription="@string/img_current_gas"/>
 
             <TextView
                 android:id="@+id/txtvCurrentGasUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/gasUsage_value"
-                style="@style/txtvPowerGasDescription"
-                />
+                style="@style/txtvPowerGasDescription"/>
 
         </android.support.v7.widget.CardView>
 
@@ -240,8 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="0"
-                style="@style/txtvPowerGasDescription"
-                />
+                style="@style/txtvPowerGasDescription"/>
 
         </android.support.v7.widget.CardView>
 
@@ -255,8 +240,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="0"
-                style="@style/txtvPowerGasDescription"
-                />
+                style="@style/txtvPowerGasDescription"/>
 
         </android.support.v7.widget.CardView>
     </GridLayout>
