@@ -30,7 +30,7 @@ public class LoginFragment extends SlideFragment {
     private TextView txt_errorMessage;
     private AppCompatButton btn_login;
 
-    private final boolean testing = true;
+    private final boolean testing = false;
 
     public LoginFragment() {
         // Required empty public constructor
