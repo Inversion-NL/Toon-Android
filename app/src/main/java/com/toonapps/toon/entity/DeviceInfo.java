@@ -8,25 +8,25 @@ public class DeviceInfo
     @SerializedName("dev_settings_device")
     private DeviceSettings devSettings;
 
-    @SerializedName("dev_2")
+    @SerializedName(value="dev_2", alternate={"dev_3"})
     private Device device;
 
-    @SerializedName("dev_2.1")
+    @SerializedName(value="dev_2.1", alternate={"dev_3.1"})
     private GasDevice gasDevice;
 
-    @SerializedName("dev_2.2")
+    @SerializedName(value="dev_2.2", alternate={"dev_3.2"})
     private PowerDevice powerDevice1;
 
-    @SerializedName("dev_2.3")
+    @SerializedName(value="dev_2.3", alternate={"dev_3.3"})
     private PowerDevice powerDevice2;
 
-    @SerializedName("dev_2.4")
+    @SerializedName(value="dev_2.4", alternate={"dev_3.4"})
     private PowerDevice powerDevice3;
 
-    @SerializedName("dev_2.5")
+    @SerializedName(value="dev_2.5", alternate={"dev_3.5"})
     private PowerDevice powerDevice4;
 
-    @SerializedName("dev_2.6")
+    @SerializedName(value="dev_2.6", alternate={"dev_3.6"})
     private PowerDevice powerDevice5;
 
     public double getGasUsed(){
