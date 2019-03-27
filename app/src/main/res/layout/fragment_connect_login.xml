@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible"/>
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_login"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_margin="20dp"
         android:maxWidth="150dp"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_toonAddress"
         android:layout_below="@+id/img_login"
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         tools:textColor="@android:color/black"
         android:text="@string/connectionWizard_login_toonAddress_title"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_toonPort"
         android:layout_below="@+id/tv_toonAddress"
         android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
         android:layout_marginEnd="20dp"
         tools:textColor="@android:color/black"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_toonAddress"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
         android:layout_toRightOf="@id/dummy"
         android:layout_toEndOf="@id/dummy">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_toonAddress"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
@@ -70,9 +70,9 @@
             android:inputType="textNoSuggestions"
             android:hint="@string/connectionWizard_login_toonAddress_hint" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_toonPort"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
         android:layout_toRightOf="@id/dummy"
         android:layout_toEndOf="@id/dummy">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_toonPort"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             android:singleLine="true"
             android:hint="@string/connectionWizard_login_toonPort_hint"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/txt_errorMessage"
@@ -104,7 +104,7 @@
         android:textSize="18sp"
         tools:text="@string/device_update_error_txt"/>
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

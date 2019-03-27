@@ -3,7 +3,6 @@ package com.toonapps.toon.view.Fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,8 @@ import com.toonapps.toon.controller.IDeviceListener;
 import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.ErrorMessage;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 public class LoginFragment extends SlideFragment {
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/tlTemperature"
         style="@style/cardTemperature"
         android:layout_marginTop="16dp"
@@ -76,7 +76,7 @@
                 android:textColor="@android:color/black"/>
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <GridLayout
         android:id="@+id/glChangeTemperature"
@@ -134,7 +134,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/glChangeTemperature">
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/swIsProgramOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
         android:layout_marginEnd="8dp">
 
         <!-- POWER USE -->
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             app:cardCornerRadius="4dp"
             style="@style/cardPowerGas">
 
@@ -188,9 +188,9 @@
                 android:text="@string/powerUsage_value"
                 style="@style/txtvPowerGasDescription"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             app:cardCornerRadius="4dp"
             style="@style/cardPowerGas">
 
@@ -215,9 +215,9 @@
                 android:text="@string/gasUsage_value"
                 style="@style/txtvPowerGasDescription"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             app:cardCornerRadius="4dp"
             style="@style/cardPowerGas"
             android:visibility="gone">
@@ -229,9 +229,9 @@
                 tools:text="0"
                 style="@style/txtvPowerGasDescription"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             app:cardCornerRadius="4dp"
             style="@style/cardPowerGas"
             android:visibility="gone">
@@ -243,6 +243,6 @@
                 tools:text="0"
                 style="@style/txtvPowerGasDescription"/>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </GridLayout>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

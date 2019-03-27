@@ -2,9 +2,6 @@ package com.toonapps.toon.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +28,10 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
+
 public class MainActivity extends AppCompatActivity implements ITemperatureListener, IDeviceListener {
 
     private TextView txtvTemperature;
@@ -38,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private TextView txtvNextProgram;
     private TextView txtvCurrentPowerUse;
     private TextView txtvCurrentGasUse;
-    private TextView txtvTotalPowerUse;
-    private TextView txtvTotalGasUse;
     private Button btnAwayMode;
     private Button btnSleepMode;
     private Button btnCozyMode;
@@ -130,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         txtvNextProgram = findViewById(R.id.txtvNextProgram);
         txtvCurrentPowerUse = findViewById(R.id.txtvCurrentPowerUse);
         txtvCurrentGasUse = findViewById(R.id.txtvCurrentGasUse);
-        txtvTotalGasUse = findViewById(R.id.txtvTotalGasUse);
-        txtvTotalPowerUse =  findViewById(R.id.txtvTotalPowerUse);
+        TextView txtvTotalGasUse = findViewById(R.id.txtvTotalGasUse);
+        TextView txtvTotalPowerUse = findViewById(R.id.txtvTotalPowerUse);
         imgvCurrentPower = findViewById(R.id.imgvCurrentPower);
         imgvCurrentGas = findViewById(R.id.imgvCurrentGas);
 
@@ -238,32 +237,32 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
 
     @Override
     public void onDeviceInfoChanged(DeviceInfo aDevicesInfo) {
-        double currentElecUsage = 0.0;
-        double currentGasUsage = 0.0;
+        double currentElectricUsage;
+        double currentGasUsage;
 
         if(aDevicesInfo.getElecUsageFlowHigh() > 0){
-            currentElecUsage = aDevicesInfo.getElecUsageFlowHigh();
+            currentElectricUsage = aDevicesInfo.getElecUsageFlowHigh();
             String text = decimalFormat.format(aDevicesInfo.getElecUsageFlowHigh()) + " watt";
             txtvCurrentPowerUse.setText(text);
         } else {
-            currentElecUsage = aDevicesInfo.getElecUsageFlowLow();
+            currentElectricUsage = aDevicesInfo.getElecUsageFlowLow();
             String text = decimalFormat.format(aDevicesInfo.getElecUsageFlowLow()) + " watt";
             txtvCurrentPowerUse.setText(text);
         }
 
-        if(currentElecUsage >= 0 && currentElecUsage < 50){
+        if(currentElectricUsage >= 0 && currentElectricUsage < 50){
             imgvCurrentPower.setImageResource(R.drawable.power1_10);
         }
-        else if(currentElecUsage >= 50 && currentElecUsage < 200){
+        else if(currentElectricUsage >= 50 && currentElectricUsage < 200){
             imgvCurrentPower.setImageResource(R.drawable.power3_10);
         }
-        else if(currentElecUsage >= 200 && currentElecUsage < 600){
+        else if(currentElectricUsage >= 200 && currentElectricUsage < 600){
             imgvCurrentPower.setImageResource(R.drawable.power5_10);
         }
-        else if(currentElecUsage >= 600 && currentElecUsage < 1000){
+        else if(currentElectricUsage >= 600 && currentElectricUsage < 1000){
             imgvCurrentPower.setImageResource(R.drawable.power7_10);
         }
-        else if(currentElecUsage >= 1000){
+        else if(currentElectricUsage >= 1000){
             imgvCurrentPower.setImageResource(R.drawable.power9_10);
         }
 
