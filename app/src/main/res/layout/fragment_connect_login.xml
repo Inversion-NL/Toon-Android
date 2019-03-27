@@ -60,7 +60,7 @@
         android:layout_toRightOf="@id/dummy"
         android:layout_toEndOf="@id/dummy">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/et_toonAddress"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         android:layout_toRightOf="@id/dummy"
         android:layout_toEndOf="@id/dummy">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/et_toonPort"
             android:layout_width="130dp"
             android:layout_height="wrap_content"

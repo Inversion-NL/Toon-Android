@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
 
         if (AppSettings.getInstance().isFirstStart()) {
             Intent intent = new Intent(this, ConnectionWizardActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, REQUEST_CODE_INTRO);
         }
     }

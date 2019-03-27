@@ -27,12 +27,10 @@ public class ConnectionWizardActivity extends IntroActivity {
                 .scrollable(false)
                 .build());
 
-        LoginFragment loginFragment;
-        loginFragment = LoginFragment.newInstance();
         addSlide(new FragmentSlide.Builder()
                 .background(android.R.color.holo_blue_light)
                 .backgroundDark(android.R.color.holo_blue_dark)
-                .fragment(loginFragment)
+                .fragment(LoginFragment.newInstance())
                 .build());
     }
 }
