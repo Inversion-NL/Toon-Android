@@ -2,10 +2,10 @@
 Toon Android app for rooted Toon devices. This app lets your control your rooted Toon device with your Android phone.
 
 ## Screenshots
-![Alt text](/screenshots/screenshot_welcome1.png?raw=true "Welcome")
-![Alt text](/screenshots/screenshot_welcome2.png?raw=true "Welcome")
-![Alt text](/screenshots/screenshot_controls1.png?raw=true "Controls")
-![Alt text](/screenshots/screenshot_settings1.png?raw=true "Settings")
+![Alt text](/screenshots/screenshot_welcome1.png?raw=true "Welcome" | width=100)
+![Alt text](/screenshots/screenshot_welcome2.png?raw=true "Welcome" | width=100)
+![Alt text](/screenshots/screenshot_controls1.png?raw=true "Controls" | width=100)
+![Alt text](/screenshots/screenshot_settings1.png?raw=true "Settings" | width=100)
 
 ## Features
 - View current temperature
