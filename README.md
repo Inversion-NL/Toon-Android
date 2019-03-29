@@ -2,7 +2,10 @@
 Toon Android app for rooted Toon devices. This app lets your control your rooted Toon device with your Android phone.
 
 ## Screenshots
-![Alt text](/screenshots/screenshot1.png?raw=true "Screenshot 1")
+![Alt text](/screenshots/screenshot_welcome1.png?raw=true "Welcome")
+![Alt text](/screenshots/screenshot_welcome2.png?raw=true "Welcome")
+![Alt text](/screenshots/screenshot_controls1.png?raw=true "Controls")
+![Alt text](/screenshots/screenshot_settings1.png?raw=true "Settings")
 
 ## Features
 - View current temperature
@@ -16,12 +19,12 @@ Toon Android app for rooted Toon devices. This app lets your control your rooted
 Install apk which can be found in the install directory
 
 ## How to use?
-1. Install the apk file (make sure you can install apps from unknown sources). 
-2. Press the settings icon
-3. Fill in the url of your Toon (e.g. http://192.168.0.1:1234)
-4. (Optional) In advanced settings, use the redirect service
-5. (Optional) Fill in token. Token will be placed in header "Api-Key".
-6. Restart the app
+1. Download APK from here: https://github.com/Inversion-NL/Toon-Android/blob/master/install/toon-v0.5.apk
+2. Install the apk file (make sure you can install apps from unknown sources). 
+3. Follow the instructions in welcome screen
+5. (Optional) In settings -> advanced settings, use the redirect service
+6. (Optional) Fill in token. Token will be placed in header "Api-Key".
+7. Restart the app
 
 To use the app outside of your internal network you can use the following methods:
 1. Use port forwarding to Toon in router settings (not recommended).
