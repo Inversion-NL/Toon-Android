@@ -35,7 +35,6 @@ public class DeviceController implements IRestClientResponseHandler {
         }
     }
 
-
     public void subscribe(IDeviceListener aListener){
         devicesListenerList.add(aListener);
     }

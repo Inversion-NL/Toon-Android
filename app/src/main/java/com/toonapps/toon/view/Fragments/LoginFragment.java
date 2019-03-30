@@ -83,8 +83,10 @@ public class LoginFragment extends SlideFragment {
             public void onDeviceInfoChanged(DeviceInfo aDevicesInfo) {
                 loggedIn = true;
                 dismissProgressDialog();
-                txt_errorMessage.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
-                txt_errorMessage.setText(R.string.connectionWizard_login_msg_loginSuccessful);
+                if (isAdded()) {
+                    txt_errorMessage.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                    txt_errorMessage.setText(R.string.connectionWizard_login_msg_loginSuccessful);
+                }
             }
 
             @Override
@@ -96,20 +98,20 @@ public class LoginFragment extends SlideFragment {
                     dismissProgressDialog();
 
                     //noinspection ConstantConditions
-                    if (testing) {
+                    if (testing && isAdded()) {
                         txt_errorMessage.setTextColor(getResources().getColor(android.R.color.black));
-                        txt_errorMessage.setText(R.string.connectionWizard_login_msg_loginSuccessful);
+                        txt_errorMessage.setText("Testing!");
                         loggedIn = true;
 
                     } else {
 
                         btn_login.setText(R.string.connectionWizard_login_buttonLogin_retryText);
 
-                        if (e instanceof IllegalArgumentException)
+                        if (e instanceof IllegalArgumentException && isAdded())
                             // If the error has to to with the host name, set error on addres widget
                             // rather than setting a generic error
                             address.setError(getString(R.string.exception_message_incorrectHostname));
-                        else {
+                        else if (isAdded()){
                             String message = ErrorMessage.getInstance(context).getHumanReadableErrorMessage(e);
                             txt_errorMessage.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                             txt_errorMessage.setText(message);

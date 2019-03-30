@@ -36,6 +36,14 @@ public class DeviceInfo {
         return gasDevice.CurrentGasQuantity / 1000;
     }
 
+    public double getElecUsageFlow(){
+        return powerDevice1.CurrentElectricityFlow;
+    }
+
+    public double getElecUsageQuantity(){
+        return powerDevice1.CurrentElectricityQuantity;
+    }
+
     public double getElecUsageFlowLow(){
         return powerDevice4.CurrentElectricityFlow;
     }
@@ -87,11 +95,11 @@ public class DeviceInfo {
 
     private class GasDevice extends DeviceSettings {
         private double CurrentGasFlow;
-        private double  CurrentGasQuantity;
+        private double CurrentGasQuantity;
     }
 
     private class PowerDevice extends DeviceSettings {
         private double CurrentElectricityFlow;
-        private double  CurrentElectricityQuantity;
+        private double CurrentElectricityQuantity;
     }
 }

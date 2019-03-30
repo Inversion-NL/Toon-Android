@@ -240,15 +240,20 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         double currentElectricUsage;
         double currentGasUsage;
 
+        String text = "N/A";
+        currentElectricUsage = 0;
+
         if(aDevicesInfo.getElecUsageFlowHigh() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlowHigh();
-            String text = decimalFormat.format(aDevicesInfo.getElecUsageFlowHigh()) + " watt";
-            txtvCurrentPowerUse.setText(text);
-        } else {
+            text = decimalFormat.format(aDevicesInfo.getElecUsageFlowHigh()) + " watt";
+        } else if(aDevicesInfo.getElecUsageFlowLow() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlowLow();
-            String text = decimalFormat.format(aDevicesInfo.getElecUsageFlowLow()) + " watt";
-            txtvCurrentPowerUse.setText(text);
+            text = decimalFormat.format(aDevicesInfo.getElecUsageFlowLow()) + " watt";
+        } else if(aDevicesInfo.getElecUsageFlow() > 0){
+            currentElectricUsage = aDevicesInfo.getElecUsageFlow();
+            text = decimalFormat.format(aDevicesInfo.getElecUsageFlow()) + " watt";
         }
+        txtvCurrentPowerUse.setText(text);
 
         if(currentElectricUsage >= 0 && currentElectricUsage < 50){
             imgvCurrentPower.setImageResource(R.drawable.power1_10);
@@ -267,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         }
 
         currentGasUsage = aDevicesInfo.getGasUsed();
-        String text = decimalFormat.format(currentGasUsage) + " m3";
+        text = decimalFormat.format(currentGasUsage) + " m3";
         txtvCurrentGasUse.setText(text);
 
         if(currentGasUsage >= 0.0 && currentGasUsage < 0.50){
