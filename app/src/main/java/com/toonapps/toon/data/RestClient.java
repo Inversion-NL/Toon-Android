@@ -11,10 +11,23 @@ import okhttp3.Response;
 
 public class RestClient {
 
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String API_KEY = "Api-Key";
     private String url;
     private String token;
     private String seperator;
     private IRestClientResponseHandler responseHandler;
+
+    public interface TYPE {
+        interface GET {
+            int THERMOSTAT_INFO = 0;
+            int ZWAVE_DEVICES = 1;
+        }
+        interface SET {
+            int SCHEME_STATE = 10;
+            int SET_POINT = 11;
+        }
+    }
 
     public RestClient(IRestClientResponseHandler aResponseHandler){
         url =  AppSettings.getInstance().getUrl();
@@ -39,10 +52,10 @@ public class RestClient {
         getDataFromSharedPreferences();
         Request request = new Request.Builder()
                 .url(url + seperator + "happ_thermstat?action=changeSchemeState&state=2&temperatureState=" + aMode)
-                .addHeader("Api-Key",  token)
+                .addHeader(API_KEY,  token)
                 .build();
 
-        new RestClientExecutor(request, "setschemestate").execute();
+        new RestClientExecutor(request, TYPE.SET.SCHEME_STATE).execute();
     }
 
     public void setSchemeState(boolean anIsProgramOn){
@@ -52,12 +65,12 @@ public class RestClient {
         try {
         Request request = new Request.Builder()
                 .url(url + seperator + "happ_thermstat?action=changeSchemeState&state=" + isProgramOn)
-                .addHeader("Api-Key", token)
+                .addHeader(API_KEY, token)
                 .build();
 
-        new RestClientExecutor(request, "setschemestate").execute();
+        new RestClientExecutor(request, TYPE.SET.SCHEME_STATE).execute();
         } catch (Exception e) {
-            responseHandler.onResponseError(e);
+            if (responseHandler != null) responseHandler.onResponseError(e);
         }
     }
 
@@ -65,39 +78,39 @@ public class RestClient {
         getDataFromSharedPreferences();
         Request request = new Request.Builder()
                 .url(url + seperator + "happ_thermstat?action=setSetpoint&Setpoint=" + aTemperature)
-                .addHeader("Api-Key", token)
+                .addHeader(API_KEY, token)
                 .build();
 
-        new RestClientExecutor(request, "setsetpoint").execute();
+        new RestClientExecutor(request, TYPE.SET.SET_POINT).execute();
     }
 
     public void getThermostatInfo(){
         getDataFromSharedPreferences();
         Request request = new Request.Builder()
                 .url(url + seperator + "happ_thermstat?action=getThermostatInfo")
-                .addHeader("Api-Key", token)
+                .addHeader(API_KEY, token)
                 .build();
 
-        new RestClientExecutor(request, "getthermostatinfo").execute();
+        new RestClientExecutor(request, TYPE.GET.THERMOSTAT_INFO).execute();
     }
 
     public void getZWaveDevices() throws IllegalArgumentException {
         getDataFromSharedPreferences();
         Request request = new Request.Builder()
                 .url(url + seperator + "hdrv_zwave?action=getDevices.json")
-                .addHeader("Api-Key", token)
+                .addHeader(API_KEY, token)
                 .build();
 
-        new RestClientExecutor(request, "getzwavedevices").execute();
+        new RestClientExecutor(request, TYPE.GET.ZWAVE_DEVICES).execute();
     }
 
     public class RestClientExecutor extends AsyncTask{
 
         private OkHttpClient client;
         private Request request;
-        private String method;
+        private int method;
 
-        public RestClientExecutor(Request aRequest, String aMethod){
+        RestClientExecutor(Request aRequest, int aMethod){
             client = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(false)
                 .build();
@@ -123,44 +136,44 @@ public class RestClient {
                 ResponseData responseData = null;
 
                 switch (method) {
-                    case "getthermostatinfo":
+                    case TYPE.GET.THERMOSTAT_INFO:
                         responseData = Converter.convertFromTemperature((String) o);
                         break;
-                    case "getzwavedevices":
+                    case TYPE.GET.ZWAVE_DEVICES:
                         responseData = Converter.convertFromDeviceInfo((String) o);
                         break;
-                    case "setschemestate":
+                    case TYPE.SET.SCHEME_STATE:
                         break;
-                    case "setsetpoint":
+                    case TYPE.SET.SET_POINT:
                         break;
                 }
 
                 if (responseData != null && responseHandler != null) {
                     responseHandler.onResponse(responseData);
                 } else
-                    responseHandler.onResponseError(new NullPointerException("response data or responseHandler is null"));
+                    if (responseHandler != null) responseHandler.onResponseError(new NullPointerException("response data or responseHandler is null"));
             } else if (o instanceof Response) {
 
                 Response response = (Response) o;
                 switch (response.code()){
                     case 401:
-                        responseHandler.onResponseError(new ToonException(ToonException.FORBIDDEN));
+                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.FORBIDDEN));
                         break;
 
                     case 403:
-                        responseHandler.onResponseError(new ToonException(ToonException.UNAUTHORIZED));
+                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.UNAUTHORIZED));
                         break;
 
                     case 404:
-                        responseHandler.onResponseError(new ToonException(ToonException.NOT_FOUND));
+                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.NOT_FOUND));
                         break;
 
                     default:
-                        responseHandler.onResponseError(new ToonException(ToonException.UNHANDLED));
+                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.UNHANDLED));
                 }
 
             } else if (o instanceof Exception) {
-                responseHandler.onResponseError((Exception)o);
+                if (responseHandler != null) responseHandler.onResponseError((Exception)o);
             }
         }
     }

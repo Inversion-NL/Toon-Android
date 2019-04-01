@@ -13,7 +13,7 @@ public class ToonException extends Exception{
         exceptionType = type;
     }
 
-    public int getType() {
+    int getType() {
         return exceptionType;
     }
 }

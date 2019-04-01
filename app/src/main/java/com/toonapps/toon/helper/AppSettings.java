@@ -7,6 +7,14 @@ import android.text.TextUtils;
 
 public class AppSettings {
 
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_URL = "pref_key_url";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_TOKEN = "pref_key_token";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_IS_FIRST_START = "pref_key_isFirstStart";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_USE_REDIRECTION_SERVICE = "pref_key_use_redirection_service";
     private static AppSettings instance;
     private  SharedPreferences sharedPref;
 
@@ -25,7 +33,7 @@ public class AppSettings {
     }
 
     public String getUrl(){
-        return sharedPref.getString("pref_key_url", "");
+        return sharedPref.getString(PREF_KEY_URL, "");
     }
 
     public int getPort() {
@@ -55,22 +63,22 @@ public class AppSettings {
     }
 
     public void setUrl(String url) {
-        sharedPref.edit().putString("pref_key_url", url).apply();
+        sharedPref.edit().putString(PREF_KEY_URL, url).apply();
     }
 
     public String getApiToken(){
-        return sharedPref.getString("pref_key_token", "");
+        return sharedPref.getString(PREF_KEY_TOKEN, "");
     }
 
     public boolean useRedirectService(){
-        return sharedPref.getBoolean("pref_key_use_redirection_service", false);
+        return sharedPref.getBoolean(PREF_KEY_USE_REDIRECTION_SERVICE, false);
     }
 
     public boolean isFirstStart() {
-        return sharedPref.getBoolean("pref_key_isFirstStart", true);
+        return sharedPref.getBoolean(PREF_KEY_IS_FIRST_START, true);
     }
 
     public void setFirstStart(boolean isFirstStart) {
-        sharedPref.edit().putBoolean("pref_key_isFirstStart", isFirstStart).apply();
+        sharedPref.edit().putBoolean(PREF_KEY_IS_FIRST_START, isFirstStart).apply();
     }
 }
