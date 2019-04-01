@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 
 public class ErrorMessage {
 
+    // TODO change static because of memory leaks!
     private static ErrorMessage instance;
     private static Context context;
 

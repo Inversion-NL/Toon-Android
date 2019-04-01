@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +28,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private TextView txtvNextProgram;
     private TextView txtvCurrentPowerUse;
     private TextView txtvCurrentGasUse;
-    private Button btnAwayMode;
-    private Button btnSleepMode;
-    private Button btnCozyMode;
-    private Button btnHomeMode;
+    private AppCompatToggleButton btnAwayMode;
+    private AppCompatToggleButton btnSleepMode;
+    private AppCompatToggleButton btnCozyMode;
+    private AppCompatToggleButton btnHomeMode;
     private SwitchCompat swIsProgramOn;
     private ImageView imgvCurrentPower;
     private ImageView imgvCurrentGas;
@@ -140,29 +140,61 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
 
     private OnClickListener onButtonClicked = new OnClickListener() {
         public void onClick(View v) {
-        v.startAnimation(animButtonClick);
+        //v.startAnimation(animButtonClick);
         switch(v.getId()){
             case R.id.btnAwayMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.AWAY);
+                setButtonState(ThermostatInfo.TemperatureMode.AWAY);
                 break;
             case R.id.btnSleepMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.SLEEP);
+                setButtonState(ThermostatInfo.TemperatureMode.SLEEP);
                 break;
             case R.id.btnHomeMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.HOME);
+                setButtonState(ThermostatInfo.TemperatureMode.HOME);
                 break;
             case R.id.btnCozyMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.COMFORT);
+                setButtonState(ThermostatInfo.TemperatureMode.COMFORT);
                 break;
             case R.id.btnPlus:
-                TemperatureController.getInstance().setTemperatureHigher(0.5);
+                TemperatureController.getInstance().setTemperatureHigher(0.1);
                 break;
             case R.id.btnMin:
-                TemperatureController.getInstance().setTemperatureLower(0.5);
+                TemperatureController.getInstance().setTemperatureLower(0.1);
                 break;
         }
         }
     };
+
+    private void setButtonState(ThermostatInfo.TemperatureMode mode) {
+        switch (mode) {
+            case AWAY:
+                btnSleepMode.setChecked(false);
+                btnHomeMode.setChecked(false);
+                btnCozyMode.setChecked(false);
+                break;
+
+            case SLEEP:
+                btnAwayMode.setChecked(false);
+                btnHomeMode.setChecked(false);
+                btnCozyMode.setChecked(false);
+                break;
+
+            case HOME:
+                btnAwayMode.setChecked(false);
+                btnSleepMode.setChecked(false);
+                btnCozyMode.setChecked(false);
+                break;
+
+            case COMFORT:
+                btnAwayMode.setChecked(false);
+                btnSleepMode.setChecked(false);
+                btnHomeMode.setChecked(false);
+                break;
+        }
+    }
 
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
