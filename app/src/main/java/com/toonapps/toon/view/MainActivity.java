@@ -155,10 +155,10 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.COMFORT);
                 break;
             case R.id.btnPlus:
-                TemperatureController.getInstance().setTemperatureHigher(0.5);
+                TemperatureController.getInstance().setTemperatureHigher(0.1);
                 break;
             case R.id.btnMin:
-                TemperatureController.getInstance().setTemperatureLower(0.5);
+                TemperatureController.getInstance().setTemperatureLower(0.1);
                 break;
         }
         }
