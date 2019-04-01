@@ -1,7 +1,5 @@
 package com.toonapps.toon.controller;
 
-import android.util.Log;
-
 import com.toonapps.toon.data.IRestClientResponseHandler;
 import com.toonapps.toon.data.ResponseData;
 import com.toonapps.toon.data.RestClient;
@@ -17,7 +15,8 @@ public class TemperatureController implements IRestClientResponseHandler {
     private ThermostatInfo currentThermostatInfo;
 
     private static TemperatureController instance = null;
-    protected TemperatureController() {
+
+    private TemperatureController() {
         restClient = new RestClient(this);
         tempListenerList = new ArrayList<>();
     }
@@ -37,19 +36,18 @@ public class TemperatureController implements IRestClientResponseHandler {
         try {
             restClient.getThermostatInfo();
         } catch(Exception e){
-            //TODO Notify user something went wrong
-            Log.d("Exception occurred", e.getMessage());
+            onError(e);
         }
     }
 
     public void setTemperatureHigher(double anAmount){
 
         if (currentThermostatInfo != null) {
-            double setpoint = currentThermostatInfo.getCurrentSetpoint();
-            setpoint += (anAmount * 100);
+            double setPoint = currentThermostatInfo.getCurrentSetpoint();
+            setPoint += (anAmount * 100);
 
-            setTemperature(setpoint);
-        }
+            setTemperature(setPoint);
+        } else onError(new NullPointerException());
     }
 
     public void setTemperatureLower(double anAmount){
@@ -59,7 +57,7 @@ public class TemperatureController implements IRestClientResponseHandler {
             setPoint -= (anAmount * 100);
 
             setTemperature(setPoint);
-        }
+        } else onError(new NullPointerException());
     }
 
     private void setTemperature(double anAmount){
@@ -79,11 +77,10 @@ public class TemperatureController implements IRestClientResponseHandler {
 
         try {
             restClient.setSchemeTemperatureState(mode);
+            updateThermostatInfo();
         }catch(Exception e){
-            Log.d("Exception occurred", e.getMessage());
+            onError(e);
         }
-
-        updateThermostatInfo();
     }
 
     public void subscribe(ITemperatureListener aListener){
@@ -94,18 +91,29 @@ public class TemperatureController implements IRestClientResponseHandler {
         tempListenerList.remove(aListener);
     }
 
-    public void onTemperatureUpdated(ThermostatInfo aThermostatInfo){
+    private void onTemperatureUpdated(ThermostatInfo aThermostatInfo){
         for(ITemperatureListener aListener : tempListenerList){
             aListener.onTemperatureChanged(aThermostatInfo);
         }
     }
 
+    private void onError(Exception e){
+        for(ITemperatureListener aListener : tempListenerList){
+            aListener.onTemperatureError(e);
+        }
+    }
+
     @Override
     public void onResponse(ResponseData aResponse) {
-        if(aResponse.getThermostatInfo() != null) {
+        if (aResponse != null) if (aResponse.getThermostatInfo() != null) {
             currentThermostatInfo = aResponse.getThermostatInfo();
 
             onTemperatureUpdated(currentThermostatInfo);
-        }
+        } else onError(new NullPointerException());
+    }
+
+    @Override
+    public void onResponseError(Exception e) {
+        onError(e);
     }
 }

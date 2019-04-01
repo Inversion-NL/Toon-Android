@@ -4,9 +4,10 @@ import com.google.gson.annotations.Expose;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public class ThermostatInfo {
 
-    public enum TemperatureMode{
+    public enum TemperatureMode {
         COMFORT,
         HOME,
         SLEEP,
@@ -34,7 +35,7 @@ public class ThermostatInfo {
     @Expose
     private long nextTime;
     @Expose
-    private int nextSetpoint;
+    private int nextSetPoint;
 
     public double getCurrentTemp(){
         return currentTemp;
@@ -45,12 +46,11 @@ public class ThermostatInfo {
     }
 
     public Date getNextProgram(){
-        Date nextDateTime = new Date(nextTime * 1000);
-        return nextDateTime;
+        return new Date(nextTime * 1000);
     }
 
-    public double getNextSetpoint(){
-        return nextSetpoint;
+    public double getNextSetPoint(){
+        return nextSetPoint;
     }
 
     public TemperatureMode getCurrentTempMode(){

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.toonapps.toon.view.ConnectionWizardActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- Empty layout (0x0 dp) centered horizontally -->
+    <Space android:id="@+id/dummy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_login"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/login"
+        android:adjustViewBounds= "true"
+        android:layout_margin="20dp"
+        android:maxWidth="150dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_toonAddress"
+        android:layout_below="@+id/img_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/dummy"
+        android:layout_toStartOf="@id/dummy"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="15dp"
+        android:textSize="20sp"
+        tools:textColor="@android:color/black"
+        android:text="@string/connectionWizard_login_toonAddress_title"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_toonPort"
+        android:layout_below="@+id/tv_toonAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/dummy"
+        android:layout_toStartOf="@id/dummy"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:text="@string/connectionWizard_login_toonPort_title"
+        android:layout_marginEnd="20dp"
+        tools:textColor="@android:color/black"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_toonAddress"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/img_login"
+        android:layout_toRightOf="@id/dummy"
+        android:layout_toEndOf="@id/dummy">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_toonAddress"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:singleLine="true"
+            android:inputType="textNoSuggestions"
+            android:hint="@string/connectionWizard_login_toonAddress_hint" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_toonPort"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/til_toonAddress"
+        android:layout_toRightOf="@id/dummy"
+        android:layout_toEndOf="@id/dummy">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_toonPort"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_toonAddress"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:inputType="numberSigned"
+            android:singleLine="true"
+            android:hint="@string/connectionWizard_login_toonPort_hint"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txt_errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/til_toonPort"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="18sp"
+        tools:text="@string/device_update_error_txt"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/connectionWizard_login_buttonLogin_loginText"/>
+
+</RelativeLayout>

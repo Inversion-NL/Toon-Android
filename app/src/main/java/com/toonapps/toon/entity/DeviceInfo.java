@@ -2,31 +2,30 @@ package com.toonapps.toon.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-
-public class DeviceInfo
-{
+@SuppressWarnings("unused")
+public class DeviceInfo {
     @SerializedName("dev_settings_device")
     private DeviceSettings devSettings;
 
-    @SerializedName("dev_2")
+    @SerializedName(value="dev_2", alternate={"dev_3"})
     private Device device;
 
-    @SerializedName("dev_2.1")
+    @SerializedName(value="dev_2.1", alternate={"dev_3.1"})
     private GasDevice gasDevice;
 
-    @SerializedName("dev_2.2")
+    @SerializedName(value="dev_2.2", alternate={"dev_3.2"})
     private PowerDevice powerDevice1;
 
-    @SerializedName("dev_2.3")
+    @SerializedName(value="dev_2.3", alternate={"dev_3.3"})
     private PowerDevice powerDevice2;
 
-    @SerializedName("dev_2.4")
+    @SerializedName(value="dev_2.4", alternate={"dev_3.4"})
     private PowerDevice powerDevice3;
 
-    @SerializedName("dev_2.5")
+    @SerializedName(value="dev_2.5", alternate={"dev_3.5"})
     private PowerDevice powerDevice4;
 
-    @SerializedName("dev_2.6")
+    @SerializedName(value="dev_2.6", alternate={"dev_3.6"})
     private PowerDevice powerDevice5;
 
     public double getGasUsed(){
@@ -37,11 +36,19 @@ public class DeviceInfo
         return gasDevice.CurrentGasQuantity / 1000;
     }
 
+    public double getElecUsageFlow(){
+        return powerDevice1.CurrentElectricityFlow;
+    }
+
+    public double getElecUsageQuantity(){
+        return powerDevice1.CurrentElectricityQuantity;
+    }
+
     public double getElecUsageFlowLow(){
         return powerDevice4.CurrentElectricityFlow;
     }
 
-    public double getElecUsageFlowLowQuantity(){
+    public double getElecUsageFlowLowQuantity() {
         return powerDevice4.CurrentElectricityQuantity / 1000;
     }
 
@@ -69,9 +76,7 @@ public class DeviceInfo
         return powerDevice3.CurrentElectricityQuantity / 1000;
     }
 
-
-    public class DeviceSettings
-    {
+    public class DeviceSettings {
         protected String uuid;
         protected String name;
         protected String internalAddress;
@@ -80,8 +85,7 @@ public class DeviceInfo
         protected String location;
     }
 
-    public class Device extends DeviceSettings
-    {
+    private class Device extends DeviceSettings {
         private String ccList;
         private String supportedCC;
         private int IsConnected;
@@ -89,14 +93,13 @@ public class DeviceInfo
         private int HealthValue;
     }
 
-    public class GasDevice extends DeviceSettings{
+    private class GasDevice extends DeviceSettings {
         private double CurrentGasFlow;
-        private double  CurrentGasQuantity;
+        private double CurrentGasQuantity;
     }
 
-    public class PowerDevice extends DeviceSettings{
+    private class PowerDevice extends DeviceSettings {
         private double CurrentElectricityFlow;
-        private double  CurrentElectricityQuantity;
+        private double CurrentElectricityQuantity;
     }
 }
-

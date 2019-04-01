@@ -4,11 +4,14 @@
         android:title="@string/pref_network_title"
         android:key="pref_key_network">
 
-        <EditTextPreference
-            android:key="pref_key_url"
-            android:title="@string/pref_url_title"
-            android:summary="@string/pref_url_summary"
-            android:defaultValue="@string/pref_url_default" />
+        <PreferenceScreen
+            android:title="@string/pref_setupConnection_title"
+            android:summary="@string/pref_setupConnection_summary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.toonapps.toon.view.ConnectionWizardActivity"
+                android:targetPackage="com.toonapps.toon"/>
+        </PreferenceScreen>
 
     </PreferenceCategory>
 
@@ -18,14 +21,15 @@
 
         <CheckBoxPreference
             android:key="pref_key_use_redirection_service"
-            android:title="@string/pref_title_use_redirection_service"
-            android:summary="@string/pref_summary_use_redirection_service" />
+            android:title="@string/pref_redirectionService_title"
+            android:summary="@string/pref_redirectionService_summary" />
 
         <EditTextPreference
+            android:defaultValue="@string/pref_token_default"
+            android:dependency="pref_key_use_redirection_service"
             android:key="pref_key_token"
-            android:title="@string/pref_token_title"
             android:summary="@string/pref_token_summary"
-            android:defaultValue="@string/pref_token_default" />
+            android:title="@string/pref_token_title" />
 
     </PreferenceCategory>
 </PreferenceScreen>

@@ -2,9 +2,10 @@ package com.toonapps.toon.view;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.support.annotation.Nullable;
 
 import com.toonapps.toon.R;
+
+import androidx.annotation.Nullable;
 
 public class SettingsActivity extends PreferenceActivity {
 
