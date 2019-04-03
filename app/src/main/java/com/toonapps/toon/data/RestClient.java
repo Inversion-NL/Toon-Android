@@ -143,15 +143,17 @@ public class RestClient {
                         responseData = Converter.convertFromDeviceInfo((String) o);
                         break;
                     case TYPE.SET.SCHEME_STATE:
+                        responseData = Converter.convertResultData((String) o);
                         break;
                     case TYPE.SET.SET_POINT:
+                        responseData = Converter.convertResultData((String) o);
                         break;
                 }
 
                 if (responseData != null && responseHandler != null) {
                     responseHandler.onResponse(responseData);
-                } else
-                    if (responseHandler != null) responseHandler.onResponseError(new NullPointerException("response data or responseHandler is null"));
+                } else if (responseHandler != null)
+                    responseHandler.onResponseError(new NullPointerException("response data or responseHandler is null"));
             } else if (o instanceof Response) {
 
                 Response response = (Response) o;

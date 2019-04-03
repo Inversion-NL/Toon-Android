@@ -4,6 +4,7 @@ import com.toonapps.toon.data.IRestClientResponseHandler;
 import com.toonapps.toon.data.ResponseData;
 import com.toonapps.toon.data.RestClient;
 import com.toonapps.toon.entity.ThermostatInfo;
+import com.toonapps.toon.helper.ToonException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,8 +108,9 @@ public class TemperatureController implements IRestClientResponseHandler {
     public void onResponse(ResponseData aResponse) {
         if (aResponse != null) if (aResponse.getThermostatInfo() != null) {
             currentThermostatInfo = aResponse.getThermostatInfo();
-
             onTemperatureUpdated(currentThermostatInfo);
+        } else if (aResponse.getResultInfo() != null) {
+            if (!aResponse.getResultInfo().isSuccess()) onError(new ToonException(ToonException.UNHANDLED));
         } else onError(new NullPointerException());
     }
 

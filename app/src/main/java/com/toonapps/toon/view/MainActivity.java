@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity implements ITemperatureListener, IDeviceListener {
 
@@ -40,12 +39,12 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private TextView txtvCurrentGasUse;
     private AppCompatToggleButton btnAwayMode;
     private AppCompatToggleButton btnSleepMode;
-    private AppCompatToggleButton btnCozyMode;
+    private AppCompatToggleButton btnComfortMode;
     private AppCompatToggleButton btnHomeMode;
     private SwitchCompat swIsProgramOn;
     private ImageView imgvCurrentPower;
     private ImageView imgvCurrentGas;
-    private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    private DecimalFormat decimalFormat = new DecimalFormat("#0.0");
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm"); // TODO internationalize date and time
 
     //prevent toggle executing onCheckedChanged
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                showRefreshToast();
                 updateData();
                 break;
             case R.id.action_settings:
@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         }
 
         return true;
+    }
+
+    private void showRefreshToast() {
+        Toast.makeText(this, getString(R.string.toast_refreshingData), Toast.LENGTH_LONG).show();
     }
 
     private void updateData(){
@@ -117,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         btnSleepMode.setOnClickListener(onButtonClicked);
         btnHomeMode = findViewById(R.id.btnHomeMode);
         btnHomeMode.setOnClickListener(onButtonClicked);
-        btnCozyMode = findViewById(R.id.btnCozyMode);
-        btnCozyMode.setOnClickListener(onButtonClicked);
+        btnComfortMode = findViewById(R.id.btnComfortMode);
+        btnComfortMode.setOnClickListener(onButtonClicked);
         findViewById(R.id.btnPlus).setOnClickListener(onButtonClicked);
         findViewById(R.id.btnMin).setOnClickListener(onButtonClicked);
 
@@ -139,24 +143,24 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private OnClickListener onButtonClicked = new OnClickListener() {
         public void onClick(View v) {
 
-        int tempSetValue = AppSettings.getInstance().getTempSetValue();
+        float tempSetValue = AppSettings.getInstance().getTempSetValue();
 
         switch(v.getId()){
             case R.id.btnAwayMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.AWAY);
-                setButtonState(ThermostatInfo.TemperatureMode.AWAY);
+                switchButtonState(ThermostatInfo.TemperatureMode.AWAY, false);
                 break;
             case R.id.btnSleepMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.SLEEP);
-                setButtonState(ThermostatInfo.TemperatureMode.SLEEP);
+                switchButtonState(ThermostatInfo.TemperatureMode.SLEEP, false);
                 break;
             case R.id.btnHomeMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.HOME);
-                setButtonState(ThermostatInfo.TemperatureMode.HOME);
+                switchButtonState(ThermostatInfo.TemperatureMode.HOME, false);
                 break;
-            case R.id.btnCozyMode:
+            case R.id.btnComfortMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.COMFORT);
-                setButtonState(ThermostatInfo.TemperatureMode.COMFORT);
+                switchButtonState(ThermostatInfo.TemperatureMode.COMFORT, false);
                 break;
             case R.id.btnPlus:
                 TemperatureController.getInstance().setTemperatureHigher(tempSetValue);
@@ -168,27 +172,31 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         }
     };
 
-    private void setButtonState(ThermostatInfo.TemperatureMode mode) {
+    private void switchButtonState(ThermostatInfo.TemperatureMode mode, boolean programChangesButton) {
         switch (mode) {
             case AWAY:
+                if (programChangesButton) btnAwayMode.setChecked(true);
                 btnSleepMode.setChecked(false);
                 btnHomeMode.setChecked(false);
-                btnCozyMode.setChecked(false);
+                btnComfortMode.setChecked(false);
                 break;
 
             case SLEEP:
+                if (programChangesButton) btnSleepMode.setChecked(true);
                 btnAwayMode.setChecked(false);
                 btnHomeMode.setChecked(false);
-                btnCozyMode.setChecked(false);
+                btnComfortMode.setChecked(false);
                 break;
 
             case HOME:
+                if (programChangesButton) btnHomeMode.setChecked(true);
                 btnAwayMode.setChecked(false);
                 btnSleepMode.setChecked(false);
-                btnCozyMode.setChecked(false);
+                btnComfortMode.setChecked(false);
                 break;
 
             case COMFORT:
+                if (programChangesButton) btnComfortMode.setChecked(true);
                 btnAwayMode.setChecked(false);
                 btnSleepMode.setChecked(false);
                 btnHomeMode.setChecked(false);
@@ -213,9 +221,22 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         String setPointText = decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°";
         txtvSetPoint.setText(setPointText);
 
-        if(aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint())
-            findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
-        else findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
+        if (aThermostatInfo.getBurnerInfo() > -1) { // Minus one meaning it hasn't been set by Toon
+            switch(aThermostatInfo.getBurnerInfo()) {
+
+                case 0:
+                    findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
+                    break;
+
+                case 1:
+                    findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
+                    break;
+            }
+        } else {
+            if (aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint()) // Figure out our own whether the burner is burning or not
+                findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
+            else findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
+        }
 
         Object[] args = {
                 simpleDateFormat.format(aThermostatInfo.getNextProgram()),
@@ -229,21 +250,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         String dontFollowProgramText = getString(R.string.temperature_setting_dontFollowProgram);
         swIsProgramOn.setText((aThermostatInfo.getProgramState() ? followProgramText : dontFollowProgramText));
 
-        clearButtonColors();
-        switch(aThermostatInfo.getCurrentTempMode()){
-            case AWAY:
-                btnAwayMode.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPresetAccent));
-                break;
-            case COMFORT:
-                btnCozyMode.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPresetAccent));
-                break;
-            case SLEEP:
-                btnSleepMode.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPresetAccent));
-                break;
-            case HOME:
-                btnHomeMode.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPresetAccent));
-                break;
-        }
+        switchButtonState(aThermostatInfo.getCurrentTempMode(), true);
 
         isUpdatingUI = false;
     }
@@ -258,13 +265,6 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     public void onDeviceError(Exception e) {
         String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
         Toast.makeText(this, getString(R.string.device_update_error_txt) + ": " +  message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void clearButtonColors(){
-        btnAwayMode.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-        btnSleepMode.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-        btnHomeMode.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-        btnCozyMode.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
     }
 
     @Override
