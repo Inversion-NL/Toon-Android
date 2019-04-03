@@ -9,6 +9,9 @@
     <string name="pref_redirectionService_summary">Use redirect script to prevent the use of a port forward in your router to the Toon thermostat</string>
     <string name="pref_setupConnection_title">Set up connection</string>
     <string name="pref_setupConnection_summary">Click here to set up the connection to Toon</string>
+    <string name="pref_category_app_settings_title">App settings</string>
+    <string name="pref_tempSetValue_title">Default temp change setting</string>
+    <string name="pref_tempSetValue_summary">The amount the + and - sign changes</string>
 
     <string name="temperature_setting_away">Away</string>
     <string name="temperature_setting_home">Home</string>

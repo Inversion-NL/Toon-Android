@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+        android:title="@string/pref_category_app_settings_title">
+        <ListPreference
+            android:key="pref_key_tempSetValue"
+            android:title="@string/pref_tempSetValue_title"
+            android:summary="@string/pref_setupConnection_summary"
+            android:defaultValue="5"
+            android:entries="@array/tempSetValues"
+            android:entryValues="@array/tempSetValues"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_network_title"
         android:key="pref_key_network">
 
@@ -12,7 +23,6 @@
                 android:targetClass="com.toonapps.toon.view.ConnectionWizardActivity"
                 android:targetPackage="com.toonapps.toon"/>
         </PreferenceScreen>
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -30,6 +40,5 @@
             android:key="pref_key_token"
             android:summary="@string/pref_token_summary"
             android:title="@string/pref_token_title" />
-
     </PreferenceCategory>
 </PreferenceScreen>

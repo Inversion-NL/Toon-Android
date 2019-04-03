@@ -15,6 +15,8 @@ public class AppSettings {
     private static final String PREF_KEY_IS_FIRST_START = "pref_key_isFirstStart";
     @SuppressWarnings("HardCodedStringLiteral")
     private static final String PREF_KEY_USE_REDIRECTION_SERVICE = "pref_key_use_redirection_service";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_TEMP_SET_VALUE = "pref_key_tempSetValue";
     private static AppSettings instance;
     private  SharedPreferences sharedPref;
 
@@ -34,6 +36,10 @@ public class AppSettings {
 
     public String getUrl(){
         return sharedPref.getString(PREF_KEY_URL, "");
+    }
+
+    public void setUrl(String url) {
+        sharedPref.edit().putString(PREF_KEY_URL, url).apply();
     }
 
     public int getPort() {
@@ -62,8 +68,10 @@ public class AppSettings {
         } else return "";
     }
 
-    public void setUrl(String url) {
-        sharedPref.edit().putString(PREF_KEY_URL, url).apply();
+    public int getTempSetValue() {
+        String value = sharedPref.getString(PREF_KEY_TEMP_SET_VALUE, "5");
+        if(value == null) value = "5"; // To circumvent null pointer exception
+        return (Integer.valueOf(value) / 10); // 1/10 of the value
     }
 
     public String getApiToken(){

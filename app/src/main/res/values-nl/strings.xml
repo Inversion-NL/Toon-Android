@@ -51,4 +51,7 @@
     <string name="exception_message_notAuthorized">Niet geauthoriseerd</string>
     <string name="exception_message_pageNotFound">Pagina niet gevonden op apparaat</string>
     <string name="exception_message_connectionRefused">Verbinding geweigerd door je Toon. Weet je zeker dat hij geroot is?</string>
+    <string name="pref_category_app_settings_title">App instellingen</string>
+    <string name="pref_tempSetValue_title">Standaard temp instel waarde</string>
+    <string name="pref_tempSetValue_summary">De hoeveelheid de + en de - de temperatuur aanpassen</string>
 </resources>

@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm"); // TODO internationalize date and time
 
-    private AlphaAnimation animButtonClick = new AlphaAnimation(1F, 0.8F);
     //prevent toggle executing onCheckedChanged
     private boolean isUpdatingUI = false;
     private int REQUEST_CODE_INTRO = 100;
@@ -140,7 +138,9 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
 
     private OnClickListener onButtonClicked = new OnClickListener() {
         public void onClick(View v) {
-        //v.startAnimation(animButtonClick);
+
+        int tempSetValue = AppSettings.getInstance().getTempSetValue();
+
         switch(v.getId()){
             case R.id.btnAwayMode:
                 TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.AWAY);
@@ -159,10 +159,10 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
                 setButtonState(ThermostatInfo.TemperatureMode.COMFORT);
                 break;
             case R.id.btnPlus:
-                TemperatureController.getInstance().setTemperatureHigher(0.1);
+                TemperatureController.getInstance().setTemperatureHigher(tempSetValue);
                 break;
             case R.id.btnMin:
-                TemperatureController.getInstance().setTemperatureLower(0.1);
+                TemperatureController.getInstance().setTemperatureLower(tempSetValue);
                 break;
         }
         }
