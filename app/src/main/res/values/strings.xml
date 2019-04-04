@@ -30,6 +30,7 @@
 
     <string name="temperature_update_error_txt">Error while updating temperature info</string>
     <string name="device_update_error_txt">Error while updating device info</string>
+    <string name="toast_refreshingData">Refreshing data…</string>
 
     <string name="connectionWizard_login_msg_pleaseEnterData">Please enter data</string>
     <string name="connectionWizard_login_msg_loginSuccessful">Login successful</string>

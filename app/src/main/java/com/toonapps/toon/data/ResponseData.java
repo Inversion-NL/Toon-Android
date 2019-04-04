@@ -1,14 +1,24 @@
 package com.toonapps.toon.data;
 
 import com.toonapps.toon.entity.DeviceInfo;
+import com.toonapps.toon.entity.ResultInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 
 public class ResponseData {
 
     private ThermostatInfo thermostatInfo;
     private DeviceInfo deviceInfo;
+    private ResultInfo resultInfo;
 
     ResponseData(){
+    }
+
+    public ResultInfo getResultInfo() {
+        return resultInfo;
+    }
+
+    public void setResultInfo(ResultInfo resultInfo) {
+        this.resultInfo = resultInfo;
     }
 
     public void setThermostatInfo(ThermostatInfo aThermostatInfo){
@@ -23,7 +33,7 @@ public class ResponseData {
         deviceInfo = aDeviceInfo;
     }
 
-    public DeviceInfo getDevicesInfo(){
+    public DeviceInfo getDeviceInfo(){
         return deviceInfo;
     }
 }
