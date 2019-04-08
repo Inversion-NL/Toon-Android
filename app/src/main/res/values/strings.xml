@@ -66,5 +66,5 @@
     <string name="exception_message_notAuthorized">Not authorized</string>
     <string name="exception_message_pageNotFound">Page not found on device</string>
     <string name="exception_message_connectionRefused">Connection refused by your Toon. Are you sure it is rooted?</string>
-    <string name="nextProgramTemp">On %d</string>
+    <string name="nextProgramTemp">On %.01f</string>
 </resources>

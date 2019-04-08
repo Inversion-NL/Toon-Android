@@ -57,6 +57,6 @@
     <string name="pref_tempSetValue_title">Standaard temp instel waarde</string>
     <string name="pref_tempSetValue_summary">De hoeveelheid de + en de - de temperatuur aanpassen</string>
     <string name="toast_refreshingData">Gegevens bijwerken…</string>
-    <string name="nextProgramTemp">Op %d</string>
+    <string name="nextProgramTemp">Op %.01f</string>
     <string name="temperature_setting_vacation">Vakantie</string>
 </resources>

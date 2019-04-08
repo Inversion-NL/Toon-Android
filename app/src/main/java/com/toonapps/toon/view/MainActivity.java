@@ -328,7 +328,9 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
             }
         } else {
             // No Toon temperature programming used
-            String text = String.format(getString(R.string.nextProgramTemp), aThermostatInfo.getCurrentSetpoint());
+            double setpoint = aThermostatInfo.getCurrentSetpoint();
+            setpoint = Math.round(setpoint/100);
+            String text = String.format(getString(R.string.nextProgramTemp), setpoint);
             txtvNextProgram.setText(text);
         }
 
