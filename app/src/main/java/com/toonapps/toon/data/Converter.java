@@ -2,11 +2,12 @@ package com.toonapps.toon.data;
 
 import com.google.gson.Gson;
 import com.toonapps.toon.entity.DeviceInfo;
+import com.toonapps.toon.entity.ResultInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 
-public class Converter {
+class Converter {
 
-    public static ResponseData convertFromTemperature(String aJson) {
+    static ResponseData convertFromTemperature(String aJson) {
         Gson gson = new Gson();
         ResponseData responseData = new ResponseData();
 
@@ -20,7 +21,7 @@ public class Converter {
         }
     }
 
-    public static ResponseData convertFromDeviceInfo(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
+    static ResponseData convertFromDeviceInfo(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
         Gson gson = new Gson();
         ResponseData responseData = new ResponseData();
         try {
@@ -31,5 +32,15 @@ public class Converter {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    static ResponseData convertResultData(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
+        Gson gson = new Gson();
+        ResponseData responseData = new ResponseData();
+
+        ResultInfo resultInfo = gson.fromJson(aJson, ResultInfo.class);
+        responseData.setResultInfo(resultInfo);
+
+        return responseData;
     }
 }

@@ -57,7 +57,7 @@ public class DeviceController implements IRestClientResponseHandler {
 
     @Override
     public void onResponse(ResponseData aResponse) {
-        if (aResponse != null) onDevicesUpdated(aResponse.getDevicesInfo());
+        if (aResponse != null) onDevicesUpdated(aResponse.getDeviceInfo());
         else onError(new NullPointerException("Device data response is null"));
     }
 

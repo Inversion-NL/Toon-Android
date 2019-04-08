@@ -102,19 +102,19 @@
             android:textOff="@string/temperature_setting_away"/>
 
         <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/btnHomeMode"
-            style="@style/btnMode"
-            android:textOn="@string/temperature_setting_home"
-            android:textOff="@string/temperature_setting_home"/>
-
-        <androidx.appcompat.widget.AppCompatToggleButton
             android:id="@+id/btnSleepMode"
             style="@style/btnMode"
             android:textOn="@string/temperature_setting_sleeping"
             android:textOff="@string/temperature_setting_sleeping"/>
 
         <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/btnCozyMode"
+            android:id="@+id/btnHomeMode"
+            style="@style/btnMode"
+            android:textOn="@string/temperature_setting_home"
+            android:textOff="@string/temperature_setting_home"/>
+
+        <androidx.appcompat.widget.AppCompatToggleButton
+            android:id="@+id/btnComfortMode"
             style="@style/btnMode"
             android:textOn="@string/temperature_setting_comfort"
             android:textOff="@string/temperature_setting_comfort"/>
