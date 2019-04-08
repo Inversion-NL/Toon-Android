@@ -11,4 +11,6 @@
 
     <color name="black_overlay">#66000000</color>
 
+    <color name="btnTempActivated">#d2d2d2</color>
+
 </resources>

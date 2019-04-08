@@ -12,18 +12,21 @@
     <string name="pref_category_app_settings_title">App settings</string>
     <string name="pref_tempSetValue_title">Default temp change setting</string>
     <string name="pref_tempSetValue_summary">The amount the + and - sign changes</string>
+    <string name="pref_nextProgramTempOrProgram_title">Use temperature or program</string>
+    <string name="pref_nextProgramTempOrProgram_summary">Show for next program the temperature or the mode</string>
 
     <string name="temperature_setting_away">Away</string>
     <string name="temperature_setting_home">Home</string>
     <string name="temperature_setting_sleeping">Sleep</string>
     <string name="temperature_setting_comfort">Comfort</string>
+    <string name="temperature_setting_vacation">Vacation</string>
     <string name="temperature_setting_followProgram">Follow program</string>
     <string name="temperature_setting_dontFollowProgram">Don\'t follow program</string>
 
     <string name="powerUsage_title">Power usage</string>
     <string name="gasUsage_title">Gas usage</string>
     <string name="nextProgramText_noData">No data</string>
-    <string name="nextProgramValue">At {0} on {1}°</string>
+    <string name="nextProgramValue">At {0} on {1}</string>
     <string name="img_description_fire">Image fire</string>
     <string name="img_current_power">Image current power usage</string>
     <string name="img_current_gas">Image current gas usage</string>
@@ -63,4 +66,5 @@
     <string name="exception_message_notAuthorized">Not authorized</string>
     <string name="exception_message_pageNotFound">Page not found on device</string>
     <string name="exception_message_connectionRefused">Connection refused by your Toon. Are you sure it is rooted?</string>
+    <string name="nextProgramTemp">On %d</string>
 </resources>

@@ -20,7 +20,7 @@
     <string name="powerUsage_title">Stroom nu</string>
     <string name="gasUsage_title">Gas nu</string>
     <string name="nextProgramText_noData">Geen gegevens</string>
-    <string name="nextProgramValue">Om {0} uur \\n op {1}°</string>
+    <string name="nextProgramValue">Om {0} uur op {1}</string>
     <string name="img_description_fire">Afbeelding vuur</string>
     <string name="img_current_power">Afbeelding huidig stroom verbruik</string>
     <string name="img_current_gas">Afbeelding huidig gas verbruik</string>
@@ -55,4 +55,8 @@
     <string name="pref_tempSetValue_title">Standaard temp instel waarde</string>
     <string name="pref_tempSetValue_summary">De hoeveelheid de + en de - de temperatuur aanpassen</string>
     <string name="toast_refreshingData">Gegevens bijwerken…</string>
+    <string name="nextProgramTemp">Op %d</string>
+    <string name="temperature_setting_vacation">Vakantie</string>
+    <string name="pref_nextProgramTempOrProgram_title">Temperatuur of programm</string>
+    <string name="pref_nextProgramTempOrProgram_summary">Laat voor het komende programma de temperatuur of de modus zien</string>
 </resources>

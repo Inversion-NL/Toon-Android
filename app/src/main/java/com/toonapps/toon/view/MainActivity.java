@@ -17,6 +17,7 @@ import com.toonapps.toon.controller.DeviceController;
 import com.toonapps.toon.controller.IDeviceListener;
 import com.toonapps.toon.controller.ITemperatureListener;
 import com.toonapps.toon.controller.TemperatureController;
+import com.toonapps.toon.entity.CurrentUsageInfo;
 import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 import com.toonapps.toon.helper.AppSettings;
@@ -25,6 +26,7 @@ import com.toonapps.toon.helper.ErrorMessage;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatToggleButton;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
 
     //prevent toggle executing onCheckedChanged
     private boolean isUpdatingUI = false;
+    private boolean isUpdatingUI2 = false;
     private int REQUEST_CODE_INTRO = 100;
 
     @Override
@@ -110,8 +113,15 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     }
 
     private void updateData(){
+        TemperatureController.getInstance().updateCurrentUsageInfo();
         TemperatureController.getInstance().updateThermostatInfo();
-        DeviceController.getInstance().updateDeviceInfo();
+
+        // Try to fetch current usage info once to see if it's available (e.g. rooted Toon)
+        if (!AppSettings.getInstance().triedCurrentUsageInfoOnce()
+                || !AppSettings.getInstance().isCurrentUsageInfoAvailable()) {
+            AppSettings.getInstance().setTriedCurrentUsageInfoOnce(true);
+            DeviceController.getInstance().updateDeviceInfo();
+        }
     }
 
     private void setResources(){
@@ -207,82 +217,29 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(!isUpdatingUI) TemperatureController.getInstance().setTemperatureProgram(isChecked);
+            if(!isUpdatingUI && !isUpdatingUI2) TemperatureController.getInstance().setTemperatureProgram(isChecked);
         }
     };
-
-    @Override
-    public void onTemperatureChanged(ThermostatInfo aThermostatInfo) {
-        isUpdatingUI = true;
-
-        String tempText = decimalFormat.format(aThermostatInfo.getCurrentTemp() / 100) + "°";
-        txtvTemperature.setText(tempText);
-
-        String setPointText = decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°";
-        txtvSetPoint.setText(setPointText);
-
-        if (aThermostatInfo.getBurnerInfo() > -1) { // Minus one meaning it hasn't been set by Toon
-            switch(aThermostatInfo.getBurnerInfo()) {
-
-                case 0:
-                    findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
-                    break;
-
-                case 1:
-                    findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
-                    break;
-            }
-        } else {
-            if (aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint()) // Figure out our own whether the burner is burning or not
-                findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
-            else findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
-        }
-
-        Object[] args = {
-                simpleDateFormat.format(aThermostatInfo.getNextProgram()),
-                decimalFormat.format(aThermostatInfo.getNextSetPoint() / 100)
-        };
-        MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue));
-        txtvNextProgram.setText(fmt.format(args));
-
-        swIsProgramOn.setChecked(aThermostatInfo.getProgramState());
-        String followProgramText = getString(R.string.temperature_setting_followProgram);
-        String dontFollowProgramText = getString(R.string.temperature_setting_dontFollowProgram);
-        swIsProgramOn.setText((aThermostatInfo.getProgramState() ? followProgramText : dontFollowProgramText));
-
-        switchButtonState(aThermostatInfo.getCurrentTempMode(), true);
-
-        isUpdatingUI = false;
-    }
-
-    @Override
-    public void onTemperatureError(Exception e) {
-        String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
-        Toast.makeText(this, getString(R.string.temperature_update_error_txt) + ": " + message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDeviceError(Exception e) {
-        String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
-        Toast.makeText(this, getString(R.string.device_update_error_txt) + ": " +  message, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onDeviceInfoChanged(DeviceInfo aDevicesInfo) {
         double currentElectricUsage;
         double currentGasUsage;
 
-        String text = "N/A";
+        @SuppressWarnings("HardCodedStringLiteral") String text = "N/A";
         currentElectricUsage = 0;
 
         if(aDevicesInfo.getElecUsageFlowHigh() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlowHigh();
+            //noinspection HardCodedStringLiteral
             text = decimalFormat.format(aDevicesInfo.getElecUsageFlowHigh()) + " watt";
         } else if(aDevicesInfo.getElecUsageFlowLow() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlowLow();
+            //noinspection HardCodedStringLiteral
             text = decimalFormat.format(aDevicesInfo.getElecUsageFlowLow()) + " watt";
         } else if(aDevicesInfo.getElecUsageFlow() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlow();
+            //noinspection HardCodedStringLiteral
             text = decimalFormat.format(aDevicesInfo.getElecUsageFlow()) + " watt";
         }
         txtvCurrentPowerUse.setText(text);
@@ -304,24 +261,152 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         }
 
         currentGasUsage = aDevicesInfo.getGasUsed();
-        text = decimalFormat.format(currentGasUsage) + " m3";
+        //noinspection HardCodedStringLiteral
+        text = String.format(Locale.getDefault(), "%.1f", currentGasUsage) + " m3";
         txtvCurrentGasUse.setText(text);
 
-        if(currentGasUsage >= 0.0 && currentGasUsage < 0.50){
+        if(currentGasUsage >= 0.0 && currentGasUsage < 200){
             imgvCurrentGas.setImageResource(R.drawable.gas1_10);
         }
-        else if(currentGasUsage >= 0.50 && currentGasUsage < 1.0){
+        else if(currentGasUsage >= 200 && currentGasUsage < 500){
             imgvCurrentGas.setImageResource(R.drawable.gas3_10);
         }
-        else if(currentGasUsage >= 1.0 && currentGasUsage < 2.0){
+        else if(currentGasUsage >= 500 && currentGasUsage < 700){
             imgvCurrentGas.setImageResource(R.drawable.gas5_10);
         }
-        else if(currentGasUsage >= 2.0 && currentGasUsage < 5.0){
+        else if(currentGasUsage >= 700 && currentGasUsage < 900){
             imgvCurrentGas.setImageResource(R.drawable.gas7_10);
         }
-        else if(currentGasUsage >= 5.0){
+        else if(currentGasUsage >= 900){
             imgvCurrentGas.setImageResource(R.drawable.gas9_10);
         }
+    }
+
+    @Override
+    public void onTemperatureChanged(ThermostatInfo aThermostatInfo) {
+        isUpdatingUI = true;
+
+        String tempText = decimalFormat.format(aThermostatInfo.getCurrentTemp() / 100) + "°";
+        txtvTemperature.setText(tempText);
+
+        String setPointText = decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°";
+        txtvSetPoint.setText(setPointText);
+
+        if (aThermostatInfo.getBurnerInfo() > -1) { // Minus one meaning the value isn't retrieved from Toon
+            switch(aThermostatInfo.getBurnerInfo()) {
+
+                case 0:
+                    findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
+                    break;
+
+                case 1:
+                    findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
+                    break;
+            }
+        } else {
+            // For non rooted Toon
+            if (aThermostatInfo.getCurrentTemp() > aThermostatInfo.getCurrentSetpoint()) // Figure out our own whether the burner is burning or not
+                findViewById(R.id.imgFire).setVisibility(View.INVISIBLE);
+            else findViewById(R.id.imgFire).setVisibility(View.VISIBLE);
+        }
+
+        if (aThermostatInfo.getNextSetpoint() != 0 || aThermostatInfo.getNextTime() != null) {
+            if (AppSettings.getInstance().whatValueToUseOnNextProgram().equals("Temperature")){
+                Object[] args = {
+                        simpleDateFormat.format(aThermostatInfo.getNextTime()),
+                        decimalFormat.format(aThermostatInfo.getNextSetpoint() / 100)
+                };
+                MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue) + "°");
+                txtvNextProgram.setText(fmt.format(args));
+            } else {
+                Object[] args = {
+                        simpleDateFormat.format(aThermostatInfo.getNextTime()),
+                        aThermostatInfo.getNextStateString(this)
+                };
+                MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue));
+                txtvNextProgram.setText(fmt.format(args));
+            }
+        } else {
+            // No Toon temperature programming used
+            String text = String.format(getString(R.string.nextProgramTemp), aThermostatInfo.getCurrentSetpoint());
+            txtvNextProgram.setText(text);
+        }
+
+        swIsProgramOn.setChecked(aThermostatInfo.getProgramState());
+        String followProgramText = getString(R.string.temperature_setting_followProgram);
+        String dontFollowProgramText = getString(R.string.temperature_setting_dontFollowProgram);
+        swIsProgramOn.setText((aThermostatInfo.getProgramState() ? followProgramText : dontFollowProgramText));
+
+        switchButtonState(aThermostatInfo.getCurrentTempMode(), true);
+
+        isUpdatingUI = false;
+    }
+
+    @Override
+    public void onTemperatureChanged(CurrentUsageInfo aCurrentUsageInfo) {
+        isUpdatingUI2 = true;
+        AppSettings.getInstance().setCurrentUsageInfoAvailable(true);
+
+        double currentPowerUsage;
+        double currentGasUsage;
+
+        currentPowerUsage = aCurrentUsageInfo.getPowerUsage().getValue();
+        //noinspection HardCodedStringLiteral
+        String text = decimalFormat.format(currentPowerUsage) + " watt";
+        txtvCurrentPowerUse.setText(text);
+        double avgPower = aCurrentUsageInfo.getPowerUsage().getAvgValue();
+
+        if(currentPowerUsage >= 0 && currentPowerUsage < (avgPower/2)){
+            imgvCurrentPower.setImageResource(R.drawable.power1_10);
+        }
+        else if(currentPowerUsage >= (avgPower/2) && currentPowerUsage < (avgPower-(avgPower*0.2))){
+            imgvCurrentPower.setImageResource(R.drawable.power3_10);
+        }
+        else if(currentPowerUsage >= (avgPower-(avgPower*0.2)) && currentPowerUsage < (avgPower+(avgPower*0.2))){
+            imgvCurrentPower.setImageResource(R.drawable.power5_10);
+        }
+        else if(currentPowerUsage >= (avgPower+(avgPower*0.2)) && currentPowerUsage < (avgPower*2)){
+            imgvCurrentPower.setImageResource(R.drawable.power7_10);
+        }
+        else if(currentPowerUsage >= (avgPower*2)){
+            imgvCurrentPower.setImageResource(R.drawable.power9_10);
+        }
+
+        currentGasUsage = aCurrentUsageInfo.getGasUsage().getValue();
+        //noinspection HardCodedStringLiteral
+        text = decimalFormat.format(currentGasUsage) + " m3";
+        txtvCurrentGasUse.setText(text);
+        double avgGas = aCurrentUsageInfo.getGasUsage().getAvgValue();
+
+        if(currentGasUsage >= 0.0 && currentGasUsage < 450.00){
+            imgvCurrentGas.setImageResource(R.drawable.gas1_10);
+        }
+        else if(currentGasUsage >= 450.00 && currentGasUsage < 800.0){
+            imgvCurrentGas.setImageResource(R.drawable.gas3_10);
+        }
+        else if(currentGasUsage >= 800.0 && currentGasUsage < 1200.0){
+            imgvCurrentGas.setImageResource(R.drawable.gas5_10);
+        }
+        else if(currentGasUsage >= 1200.0 && currentGasUsage < 2000.0){
+            imgvCurrentGas.setImageResource(R.drawable.gas7_10);
+        }
+        else if(currentGasUsage >= 2000.0){
+            imgvCurrentGas.setImageResource(R.drawable.gas9_10);
+        }
+
+        isUpdatingUI2 = false;
+    }
+
+    @Override
+    public void onTemperatureError(Exception e) {
+        String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
+        Toast.makeText(this, getString(R.string.temperature_update_error_txt) + ": " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeviceError(Exception e) {
+        String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
+        Toast.makeText(this, getString(R.string.device_update_error_txt) + ": " +  message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -6,9 +6,16 @@
             android:key="pref_key_tempSetValue"
             android:title="@string/pref_tempSetValue_title"
             android:summary="@string/pref_setupConnection_summary"
-            android:defaultValue="5"
+            android:defaultValue="0.5"
             android:entries="@array/tempSetValues"
             android:entryValues="@array/tempSetValues"/>
+        <ListPreference
+            android:key="pref_key_nextProgramOrTemp"
+            android:title="@string/pref_nextProgramTempOrProgram_title"
+            android:summary="@string/pref_nextProgramTempOrProgram_summary"
+            android:defaultValue="Temperature"
+            android:entries="@array/showTempOrProgramEntries"
+            android:entryValues="@array/showTempOrProgramValues"/>
     </PreferenceCategory>
 
     <PreferenceCategory
