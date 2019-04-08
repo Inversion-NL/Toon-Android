@@ -7,10 +7,10 @@
     </string-array>
     <string-array name="showTempOrProgramEntries">
         <item>Temperature</item>
-        <item>Program</item>
+        <item>Mode</item>
     </string-array>
     <string-array name="showTempOrProgramValues">
         <item>Temperature</item>
-        <item>Program</item>
+        <item>Mode</item>
     </string-array>
 </resources>

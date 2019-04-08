@@ -9,6 +9,8 @@
     <string name="pref_redirectionService_summary">Maak gebruik van een redirect script om portforwarding in de router naar de Toon thermostaat te voorkomen</string>
     <string name="pref_setupConnection_title">Verbinding instellen</string>
     <string name="pref_setupConnection_summary">Klik hier de verbinding in te stellen naar Toon</string>
+    <string name="pref_nextProgramTempOrProgram_title">Temperatuur of programma</string>
+    <string name="pref_nextProgramTempOrProgram_summary">Laat voor het komende programma de temperatuur of de modus zien</string>
 
     <string name="temperature_setting_away">Weg</string>
     <string name="temperature_setting_home">Thuis</string>
@@ -57,6 +59,4 @@
     <string name="toast_refreshingData">Gegevens bijwerken…</string>
     <string name="nextProgramTemp">Op %d</string>
     <string name="temperature_setting_vacation">Vakantie</string>
-    <string name="pref_nextProgramTempOrProgram_title">Temperatuur of programm</string>
-    <string name="pref_nextProgramTempOrProgram_summary">Laat voor het komende programma de temperatuur of de modus zien</string>
 </resources>
