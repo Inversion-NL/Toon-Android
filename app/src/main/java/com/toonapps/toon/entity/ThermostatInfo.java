@@ -36,6 +36,44 @@ public class ThermostatInfo {
     private long nextTime;
     @Expose
     private int nextSetPoint;
+    @Expose
+    private int errorFound;
+    @Expose
+    private int burnerInfo = -1;
+    @Expose
+    private int otCommError;
+    @Expose
+    private int currentModulationLevel;
+
+    //TODO Do something with error found, otCommError and currentModulationLevel
+
+    public String getResult() {
+        return result;
+    }
+
+    public int getCurrentInternalBoilerSetpoint() {
+        return currentInternalBoilerSetpoint;
+    }
+
+    public int getNextState() {
+        return nextState;
+    }
+
+    public int getErrorFound() {
+        return errorFound;
+    }
+
+    public int getBurnerInfo() {
+        return burnerInfo;
+    }
+
+    public int getOtCommError() {
+        return otCommError;
+    }
+
+    public int getCurrentModulationLevel() {
+        return currentModulationLevel;
+    }
 
     public double getCurrentTemp(){
         return currentTemp;

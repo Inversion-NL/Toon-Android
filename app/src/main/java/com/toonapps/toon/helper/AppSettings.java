@@ -68,10 +68,11 @@ public class AppSettings {
         } else return "";
     }
 
-    public int getTempSetValue() {
+    public float getTempSetValue() {
         String value = sharedPref.getString(PREF_KEY_TEMP_SET_VALUE, "5");
         if(value == null) value = "5"; // To circumvent null pointer exception
-        return (Integer.valueOf(value) / 10); // 1/10 of the value
+        float returnValue = (Float.valueOf(value));
+        return returnValue / 10; // 1/10 of the value
     }
 
     public String getApiToken(){
