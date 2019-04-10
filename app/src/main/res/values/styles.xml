@@ -30,7 +30,7 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="cardPowerGas">
+    <style name="style_card_PowerGas">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_width">@dimen/_145sdp</item>
         <item name="android:layout_height">180dp</item>
@@ -45,7 +45,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="txtvPowerGasDescription">
+    <style name="style_card_txtvPowerGasDescription">
         <item name="android:layout_gravity">bottom|center_horizontal</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:textSize">18sp</item>

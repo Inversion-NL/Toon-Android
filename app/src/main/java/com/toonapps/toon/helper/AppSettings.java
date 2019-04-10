@@ -21,6 +21,10 @@ public class AppSettings {
     private static final String PREF_KEY_IS_USAGE_INFO_AVAILABLE = "pref_key_isCurrentUsageInfoAvailable";
     @SuppressWarnings("HardCodedStringLiteral")
     private static final String PREF_KEY_TRIED_USAGE_INFO_ONCE = "pref_key_triedCurrentUsageInfoOnce";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_USE_AUTO_REFRESH = "pref_key_autoRefresh";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String pref_key_autoRefreshPeriod = "pref_key_autoRefreshPeriod";
 
     private static AppSettings instance;
     private  SharedPreferences sharedPref;
@@ -113,5 +117,15 @@ public class AppSettings {
 
     public String whatValueToUseOnNextProgram() {
         return sharedPref.getString("pref_key_nextProgramOrTemp", "Temperature");
+    }
+
+    public boolean useAutoRefresh() {
+        return sharedPref.getBoolean(PREF_KEY_USE_AUTO_REFRESH, true);
+    }
+
+    public long getAutoRefreshValue() {
+        String value = sharedPref.getString(pref_key_autoRefreshPeriod, "15");
+        if(value == null) value = "15"; // To circumvent null pointer exception
+        return Long.valueOf(value) * 1000; // in milliseconds
     }
 }

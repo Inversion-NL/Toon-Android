@@ -22,8 +22,8 @@ import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.ErrorMessage;
+import com.toonapps.toon.helper.TimerHelper;
 
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -31,6 +31,7 @@ import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity implements ITemperatureListener, IDeviceListener {
 
@@ -46,13 +47,14 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     private SwitchCompat swIsProgramOn;
     private ImageView imgvCurrentPower;
     private ImageView imgvCurrentGas;
-    private DecimalFormat decimalFormat = new DecimalFormat("#0.0");
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm"); // TODO internationalize date and time
 
     //prevent toggle executing onCheckedChanged
     private boolean isUpdatingUI = false;
     private boolean isUpdatingUI2 = false;
     private int REQUEST_CODE_INTRO = 100;
+    private SwipeRefreshLayout refreshLayout;
+    private TimerHelper timerHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,9 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         if (!AppSettings.getInstance().isFirstStart()) {
             TemperatureController.getInstance().subscribe(this);
             DeviceController.getInstance().subscribe(this);
-            updateData();
+            updateData(false);
+            if (AppSettings.getInstance().useAutoRefresh()) setTimer(true);
+            else setTimer(false);
         }
     }
 
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         super.onPause();
         TemperatureController.getInstance().unsubscribe(this);
         DeviceController.getInstance().unsubscribe(this);
+        setTimer(false);
     }
 
     @Override
@@ -97,8 +102,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                showRefreshToast();
-                updateData();
+                updateData(false);
                 break;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -108,11 +112,8 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         return true;
     }
 
-    private void showRefreshToast() {
-        Toast.makeText(this, getString(R.string.toast_refreshingData), Toast.LENGTH_LONG).show();
-    }
-
-    private void updateData(){
+    private void updateData(boolean isTimerTask){
+        if (!isTimerTask) setRefreshing(true);
         TemperatureController.getInstance().updateCurrentUsageInfo();
         TemperatureController.getInstance().updateThermostatInfo();
 
@@ -124,7 +125,48 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         }
     }
 
+    private OnClickListener onButtonClicked = new OnClickListener() {
+        public void onClick(View v) {
+
+            float tempSetValue = AppSettings.getInstance().getTempSetValue();
+
+            switch(v.getId()){
+                case R.id.btnAwayMode:
+                    TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.AWAY);
+                    switchButtonState(ThermostatInfo.TemperatureMode.AWAY, false);
+                    break;
+                case R.id.btnSleepMode:
+                    TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.SLEEP);
+                    switchButtonState(ThermostatInfo.TemperatureMode.SLEEP, false);
+                    break;
+                case R.id.btnHomeMode:
+                    TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.HOME);
+                    switchButtonState(ThermostatInfo.TemperatureMode.HOME, false);
+                    break;
+                case R.id.btnComfortMode:
+                    TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.COMFORT);
+                    switchButtonState(ThermostatInfo.TemperatureMode.COMFORT, false);
+                    break;
+                case R.id.btnPlus:
+                    TemperatureController.getInstance().setTemperatureHigher(tempSetValue);
+                    break;
+                case R.id.btnMin:
+                    TemperatureController.getInstance().setTemperatureLower(tempSetValue);
+                    break;
+            }
+        }
+    };
+
     private void setResources(){
+
+        refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateData(false);
+            }
+        });
+
         btnAwayMode = findViewById(R.id.btnAwayMode);
         btnAwayMode.setOnClickListener(onButtonClicked);
         btnSleepMode = findViewById(R.id.btnSleepMode);
@@ -150,37 +192,23 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         swIsProgramOn.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
-    private OnClickListener onButtonClicked = new OnClickListener() {
-        public void onClick(View v) {
+    private void setTimer(boolean enabled) {
 
-        float tempSetValue = AppSettings.getInstance().getTempSetValue();
+        if (enabled) {
+            long refreshRate = AppSettings.getInstance().getAutoRefreshValue();
 
-        switch(v.getId()){
-            case R.id.btnAwayMode:
-                TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.AWAY);
-                switchButtonState(ThermostatInfo.TemperatureMode.AWAY, false);
-                break;
-            case R.id.btnSleepMode:
-                TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.SLEEP);
-                switchButtonState(ThermostatInfo.TemperatureMode.SLEEP, false);
-                break;
-            case R.id.btnHomeMode:
-                TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.HOME);
-                switchButtonState(ThermostatInfo.TemperatureMode.HOME, false);
-                break;
-            case R.id.btnComfortMode:
-                TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.COMFORT);
-                switchButtonState(ThermostatInfo.TemperatureMode.COMFORT, false);
-                break;
-            case R.id.btnPlus:
-                TemperatureController.getInstance().setTemperatureHigher(tempSetValue);
-                break;
-            case R.id.btnMin:
-                TemperatureController.getInstance().setTemperatureLower(tempSetValue);
-                break;
+            if (timerHelper != null) timerHelper.stop();
+            timerHelper = new TimerHelper(this, refreshRate, new TimerHelper.TimerInterface() {
+                @Override
+                public void onTime() {
+                    updateData(true);
+                }
+            });
+            timerHelper.start();
+        } else {
+            if (timerHelper != null) timerHelper.stop();
         }
-        }
-    };
+    }
 
     private void switchButtonState(ThermostatInfo.TemperatureMode mode, boolean programChangesButton) {
         switch (mode) {
@@ -223,74 +251,30 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
 
     @Override
     public void onDeviceInfoChanged(DeviceInfo aDevicesInfo) {
-        double currentElectricUsage;
-        double currentGasUsage;
-
-        @SuppressWarnings("HardCodedStringLiteral") String text = "N/A";
-        currentElectricUsage = 0;
+        double currentElectricUsage = 0;
 
         if(aDevicesInfo.getElecUsageFlowHigh() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlowHigh();
-            //noinspection HardCodedStringLiteral
-            text = decimalFormat.format(aDevicesInfo.getElecUsageFlowHigh()) + " watt";
         } else if(aDevicesInfo.getElecUsageFlowLow() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlowLow();
-            //noinspection HardCodedStringLiteral
-            text = decimalFormat.format(aDevicesInfo.getElecUsageFlowLow()) + " watt";
         } else if(aDevicesInfo.getElecUsageFlow() > 0){
             currentElectricUsage = aDevicesInfo.getElecUsageFlow();
-            //noinspection HardCodedStringLiteral
-            text = decimalFormat.format(aDevicesInfo.getElecUsageFlow()) + " watt";
-        }
-        txtvCurrentPowerUse.setText(text);
-
-        if(currentElectricUsage >= 0 && currentElectricUsage < 50){
-            imgvCurrentPower.setImageResource(R.drawable.power1_10);
-        }
-        else if(currentElectricUsage >= 50 && currentElectricUsage < 200){
-            imgvCurrentPower.setImageResource(R.drawable.power3_10);
-        }
-        else if(currentElectricUsage >= 200 && currentElectricUsage < 600){
-            imgvCurrentPower.setImageResource(R.drawable.power5_10);
-        }
-        else if(currentElectricUsage >= 600 && currentElectricUsage < 1000){
-            imgvCurrentPower.setImageResource(R.drawable.power7_10);
-        }
-        else if(currentElectricUsage >= 1000){
-            imgvCurrentPower.setImageResource(R.drawable.power9_10);
         }
 
-        currentGasUsage = aDevicesInfo.getGasUsed();
-        //noinspection HardCodedStringLiteral
-        text = String.format(Locale.getDefault(), "%.1f", currentGasUsage) + " m3";
-        txtvCurrentGasUse.setText(text);
-
-        if(currentGasUsage >= 0.0 && currentGasUsage < 200){
-            imgvCurrentGas.setImageResource(R.drawable.gas1_10);
-        }
-        else if(currentGasUsage >= 200 && currentGasUsage < 500){
-            imgvCurrentGas.setImageResource(R.drawable.gas3_10);
-        }
-        else if(currentGasUsage >= 500 && currentGasUsage < 700){
-            imgvCurrentGas.setImageResource(R.drawable.gas5_10);
-        }
-        else if(currentGasUsage >= 700 && currentGasUsage < 900){
-            imgvCurrentGas.setImageResource(R.drawable.gas7_10);
-        }
-        else if(currentGasUsage >= 900){
-            imgvCurrentGas.setImageResource(R.drawable.gas9_10);
-        }
+        setPowerMeter(currentElectricUsage, 0);
+        setGasMeter(aDevicesInfo.getGasUsed(), 0);
     }
 
     @Override
     public void onTemperatureChanged(ThermostatInfo aThermostatInfo) {
         isUpdatingUI = true;
 
-        String tempText = decimalFormat.format(aThermostatInfo.getCurrentTemp() / 100) + "°";
-        txtvTemperature.setText(tempText);
+        String text = String.format(Locale.getDefault(), "%.01f°", aThermostatInfo.getCurrentTemp() / 100);
+        txtvTemperature.setText(text);
 
-        String setPointText = decimalFormat.format(aThermostatInfo.getCurrentSetpoint() / 100) + "°";
-        txtvSetPoint.setText(setPointText);
+        text = String.format(Locale.getDefault(), getString(R.string.nextProgramTemp), aThermostatInfo.getCurrentSetpoint() / 100);
+
+        txtvSetPoint.setText(text);
 
         if (aThermostatInfo.getBurnerInfo() > -1) { // Minus one meaning the value isn't retrieved from Toon
             switch(aThermostatInfo.getBurnerInfo()) {
@@ -314,9 +298,9 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
             if (AppSettings.getInstance().whatValueToUseOnNextProgram().equals("Temperature")){
                 Object[] args = {
                         simpleDateFormat.format(aThermostatInfo.getNextTime()),
-                        decimalFormat.format(aThermostatInfo.getNextSetpoint() / 100)
+                        String.format(Locale.getDefault(), "%.01f°", aThermostatInfo.getNextSetpoint() / 100)
                 };
-                MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue) + "°");
+                MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue));
                 txtvNextProgram.setText(fmt.format(args));
             } else {
                 Object[] args = {
@@ -328,20 +312,19 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
             }
         } else {
             // No Toon temperature programming used
-            double setpoint = aThermostatInfo.getCurrentSetpoint();
-            setpoint = Math.round(setpoint/100);
-            String text = String.format(getString(R.string.nextProgramTemp), setpoint);
+            text = String.format(
+                    Locale.getDefault(),
+                    getString(R.string.nextProgramTemp),
+                    aThermostatInfo.getCurrentSetpoint() / 100
+            );
             txtvNextProgram.setText(text);
         }
 
         swIsProgramOn.setChecked(aThermostatInfo.getProgramState());
-        String followProgramText = getString(R.string.temperature_setting_followProgram);
-        String dontFollowProgramText = getString(R.string.temperature_setting_dontFollowProgram);
-        swIsProgramOn.setText((aThermostatInfo.getProgramState() ? followProgramText : dontFollowProgramText));
-
         switchButtonState(aThermostatInfo.getCurrentTempMode(), true);
 
         isUpdatingUI = false;
+        if (!isUpdatingUI2) setRefreshing(false);
     }
 
     @Override
@@ -349,36 +332,23 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         isUpdatingUI2 = true;
         AppSettings.getInstance().setCurrentUsageInfoAvailable(true);
 
-        double currentPowerUsage;
-        double currentGasUsage;
+        setPowerMeter(
+                aCurrentUsageInfo.getPowerUsage().getValue(),
+                aCurrentUsageInfo.getPowerUsage().getAvgValue()
+        );
+        setGasMeter(
+                aCurrentUsageInfo.getGasUsage().getValue(),
+                aCurrentUsageInfo.getGasUsage().getAvgValue()
+        );
 
-        currentPowerUsage = aCurrentUsageInfo.getPowerUsage().getValue();
-        //noinspection HardCodedStringLiteral
-        String text = decimalFormat.format(currentPowerUsage) + " watt";
-        txtvCurrentPowerUse.setText(text);
-        double avgPower = aCurrentUsageInfo.getPowerUsage().getAvgValue();
+        isUpdatingUI2 = false;
+        if (!isUpdatingUI) setRefreshing(false);
+    }
 
-        if(currentPowerUsage >= 0 && currentPowerUsage < (avgPower/2)){
-            imgvCurrentPower.setImageResource(R.drawable.power1_10);
-        }
-        else if(currentPowerUsage >= (avgPower/2) && currentPowerUsage < (avgPower-(avgPower*0.2))){
-            imgvCurrentPower.setImageResource(R.drawable.power3_10);
-        }
-        else if(currentPowerUsage >= (avgPower-(avgPower*0.2)) && currentPowerUsage < (avgPower+(avgPower*0.2))){
-            imgvCurrentPower.setImageResource(R.drawable.power5_10);
-        }
-        else if(currentPowerUsage >= (avgPower+(avgPower*0.2)) && currentPowerUsage < (avgPower*2)){
-            imgvCurrentPower.setImageResource(R.drawable.power7_10);
-        }
-        else if(currentPowerUsage >= (avgPower*2)){
-            imgvCurrentPower.setImageResource(R.drawable.power9_10);
-        }
+    private void setGasMeter(double currentGasUsage, double avgGas) {
 
-        currentGasUsage = aCurrentUsageInfo.getGasUsage().getValue();
-        //noinspection HardCodedStringLiteral
-        text = decimalFormat.format(currentGasUsage) + " m3";
+        String text = String.format(Locale.getDefault(), "%.00f m3", currentGasUsage);
         txtvCurrentGasUse.setText(text);
-        double avgGas = aCurrentUsageInfo.getGasUsage().getAvgValue();
 
         if(currentGasUsage >= 0.0 && currentGasUsage < 450.00){
             imgvCurrentGas.setImageResource(R.drawable.gas1_10);
@@ -395,20 +365,67 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         else if(currentGasUsage >= 2000.0){
             imgvCurrentGas.setImageResource(R.drawable.gas9_10);
         }
+    }
 
-        isUpdatingUI2 = false;
+    private void setPowerMeter(double currentPowerUsage, double avgPower) {
+
+        String text = String.format(Locale.getDefault(), "%.00f watt", currentPowerUsage);
+        txtvCurrentPowerUse.setText(text);
+
+        if (avgPower > 0 && currentPowerUsage > 0) {
+            // Use dynamic meter when there is an average value
+            // and the current usage is more then 0
+            if (currentPowerUsage >= 0 && currentPowerUsage < (avgPower / 2)) {
+                imgvCurrentPower.setImageResource(R.drawable.power1_10);
+            } else if (currentPowerUsage >= (avgPower / 2) && currentPowerUsage < (avgPower - (avgPower * 0.2))) {
+                imgvCurrentPower.setImageResource(R.drawable.power3_10);
+            } else if (currentPowerUsage >= (avgPower - (avgPower * 0.2)) && currentPowerUsage < (avgPower + (avgPower * 0.2))) {
+                imgvCurrentPower.setImageResource(R.drawable.power5_10);
+            } else if (currentPowerUsage >= (avgPower + (avgPower * 0.2)) && currentPowerUsage < (avgPower * 2)) {
+                imgvCurrentPower.setImageResource(R.drawable.power7_10);
+            } else if (currentPowerUsage >= (avgPower * 2)) {
+                imgvCurrentPower.setImageResource(R.drawable.power9_10);
+            }
+        } else {
+            // Use static meter if there is no average value or the current
+            // PowerUsage is 0
+            if(currentPowerUsage >= 0 && currentPowerUsage < 50){
+                imgvCurrentPower.setImageResource(R.drawable.power1_10);
+            }
+            else if(currentPowerUsage >= 50 && currentPowerUsage < 200){
+                imgvCurrentPower.setImageResource(R.drawable.power3_10);
+            }
+            else if(currentPowerUsage >= 200 && currentPowerUsage < 600){
+                imgvCurrentPower.setImageResource(R.drawable.power5_10);
+            }
+            else if(currentPowerUsage >= 600 && currentPowerUsage < 1000){
+                imgvCurrentPower.setImageResource(R.drawable.power7_10);
+            }
+            else if(currentPowerUsage >= 1000){
+                imgvCurrentPower.setImageResource(R.drawable.power9_10);
+            }
+        }
+    }
+
+    private void setRefreshing(boolean setRefreshing) {
+        if (refreshLayout != null) {
+            if (setRefreshing && !refreshLayout.isRefreshing()) refreshLayout.setRefreshing(true);
+            else if (!setRefreshing && refreshLayout.isRefreshing()) refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void onTemperatureError(Exception e) {
         String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
-        Toast.makeText(this, getString(R.string.temperature_update_error_txt) + ": " + message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.exception_message_temperature_update_error_txt) + ": " + message, Toast.LENGTH_SHORT).show();
+        setRefreshing(false);
     }
 
     @Override
     public void onDeviceError(Exception e) {
         String message = ErrorMessage.getInstance(this).getHumanReadableErrorMessage(e);
-        Toast.makeText(this, getString(R.string.device_update_error_txt) + ": " +  message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.exception_message_device_update_error_txt) + ": " +  message, Toast.LENGTH_SHORT).show();
+        setRefreshing(false);
     }
 
     @Override
@@ -417,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements ITemperatureListe
         if (requestCode == REQUEST_CODE_INTRO) {
             if (resultCode == RESULT_OK) {
                 AppSettings.getInstance().setFirstStart(false);
-                updateData();
+                updateData(false);
             } else {
                 // Cancelled the intro. You can then e.g. finish this activity too.
                 finish();
