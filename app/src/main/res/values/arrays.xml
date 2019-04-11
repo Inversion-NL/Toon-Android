@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="tempSetValues">
-        <item>1</item>
+        <item>0.1</item>
+        <item>0.5</item>
+        <item>1.0</item>
+    </string-array>
+    <string-array name="showTempOrProgramEntries">
+        <item>Temperature</item>
+        <item>Mode</item>
+    </string-array>
+    <string-array name="showTempOrProgramValues">
+        <item>Temperature</item>
+        <item>Mode</item>
+    </string-array>
+    <string-array name="refreshValues">
         <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
     </string-array>
 </resources>

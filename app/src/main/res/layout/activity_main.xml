@@ -1,253 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
     tools:context="com.toonapps.toon.view.MainActivity"
-    android:layout_width="match_parent"
+    android:background="@color/colorBackground"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:layout_width="match_parent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/tlTemperature"
-        style="@style/cardTemperature"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="4dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/tlTemperature"
+            style="@style/cardTemperature"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:cardCornerRadius="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_marginStart="30dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/txtvTemperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginLeft="18dp"
                     android:text="0.0"
-                    android:textColor="@android:color/black"
                     android:textSize="32sp"
-                    tools:ignore="HardcodedText" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText"
+                    tools:text="19,4°" />
+
+                <ImageView
+                    android:id="@+id/imgFire"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@string/fire_description_img"
+                    android:src="@drawable/fire"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/txtvTemperature"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/txtvSetPoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtvTemperature"
-                    android:layout_centerHorizontal="true"
-                    android:text="0.0"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:text="On 0.0"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText"
+                    tools:text="Op 21,0°" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/imgFire"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/fire"
-                android:visibility="invisible"
-                tools:visibility="visible"
-                android:contentDescription="@string/img_description_fire" />
+        <GridLayout
+            android:id="@+id/glChangeTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:columnCount="3"
+            android:orientation="vertical"
+            android:rowCount="2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tlTemperature">
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnAwayMode"
+                style="@style/btnMode"
+                android:textOff="@string/temperature_setting_away"
+                android:textOn="@string/temperature_setting_away"
+                tools:checked="true" />
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnSleepMode"
+                style="@style/btnMode"
+                android:textOff="@string/temperature_setting_sleeping"
+                android:textOn="@string/temperature_setting_sleeping" />
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnHomeMode"
+                style="@style/btnMode"
+                android:textOff="@string/temperature_setting_home"
+                android:textOn="@string/temperature_setting_home" />
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnComfortMode"
+                style="@style/btnMode"
+                android:textOff="@string/temperature_setting_comfort"
+                android:textOn="@string/temperature_setting_comfort" />
+
+            <Button
+                android:id="@+id/btnPlus"
+                style="@style/btnChangeTemp"
+                android:text="@string/temperature_setting_sign_plus" />
+
+            <Button
+                android:id="@+id/btnMin"
+                style="@style/btnChangeTemp"
+                android:text="@string/temperature_setting_sign_min" />
+
+        </GridLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rlIsProgramOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/glChangeTemperature">
 
             <TextView
                 android:id="@+id/txtvNextProgram"
-                android:layout_width="75dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:maxLines="1"
                 android:text="@string/nextProgramText_noData"
                 android:textSize="16sp"
-                android:maxLength="20"
-                android:maxLines="2"
-                android:textColor="@android:color/black"/>
+                android:paddingEnd="14dp"
+                android:paddingRight="14dp"
+                android:paddingStart="14dp"
+                android:paddingLeft="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Om 23:00 op Slapen"/>
 
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swIsProgramOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_25sdp"
+                android:layout_marginBottom="8dp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:switchPadding="10dp"
+                tools:checked="true" />
 
-    <GridLayout
-        android:id="@+id/glChangeTemperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="2"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tlTemperature"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/btnAwayMode"
-            style="@style/btnMode"
-            tools:checked="false"
-            android:textOn="@string/temperature_setting_away"
-            android:textOff="@string/temperature_setting_away"/>
-
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/btnHomeMode"
-            style="@style/btnMode"
-            android:textOn="@string/temperature_setting_home"
-            android:textOff="@string/temperature_setting_home"/>
-
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/btnSleepMode"
-            style="@style/btnMode"
-            android:textOn="@string/temperature_setting_sleeping"
-            android:textOff="@string/temperature_setting_sleeping"/>
-
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/btnCozyMode"
-            style="@style/btnMode"
-            android:textOn="@string/temperature_setting_comfort"
-            android:textOff="@string/temperature_setting_comfort"/>
-
-        <Button
-            android:id="@+id/btnPlus"
-            style="@style/btnChangeTemp"
-            android:text="@string/temperature_setting_sign_plus"/>
-
-        <Button
-            android:id="@+id/btnMin"
-            style="@style/btnChangeTemp"
-            android:text="@string/temperature_setting_sign_min"/>
-
-    </GridLayout>
-
-    <RelativeLayout
-        android:id="@+id/rlIsProgramOn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/glChangeTemperature">
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/swIsProgramOn"
+        <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            app:switchPadding="10dp"
-            android:textSize="16sp"
-            android:text="@string/temperature_setting_followProgram"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rlIsProgramOn">
 
-    </RelativeLayout>
+            <!-- POWER USE -->
+            <androidx.cardview.widget.CardView
+                style="@style/style_card_PowerGas"
+                app:cardCornerRadius="4dp">
 
-    <GridLayout
-        android:id="@+id/glPowerGasUse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="2"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rlIsProgramOn"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+                <TextView
+                    style="@style/txtvPowerGasTitle"
+                    android:text="@string/card_powerUsage_title" />
 
-        <!-- POWER USE -->
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="4dp"
-            style="@style/cardPowerGas">
+                <ImageView
+                    android:id="@+id/imgvCurrentPower"
+                    android:layout_width="47dp"
+                    android:layout_height="89dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/card_powerUsage_img_current_power"
+                    android:src="@drawable/power1_10" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/powerUsage_title"
-                style="@style/txtvPowerGasTitle"/>
+                <TextView
+                    android:id="@+id/txtvCurrentPowerUse"
+                    style="@style/style_card_txtvPowerGasDescription"
+                    android:text="@string/card_powerUsage_powerValue"
+                    tools:text="1000 Watt"/>
 
-            <ImageView
-                android:id="@+id/imgvCurrentPower"
-                android:layout_width="47dp"
-                android:layout_height="89dp"
-                android:src="@drawable/power1_10"
-                android:layout_gravity="center"
-                android:contentDescription="@string/img_current_power"/>
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/txtvCurrentPowerUse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/powerUsage_value"
-                style="@style/txtvPowerGasDescription"/>
+            <!-- GAS USE -->
+            <androidx.cardview.widget.CardView
+                style="@style/style_card_PowerGas"
+                app:cardCornerRadius="4dp">
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    style="@style/txtvPowerGasTitle"
+                    android:text="@string/card_gasUsage_gasUsage_title" />
 
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="4dp"
-            style="@style/cardPowerGas">
+                <ImageView
+                    android:id="@+id/imgvCurrentGas"
+                    android:layout_width="47dp"
+                    android:layout_height="89dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/card_GasUsage_img_current_gas"
+                    android:src="@drawable/gas1_10" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gasUsage_title"
-                style="@style/txtvPowerGasTitle"/>
+                <TextView
+                    android:id="@+id/txtvCurrentGasUse"
+                    style="@style/style_card_txtvPowerGasDescription"
+                    android:text="@string/card_gasUsage_gasValue"
+                    tools:text="1000 m3"/>
 
-            <ImageView
-                android:id="@+id/imgvCurrentGas"
-                android:layout_width="47dp"
-                android:layout_height="89dp"
-                android:src="@drawable/gas1_10"
-                android:layout_gravity="center"
-                android:contentDescription="@string/img_current_gas"/>
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/txtvCurrentGasUse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gasUsage_value"
-                style="@style/txtvPowerGasDescription"/>
+            <androidx.cardview.widget.CardView
+                style="@style/style_card_PowerGas"
+                android:visibility="gone"
+                app:cardCornerRadius="4dp">
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/txtvTotalPowerUse"
+                    style="@style/style_card_txtvPowerGasDescription"
+                    tools:text="0" />
 
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="4dp"
-            style="@style/cardPowerGas"
-            android:visibility="gone">
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/txtvTotalPowerUse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="0"
-                style="@style/txtvPowerGasDescription"/>
+            <androidx.cardview.widget.CardView
+                style="@style/style_card_PowerGas"
+                android:visibility="gone"
+                app:cardCornerRadius="4dp">
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/txtvTotalGasUse"
+                    style="@style/style_card_txtvPowerGasDescription"
+                    tools:text="1234567" />
 
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="4dp"
-            style="@style/cardPowerGas"
-            android:visibility="gone">
+            </androidx.cardview.widget.CardView>
+        </GridLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/txtvTotalGasUse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="0"
-                style="@style/txtvPowerGasDescription"/>
-
-        </androidx.cardview.widget.CardView>
-    </GridLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

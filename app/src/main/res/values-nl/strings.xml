@@ -1,57 +1,58 @@
 <resources>
     <string name="app_name">Toon</string>
 
-    <string name="pref_network_title">Netwerk instellingen</string>
-    <string name="pref_token_title">Api token</string>
-    <string name="pref_token_summary">Vul hier, indien nodig, een api token in. Deze wordt meegestuurd in de http header</string>
-    <string name="pref_network_advanced_title">Geavanceerde instellingen</string>
-    <string name="pref_redirectionService_title">Gebruik redirection service</string>
-    <string name="pref_redirectionService_summary">Maak gebruik van een redirect script om portforwarding in de router naar de Toon thermostaat te voorkomen</string>
-    <string name="pref_setupConnection_title">Verbinding instellen</string>
-    <string name="pref_setupConnection_summary">Klik hier de verbinding in te stellen naar Toon</string>
+    <string name="pref_appSettings_category_title">App instellingen</string>
+    <string name="pref_appSettings_tempSetValue_title">Standaard temp instel waarde</string>
+    <string name="pref_appSettings_nextProgramTempOrProgram_title">Temperatuur of programma</string>
+    <string name="pref_appSettings_nextProgramTempOrProgram_summary">Laat voor het komende programma de temperatuur of de modus zien</string>
+    <string name="pref_appSettings_refresh_useAutoRefresh_title">Automatisch verversen</string>
+    <string name="pref_appSettings_refresh_useAutoRefresh_summary">Ververs automatisch de gegevens terwijl de app in gebruik is</string>
+    <string name="pref_appSettings_refresh_autoRefreshPeriod_title">Stel de ververs interval in</string>
+    <string name="pref_network_category_title">Netwerk instellingen</string>
+    <string name="pref_network_setupConnection_title">Verbinding instellen</string>
+    <string name="pref_network_setupConnection_summary">Klik hier de verbinding in te stellen naar Toon</string>
+    <string name="pref_advanced_token_title">Api token</string>
+    <string name="pref_advanced_token_summary">Vul hier, indien nodig, een api token in. Deze wordt meegestuurd in de http header</string>
+    <string name="pref_advanced_category_title">Geavanceerde instellingen</string>
+    <string name="pref_advanced_redirectionService_title">Gebruik redirection service</string>
+    <string name="pref_advanced_redirectionService_summary">Maak gebruik van een redirect script om portforwarding in de router naar de Toon thermostaat te voorkomen</string>
 
     <string name="temperature_setting_away">Weg</string>
     <string name="temperature_setting_home">Thuis</string>
     <string name="temperature_setting_sleeping">Slapen</string>
     <string name="temperature_setting_comfort">Comfort</string>
-    <string name="temperature_setting_followProgram">Programma aan</string>
-    <string name="temperature_setting_dontFollowProgram">Programma uit</string>
+    <string name="temperature_setting_vacation">Vakantie</string>
 
-    <string name="powerUsage_title">Stroom nu</string>
-    <string name="gasUsage_title">Gas nu</string>
+    <string name="card_powerUsage_title">Stroom nu</string>
+    <string name="card_gasUsage_gasUsage_title">Gas nu</string>
     <string name="nextProgramText_noData">Geen gegevens</string>
-    <string name="nextProgramValue">Om {0} uur \\n op {1}°</string>
-    <string name="img_description_fire">Afbeelding vuur</string>
-    <string name="img_current_power">Afbeelding huidig stroom verbruik</string>
-    <string name="img_current_gas">Afbeelding huidig gas verbruik</string>
+    <string name="nextProgramValue">Om {0} uur op {1}</string>
+    <string name="fire_description_img">Afbeelding vuur</string>
+    <string name="card_powerUsage_img_current_power">Afbeelding huidig stroom verbruik</string>
+    <string name="card_GasUsage_img_current_gas">Afbeelding huidig gas verbruik</string>
+    <string name="nextProgramTemp">Op %.01f°</string>
 
-    <string name="temperature_update_error_txt">Fout bij het ophalen van temperatuur gegevens</string>
-    <string name="device_update_error_txt">Fout bij het ophalen van apparaat gegevens</string>
-
-    <string name="connectionWizard_login_msg_pleaseEnterData">Vul aub gegevens in</string>
     <string name="connectionWizard_login_msg_loginSuccessful">Aanmelden gelukt</string>
     <string name="connectionWizard_login_msg_loading_title">Even geduld</string>
     <string name="connectionWizard_login_msg_loading_text">Even geduld a.u.b. terwijl we proberen om verbinding te maken met de Toon thermostaat</string>
-    <string name="connectionWizard_login_msg_failed">Mislukt</string>
     <string name="connectionWizard_login_toonAddress_title">Toon adres</string>
     <string name="connectionWizard_login_toonPort_title">Toon poort</string>
     <string name="connectionWizard_login_buttonLogin_loginText">Aanmelden</string>
     <string name="connectionWizard_login_buttonLogin_retryText">Opnieuw</string>
 
+    <string name="exception_message_temperature_update_error_txt">Fout bij het ophalen van temperatuur gegevens</string>
+    <string name="exception_message_device_update_error_txt">Fout bij het ophalen van apparaat gegevens</string>
     <string name="exception_message_hostUnknown">Host onbekend</string>
     <string name="exception_message_timeout">Geen reactie bij verbinden naar apparaat</string>
     <string name="exception_message_noNetwork">Geen netwerk verbinding beschikbaar</string>
     <string name="exception_message_incorrectHostname">Host naam verkeerd</string>
+    <string name="exception_message_unhandled">Onbekende fout</string>
+    <string name="exception_message_notAuthorized">Niet geauthoriseerd</string>
+    <string name="exception_message_pageNotFound">Pagina niet gevonden op apparaat</string>
+    <string name="exception_message_connectionRefused">Verbinding geweigerd door je Toon. Weet je zeker dat hij geroot is?</string>
 
     <string name="connectionWizard_intro_title">Toon app</string>
     <string name="connectionWizard_intro_text">Onofficiële Toon app om je (rooted) Toon thermostaat te bedienen.</string>
     <string name="connectionWizard_intro_text2">Je kunt deze app gebruiken om je Toon thermostaat te bedienen terwijl je geen abonnement hebt bij Eneco.</string>
     <string name="connectionWizard_intro_text3">Of gewoon omdat je deze app leuk vind!</string>
-    <string name="exception_message_unhandled">Onbekende fout</string>
-    <string name="exception_message_notAuthorized">Niet geauthoriseerd</string>
-    <string name="exception_message_pageNotFound">Pagina niet gevonden op apparaat</string>
-    <string name="exception_message_connectionRefused">Verbinding geweigerd door je Toon. Weet je zeker dat hij geroot is?</string>
-    <string name="pref_category_app_settings_title">App instellingen</string>
-    <string name="pref_tempSetValue_title">Standaard temp instel waarde</string>
-    <string name="pref_tempSetValue_summary">De hoeveelheid de + en de - de temperatuur aanpassen</string>
 </resources>
