@@ -13,12 +13,11 @@ Toon Android app for rooted Toon devices. This app lets your control your rooted
 Install apk which can be found in the install directory
 
 ## How to use?
-1. Download APK from here: https://github.com/Inversion-NL/Toon-Android/raw/master/install/toon-v0.5.apk
-2. Install the apk file (make sure you can install apps from unknown sources). 
-3. Follow the instructions in welcome screen
-5. (Optional) In settings -> advanced settings, use the redirect service
-6. (Optional) Fill in token. Token will be placed in header "Api-Key".
-7. Restart the app
+1. Download from the Play Store here: https://play.google.com/store/apps/details?id=com.toonapps.toon
+2. Follow the instructions in welcome screen
+3. (Optional) In settings -> advanced settings, use the redirect service
+4. (Optional) Fill in token. Token will be placed in header "Api-Key".
+5. Restart the app
 
 To use the app outside of your internal network you can use the following methods:
 1. Use port forwarding to Toon in router settings (not recommended).
