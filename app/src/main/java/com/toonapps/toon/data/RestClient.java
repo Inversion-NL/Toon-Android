@@ -22,6 +22,7 @@ public class RestClient {
         interface GET {
             int THERMOSTAT_INFO = 0;
             int ZWAVE_DEVICES = 1;
+            int USAGE_INFO = 2;
         }
         interface SET {
             int SCHEME_STATE = 10;
@@ -104,6 +105,16 @@ public class RestClient {
         new RestClientExecutor(request, TYPE.GET.ZWAVE_DEVICES).execute();
     }
 
+    public void getUsageInfo() throws IllegalArgumentException {
+        getDataFromSharedPreferences();
+        Request request = new Request.Builder()
+                .url(url + seperator + "happ_pwrusage?action=GetCurrentUsage")
+                .addHeader(API_KEY, token)
+                .build();
+
+        new RestClientExecutor(request, TYPE.GET.USAGE_INFO).execute();
+    }
+
     public class RestClientExecutor extends AsyncTask{
 
         private OkHttpClient client;
@@ -147,6 +158,9 @@ public class RestClient {
                         break;
                     case TYPE.SET.SET_POINT:
                         responseData = Converter.convertResultData((String) o);
+                        break;
+                    case TYPE.GET.USAGE_INFO:
+                        responseData = Converter.convertCurrentUsageData((String) o);
                         break;
                 }
 

@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/pref_category_app_settings_title">
+        android:title="@string/pref_appSettings_category_title">
         <ListPreference
             android:key="pref_key_tempSetValue"
-            android:title="@string/pref_tempSetValue_title"
-            android:summary="@string/pref_setupConnection_summary"
-            android:defaultValue="5"
+            android:title="@string/pref_appSettings_tempSetValue_title"
+            android:summary="@string/pref_network_setupConnection_summary"
+            android:defaultValue="0.5"
             android:entries="@array/tempSetValues"
             android:entryValues="@array/tempSetValues"/>
+        <ListPreference
+            android:key="pref_key_nextProgramOrTemp"
+            android:title="@string/pref_appSettings_nextProgramTempOrProgram_title"
+            android:summary="@string/pref_appSettings_nextProgramTempOrProgram_summary"
+            android:defaultValue="Temperature"
+            android:entries="@array/showTempOrProgramEntries"
+            android:entryValues="@array/showTempOrProgramValues"/>
+        <SwitchPreference
+            android:key="pref_key_autoRefresh"
+            android:title="@string/pref_appSettings_refresh_useAutoRefresh_title"
+            android:defaultValue="true"
+            android:summary="@string/pref_appSettings_refresh_useAutoRefresh_summary"/>
+        <ListPreference
+            android:key="pref_key_autoRefreshPeriod"
+            android:title="@string/pref_appSettings_refresh_autoRefreshPeriod_title"
+            android:dependency="pref_key_autoRefresh"
+            android:defaultValue="15"
+            android:entries="@array/refreshValues"
+            android:entryValues="@array/refreshValues"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/pref_network_title"
+        android:title="@string/pref_network_category_title"
         android:key="pref_key_network">
 
         <PreferenceScreen
-            android:title="@string/pref_setupConnection_title"
-            android:summary="@string/pref_setupConnection_summary">
+            android:title="@string/pref_network_setupConnection_title"
+            android:summary="@string/pref_network_setupConnection_summary">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetClass="com.toonapps.toon.view.ConnectionWizardActivity"
@@ -26,19 +45,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/pref_network_advanced_title"
+        android:title="@string/pref_advanced_category_title"
         android:key="pref_key_network_advanced">
 
         <CheckBoxPreference
             android:key="pref_key_use_redirection_service"
-            android:title="@string/pref_redirectionService_title"
-            android:summary="@string/pref_redirectionService_summary" />
+            android:title="@string/pref_advanced_redirectionService_title"
+            android:summary="@string/pref_advanced_redirectionService_summary" />
 
         <EditTextPreference
-            android:defaultValue="@string/pref_token_default"
+            android:defaultValue="@string/pref_advanced_token_default"
             android:dependency="pref_key_use_redirection_service"
             android:key="pref_key_token"
-            android:summary="@string/pref_token_summary"
-            android:title="@string/pref_token_title" />
+            android:summary="@string/pref_advanced_token_summary"
+            android:title="@string/pref_advanced_token_title" />
     </PreferenceCategory>
 </PreferenceScreen>

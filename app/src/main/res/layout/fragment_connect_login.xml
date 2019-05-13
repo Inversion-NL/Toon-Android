@@ -39,7 +39,6 @@
         android:text="@string/connectionWizard_login_toonAddress_title"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_toonPort"
         android:layout_below="@+id/tv_toonAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,7 +101,7 @@
         android:layout_marginTop="20dp"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18sp"
-        tools:text="@string/device_update_error_txt"/>
+        tools:text="@string/exception_message_device_update_error_txt"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"

@@ -1,66 +1,65 @@
 <resources>
     <string name="app_name">Toon</string>
 
-    <string name="pref_network_title">Network settings</string>
-    <string name="pref_token_title">Api token</string>
-    <string name="pref_token_summary">Enter, if used, the api token. this is send within the http header</string>
-    <string name="pref_network_advanced_title">Advanced settings</string>
-    <string name="pref_redirectionService_title">Use redirection service</string>
-    <string name="pref_redirectionService_summary">Use redirect script to prevent the use of a port forward in your router to the Toon thermostat</string>
-    <string name="pref_setupConnection_title">Set up connection</string>
-    <string name="pref_setupConnection_summary">Click here to set up the connection to Toon</string>
-    <string name="pref_category_app_settings_title">App settings</string>
-    <string name="pref_tempSetValue_title">Default temp change setting</string>
-    <string name="pref_tempSetValue_summary">The amount the + and - sign changes</string>
+    <string name="pref_appSettings_category_title">App settings</string>
+    <string name="pref_appSettings_tempSetValue_title">Default temp change setting</string>
+    <string name="pref_appSettings_nextProgramTempOrProgram_title">Use temperature or program</string>
+    <string name="pref_appSettings_nextProgramTempOrProgram_summary">Show for next program the temperature or the mode</string>
+    <string name="pref_appSettings_refresh_useAutoRefresh_title">Auto refresh</string>
+    <string name="pref_appSettings_refresh_useAutoRefresh_summary">Automatically refresh data while the app is in use</string>
+    <string name="pref_appSettings_refresh_autoRefreshPeriod_title">Set the auto refresh interval</string>
+    <string name="pref_network_category_title">Network settings</string>
+    <string name="pref_network_setupConnection_title">Set up connection</string>
+    <string name="pref_network_setupConnection_summary">Click here to set up the connection to Toon</string>
+    <string name="pref_advanced_redirectionService_title">Use redirection service</string>
+    <string name="pref_advanced_redirectionService_summary">Use redirect script to prevent the use of a port forward in your router to the Toon thermostat</string>
+    <string name="pref_advanced_token_title">Api token</string>
+    <string name="pref_advanced_token_summary">Enter, if used, the api token. this is send within the http header</string>
+    <string name="pref_advanced_token_default" translatable="false" />
+    <string name="pref_advanced_category_title">Advanced settings</string>
 
     <string name="temperature_setting_away">Away</string>
     <string name="temperature_setting_home">Home</string>
     <string name="temperature_setting_sleeping">Sleep</string>
     <string name="temperature_setting_comfort">Comfort</string>
-    <string name="temperature_setting_followProgram">Follow program</string>
-    <string name="temperature_setting_dontFollowProgram">Don\'t follow program</string>
+    <string name="temperature_setting_vacation">Vacation</string>
 
-    <string name="powerUsage_title">Power usage</string>
-    <string name="gasUsage_title">Gas usage</string>
+    <string name="card_powerUsage_title">Power usage</string>
+    <string name="card_gasUsage_gasUsage_title">Gas usage</string>
+    <string name="card_powerUsage_img_current_power">Image current power usage</string>
+    <string name="card_GasUsage_img_current_gas">Image current gas usage</string>
     <string name="nextProgramText_noData">No data</string>
-    <string name="nextProgramValue">At {0} on {1}°</string>
-    <string name="img_description_fire">Image fire</string>
-    <string name="img_current_power">Image current power usage</string>
-    <string name="img_current_gas">Image current gas usage</string>
+    <string name="nextProgramValue">At {0} on {1}</string>
+    <string name="fire_description_img">Image fire</string>
+    <string name="nextProgramTemp">On %.01f°</string>
+    <string name="card_gasUsage_gasValue" translatable="false">0.0 m3</string>
+    <string name="card_powerUsage_powerValue" translatable="false">0.0 watt</string>
+    <string name="temperature_setting_sign_min" translatable="false">-</string>
+    <string name="temperature_setting_sign_plus" translatable="false">+</string>
 
-    <string name="temperature_update_error_txt">Error while updating temperature info</string>
-    <string name="device_update_error_txt">Error while updating device info</string>
-    <string name="toast_refreshingData">Refreshing data…</string>
-
-    <string name="connectionWizard_login_msg_pleaseEnterData">Please enter data</string>
     <string name="connectionWizard_login_msg_loginSuccessful">Login successful</string>
     <string name="connectionWizard_login_msg_loading_title">Please wait</string>
     <string name="connectionWizard_login_msg_loading_text">Please wait while connecting to your Toon thermostat</string>
-    <string name="connectionWizard_login_msg_failed">Failed</string>
     <string name="connectionWizard_login_toonAddress_title">Toon address</string>
     <string name="connectionWizard_login_toonPort_title">Toon port</string>
     <string name="connectionWizard_login_buttonLogin_loginText">Login</string>
     <string name="connectionWizard_login_buttonLogin_retryText">Retry</string>
-
     <string name="connectionWizard_intro_title">Toon app</string>
     <string name="connectionWizard_intro_text">Unofficial Toon app to connect to your (rooted) Toon.</string>
     <string name="connectionWizard_intro_text2">You can use the app to connect to your Toon thermostat when you don\'t have an subscription with Eneco.</string>
     <string name="connectionWizard_intro_text3">Or just because you love our app!</string>
+    <string name="connectionWizard_login_toonAddress_hint" translatable="false">192.168.0.10</string>
+    <string name="connectionWizard_login_toonPort_hint" translatable="false">10800</string>
 
+    <string name="exception_message_temperature_update_error_txt">Error while updating temperature info</string>
+    <string name="exception_message_device_update_error_txt">Error while updating device info</string>
     <string name="exception_message_hostUnknown">Host unknown</string>
     <string name="exception_message_timeout">Timeout connecting to host</string>
     <string name="exception_message_noNetwork">No network connection available</string>
     <string name="exception_message_incorrectHostname">Hostname not correct</string>
-
-    <string name="connectionWizard_login_toonAddress_hint" translatable="false">192.168.0.10</string>
-    <string name="gasUsage_value" translatable="false">0.0 m3</string>
-    <string name="powerUsage_value" translatable="false">0.0 watt</string>
-    <string name="temperature_setting_sign_min" translatable="false">-</string>
-    <string name="pref_token_default" translatable="false" />
-    <string name="temperature_setting_sign_plus" translatable="false">+</string>
-    <string name="connectionWizard_login_toonPort_hint" translatable="false">10800</string>
     <string name="exception_message_unhandled">Unhandled exception</string>
     <string name="exception_message_notAuthorized">Not authorized</string>
     <string name="exception_message_pageNotFound">Page not found on device</string>
     <string name="exception_message_connectionRefused">Connection refused by your Toon. Are you sure it is rooted?</string>
+
 </resources>
