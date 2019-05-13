@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Toon</string>
 
+    <string name="menu_refresh">Ververs</string>
+    <string name="menu_settings">Instellingen</string>
+
     <string name="pref_appSettings_category_title">App instellingen</string>
     <string name="pref_appSettings_tempSetValue_title">Standaard temp instel waarde</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_title">Temperatuur of programma</string>
@@ -30,7 +33,6 @@
     <string name="fire_description_img">Afbeelding vuur</string>
     <string name="card_powerUsage_img_current_power">Afbeelding huidig stroom verbruik</string>
     <string name="card_GasUsage_img_current_gas">Afbeelding huidig gas verbruik</string>
-    <string name="nextProgramTemp">Op %.01f°</string>
 
     <string name="connectionWizard_login_msg_loginSuccessful">Aanmelden gelukt</string>
     <string name="connectionWizard_login_msg_loading_title">Even geduld</string>
@@ -39,6 +41,15 @@
     <string name="connectionWizard_login_toonPort_title">Toon poort</string>
     <string name="connectionWizard_login_buttonLogin_loginText">Aanmelden</string>
     <string name="connectionWizard_login_buttonLogin_retryText">Opnieuw</string>
+    <string name="connectionWizard_login_error_pleaseEnterAddress">Geef een adres op a.u.b.</string>
+    <string name="connectionWizard_login_error_noValidInput">Deze waarde klopt niet</string>
+    <string name="connectionWizard_login_error_pleaseEnterPortNumber">Geef een poort nummer op a.u.b.</string>
+    <string name="connectionWizard_login_error_enterValidPortNumber">Deze waarde klopt niet</string>
+    <string name="connectionWizard_login_error_pleaseOnlyUseNumbers">Gebruik alleen nummers, a.u.b.</string>
+    <string name="connectionWizard_intro_title">Toon app</string>
+    <string name="connectionWizard_intro_text">Onofficiële Toon app om je (rooted) Toon thermostaat te bedienen.</string>
+    <string name="connectionWizard_intro_text2">Je kunt deze app gebruiken om je Toon thermostaat te bedienen terwijl je geen abonnement hebt bij Eneco.</string>
+    <string name="connectionWizard_intro_text3">Of gewoon omdat je deze app leuk vind!</string>
 
     <string name="exception_message_temperature_update_error_txt">Fout bij het ophalen van temperatuur gegevens</string>
     <string name="exception_message_device_update_error_txt">Fout bij het ophalen van apparaat gegevens</string>
@@ -50,9 +61,35 @@
     <string name="exception_message_notAuthorized">Niet geauthoriseerd</string>
     <string name="exception_message_pageNotFound">Pagina niet gevonden op apparaat</string>
     <string name="exception_message_connectionRefused">Verbinding geweigerd door je Toon. Weet je zeker dat hij geroot is?</string>
+    <string name="exception_message_unsupported">Toon ondersteund de aanvraag niet</string>
 
-    <string name="connectionWizard_intro_title">Toon app</string>
-    <string name="connectionWizard_intro_text">Onofficiële Toon app om je (rooted) Toon thermostaat te bedienen.</string>
-    <string name="connectionWizard_intro_text2">Je kunt deze app gebruiken om je Toon thermostaat te bedienen terwijl je geen abonnement hebt bij Eneco.</string>
-    <string name="connectionWizard_intro_text3">Of gewoon omdat je deze app leuk vind!</string>
+    <string name="graph_firstToggle">6 uur</string>
+    <string name="graph_secondToggle">12 uur</string>
+    <string name="graph_thirdToggle">1 dag</string>
+    <string name="elec_usage_used">Op %s gebruikte je %.0fWatt</string>
+    <string name="message_updatingData">Gegevens bijwerken</string>
+    <string name="graph_label_electricity">Stroom verbruik</string>
+    <string name="message_error_updatingGraphData_txt">Fout tijdens bijwerken:</string>
+    <string name="flow_elecUsage_clickForMoreInfo">Tik op een punt voor meer info</string>
+    <string name="usage_fragment_elecUsage">Stroomverbruik</string>
+    <string name="usage_fragment_gasUsage">Gasverbruik</string>
+    <string name="usage_fragment_thirdFragment">Derde fragment</string>
+    <string name="gasUsage_formatted">%.00f liter</string>
+    <string name="powerUsage_formatted">%.00f watt</string>
+    <string name="temp_formatted">%.01f°</string>
+    <string name="connectionWizard_login_protocol">Protocol</string>
+    <string name="protocol_http">HTTP</string>
+    <string name="protocol_https">HTTP</string>
+    <string name="usage_fragment_controls">Thermostaat</string>
+    <string name="pref_appInfo_appVersion_title">App versie</string>
+    <string name="pref_appInfo_category_title">App info</string>
+    <string name="pref_appInfo_appLibraries_summary">Informatie over de gebruikte opensource bibliotheken</string>
+    <string name="pref_appInfo_appLibraries_title">Gebruikte bibliotheken</string>
+    <string name="gas_used_today">Gas vandaag</string>
+    <string name="power_used_today">Stroom vandaag</string>
+    <string name="txtvTotalPowerUseValue">%.2f kWh</string>
+    <string name="txtvTotalGasUseValue">%.2f m3</string>
+    <string name="drawer_app_version">Versie %s</string>
+    <string name="menu_openSource">Open Source</string>
+    <string name="gas_usage_used">Op %s gebruikte je %.0fm3</string>
 </resources>

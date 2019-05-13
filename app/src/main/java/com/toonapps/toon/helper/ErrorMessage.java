@@ -10,18 +10,10 @@ import java.net.UnknownHostException;
 
 public class ErrorMessage {
 
-    // TODO change static because of memory leaks!
-    private static ErrorMessage instance;
-    private static Context context;
+    private final Context context;
 
-    private ErrorMessage() {}
-
-    public static ErrorMessage getInstance(Context mContext) {
-        context = mContext;
-        if(instance == null) {
-            instance = new ErrorMessage();
-        }
-        return instance;
+    public ErrorMessage(Context mContext) {
+        this.context = mContext;
     }
 
     public String getHumanReadableErrorMessage(Exception exception) {
@@ -41,6 +33,9 @@ public class ErrorMessage {
 
                 case ToonException.UNAUTHORIZED:
                     return context.getString(R.string.exception_message_notAuthorized);
+
+                case ToonException.UNSUPPORTED:
+                    return context.getString(R.string.exception_message_unsupported);
 
                 case ToonException.UNHANDLED:
                 default:

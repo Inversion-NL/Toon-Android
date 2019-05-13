@@ -10,6 +10,7 @@ public class CurrentUsageInfo {
 
 
     public boolean getResult() {
+        //noinspection HardCodedStringLiteral
         return result.equals("ok");
     }
 

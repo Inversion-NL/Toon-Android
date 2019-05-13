@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="@style/AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="cardTemperature">
         <item name="android:background">@android:color/white</item>
         <item name="android:layout_width">match_parent</item>
@@ -37,11 +42,26 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
+    <style name="style_card_TotalPowerGas">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">@dimen/_145sdp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="style_img_meter">
+        <item name="android:layout_width">47dp</item>
+        <item name="android:layout_height">89dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="txtvPowerGasTitle">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -50,6 +70,8 @@
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

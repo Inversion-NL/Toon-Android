@@ -10,8 +10,8 @@ import java.util.List;
 
 public class DeviceController implements IRestClientResponseHandler {
 
-    private RestClient restClient;
-    private List<IDeviceListener> devicesListenerList;
+    private final RestClient restClient;
+    private final List<IDeviceListener> devicesListenerList;
 
     private static DeviceController instance = null;
 

@@ -18,7 +18,7 @@ public class TimerHelper {
         this.listener = listener;
     }
 
-    private TimerTask timerTask = new TimerTask() {
+    private final TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
             mActivity.runOnUiThread(new Runnable() {

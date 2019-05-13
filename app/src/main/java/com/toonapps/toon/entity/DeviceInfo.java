@@ -2,7 +2,7 @@ package com.toonapps.toon.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "HardCodedStringLiteral"})
 public class DeviceInfo {
     @SerializedName("dev_settings_device")
     private DeviceSettings devSettings;

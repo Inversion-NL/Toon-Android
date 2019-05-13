@@ -1,4 +1,4 @@
-package com.toonapps.toon.view.Fragments;
+package com.toonapps.toon.view.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 import com.toonapps.toon.R;
@@ -18,9 +23,6 @@ import com.toonapps.toon.controller.IDeviceListener;
 import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.ErrorMessage;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 
 public class LoginFragment extends SlideFragment {
 
@@ -33,6 +35,7 @@ public class LoginFragment extends SlideFragment {
     private AppCompatButton btn_login;
 
     private final boolean testing = false;
+    private RadioButton rb_protocol_https;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -47,18 +50,32 @@ public class LoginFragment extends SlideFragment {
         View view = inflater.inflate(R.layout.fragment_connect_login, container, false);
 
         // Setting to prevent keyboard from changing the layout
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
+        if (getActivity() != null) getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        setAndInitWidgets(view);
+        return view;
+    }
+
+    private void setAndInitWidgets(View view){
         address = view.findViewById(R.id.et_toonAddress);
         port = view.findViewById(R.id.et_toonPort);
+        RadioButton rb_protocol_http = view.findViewById(R.id.rb_protocol_http);
+        rb_protocol_https = view.findViewById(R.id.rb_protocol_https);
         txt_errorMessage = view.findViewById(R.id.txt_errorMessage);
+        RadioGroup rg = view.findViewById(R.id.rg_protocol);
+        rg.setEnabled(false);
 
         address.setText(AppSettings.getInstance().getAddress());
 
         int portInt = AppSettings.getInstance().getPort();
         if (portInt == 0) port.setText("");
         else port.setText(String.valueOf(portInt));
+
+        //noinspection HardCodedStringLiteral
+        if(AppSettings.getInstance().getProtocol().equals("https")) {
+            rb_protocol_https.setChecked(true);
+        } else rb_protocol_http.setChecked(true);
 
         btn_login = view.findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -68,15 +85,14 @@ public class LoginFragment extends SlideFragment {
                 else advancedFieldCheck();
             }
         });
-
-        return view;
     }
 
     private void updateData() {
         showProgressDialog();
 
-        String url = "http://" + address.getText().toString() + ":" + port.getText().toString();
-        AppSettings.getInstance().setUrl(url);
+        AppSettings.getInstance().setPort(Integer.valueOf(port.getText().toString()));
+        AppSettings.getInstance().setAddress(address.getText().toString());
+        AppSettings.getInstance().setProtocol(getProtocolFromRadioButtons());
 
         DeviceController.getInstance().subscribe(new IDeviceListener() {
             @Override
@@ -97,9 +113,9 @@ public class LoginFragment extends SlideFragment {
                     // attached anymore resulting in a crash of the app
                     dismissProgressDialog();
 
-                    //noinspection ConstantConditions
                     if (testing && isAdded()) {
                         txt_errorMessage.setTextColor(getResources().getColor(android.R.color.black));
+                        //noinspection HardCodedStringLiteral
                         txt_errorMessage.setText("Testing!");
                         loggedIn = true;
 
@@ -108,11 +124,12 @@ public class LoginFragment extends SlideFragment {
                         btn_login.setText(R.string.connectionWizard_login_buttonLogin_retryText);
 
                         if (e instanceof IllegalArgumentException && isAdded())
-                            // If the error has to to with the host name, set error on addres widget
+                            // If the error has to to with the host name, set error on address widget
                             // rather than setting a generic error
                             address.setError(getString(R.string.exception_message_incorrectHostname));
                         else if (isAdded()){
-                            String message = ErrorMessage.getInstance(context).getHumanReadableErrorMessage(e);
+                            ErrorMessage errorMessage = new ErrorMessage(context);
+                            String message = errorMessage.getHumanReadableErrorMessage(e);
                             txt_errorMessage.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                             txt_errorMessage.setText(message);
                         }
@@ -125,6 +142,11 @@ public class LoginFragment extends SlideFragment {
             }
         });
         DeviceController.getInstance().updateDeviceInfo();
+    }
+
+    private String getProtocolFromRadioButtons() {
+        if (rb_protocol_https.isChecked()) return context.getString(R.string.protocol_https);
+        else return context.getString(R.string.protocol_http);
     }
 
     private void showProgressDialog() {
@@ -147,19 +169,19 @@ public class LoginFragment extends SlideFragment {
         // Address text field checks
         String addressText = address.getText().toString();
         if(TextUtils.isEmpty(addressText))
-            address.setError("Please enter address");
+            address.setError(getString(R.string.connectionWizard_login_error_pleaseEnterAddress));
         else if (addressText.length() < 2)
-            address.setError("Not a valid input");
+            address.setError(getString(R.string.connectionWizard_login_error_noValidInput));
 
         // Port text field checks
         String portText = port.getText().toString();
         if (TextUtils.isEmpty(portText))
-            port.setError("Please enter a port number");
+            port.setError(getString(R.string.connectionWizard_login_error_pleaseEnterPortNumber));
         try {
             int portNumber = Integer.valueOf(portText);
-            if (portNumber < 1 || portNumber > 65535) port.setError("Enter a valid port number");
+            if (portNumber < 1 || portNumber > 65535) port.setError(getString(R.string.connectionWizard_login_error_enterValidPortNumber));
         } catch (NumberFormatException e) {
-            port.setError("Please only use numbers");
+            port.setError(getString(R.string.connectionWizard_login_error_pleaseOnlyUseNumbers));
         }
 
     }
@@ -170,7 +192,7 @@ public class LoginFragment extends SlideFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         this.context = context;
         super.onAttach(context);
     }

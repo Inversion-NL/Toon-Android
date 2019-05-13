@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Toon</string>
 
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_settings">Settings</string>
+
     <string name="pref_appSettings_category_title">App settings</string>
     <string name="pref_appSettings_tempSetValue_title">Default temp change setting</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_title">Use temperature or program</string>
@@ -17,6 +20,10 @@
     <string name="pref_advanced_token_summary">Enter, if used, the api token. this is send within the http header</string>
     <string name="pref_advanced_token_default" translatable="false" />
     <string name="pref_advanced_category_title">Advanced settings</string>
+    <string name="pref_appInfo_category_title">App info</string>
+    <string name="pref_appInfo_appVersion_title">App version</string>
+    <string name="pref_appInfo_appLibraries_title">Libraries used</string>
+    <string name="pref_appInfo_appLibraries_summary">Information on the open source libraries used by this app</string>
 
     <string name="temperature_setting_away">Away</string>
     <string name="temperature_setting_home">Home</string>
@@ -31,8 +38,7 @@
     <string name="nextProgramText_noData">No data</string>
     <string name="nextProgramValue">At {0} on {1}</string>
     <string name="fire_description_img">Image fire</string>
-    <string name="nextProgramTemp">On %.01f°</string>
-    <string name="card_gasUsage_gasValue" translatable="false">0.0 m3</string>
+    <string name="card_gasUsage_gasValue" translatable="false">0.0 liter</string>
     <string name="card_powerUsage_powerValue" translatable="false">0.0 watt</string>
     <string name="temperature_setting_sign_min" translatable="false">-</string>
     <string name="temperature_setting_sign_plus" translatable="false">+</string>
@@ -44,12 +50,18 @@
     <string name="connectionWizard_login_toonPort_title">Toon port</string>
     <string name="connectionWizard_login_buttonLogin_loginText">Login</string>
     <string name="connectionWizard_login_buttonLogin_retryText">Retry</string>
+    <string name="connectionWizard_login_error_pleaseEnterAddress">Please enter address</string>
+    <string name="connectionWizard_login_error_noValidInput">Not a valid input</string>
+    <string name="connectionWizard_login_error_pleaseEnterPortNumber">Please enter a port number</string>
+    <string name="connectionWizard_login_error_enterValidPortNumber">Enter a valid port number</string>
+    <string name="connectionWizard_login_error_pleaseOnlyUseNumbers">Please only use numbers</string>
     <string name="connectionWizard_intro_title">Toon app</string>
     <string name="connectionWizard_intro_text">Unofficial Toon app to connect to your (rooted) Toon.</string>
     <string name="connectionWizard_intro_text2">You can use the app to connect to your Toon thermostat when you don\'t have an subscription with Eneco.</string>
     <string name="connectionWizard_intro_text3">Or just because you love our app!</string>
     <string name="connectionWizard_login_toonAddress_hint" translatable="false">192.168.0.10</string>
-    <string name="connectionWizard_login_toonPort_hint" translatable="false">10800</string>
+    <string name="connectionWizard_login_toonPort_hint" translatable="false">80</string>
+    <string name="connectionWizard_login_protocol">Protocol</string>
 
     <string name="exception_message_temperature_update_error_txt">Error while updating temperature info</string>
     <string name="exception_message_device_update_error_txt">Error while updating device info</string>
@@ -61,5 +73,32 @@
     <string name="exception_message_notAuthorized">Not authorized</string>
     <string name="exception_message_pageNotFound">Page not found on device</string>
     <string name="exception_message_connectionRefused">Connection refused by your Toon. Are you sure it is rooted?</string>
+    <string name="exception_message_unsupported">Toon did not support the request</string>
+
+    <string name="graph_firstToggle">6 hour</string>
+    <string name="graph_secondToggle">12 hour</string>
+    <string name="graph_thirdToggle">1 day</string>
+    <string name="elec_usage_used">On %s you used %.0fWatt</string>
+    <string name="gas_usage_used">On %s you used %.0fm3</string>
+    <string name="message_updatingData">Updating data</string>
+    <string name="graph_label_electricity">Electricity usage</string>
+    <string name="message_error_updatingGraphData_txt">Error while updating data:</string>
+    <string name="flow_elecUsage_clickForMoreInfo">Click on a dot for more info</string>
+    <string name="usage_fragment_controls">Thermostat</string>
+    <string name="usage_fragment_elecUsage">Electricity usage</string>
+    <string name="usage_fragment_gasUsage">Gas usage</string>
+    <string name="usage_fragment_thirdFragment">Third Fragment</string>
+    <string name="gasUsage_formatted">%.00f liter</string>
+    <string name="powerUsage_formatted">%.00f watt</string>
+    <string name="temp_formatted">%.01f°</string>
+    <string name="protocol_http">HTTP</string>
+    <string name="protocol_https">HTTPS</string>
+    <string name="gas_used_today">Gas used today</string>
+    <string name="power_used_today">Power used today</string>
+    <string name="txtvTotalPowerUseValue">%.2f kWh</string>
+    <string name="txtvTotalGasUseValue">%.2f m3</string>
+
+    <string name="drawer_app_version">Version %s</string>
+    <string name="menu_openSource">Open Source</string>
 
 </resources>
