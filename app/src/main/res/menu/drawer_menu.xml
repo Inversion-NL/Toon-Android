@@ -8,17 +8,17 @@
         <item
             android:id="@+id/menu_controls"
             android:icon="@drawable/ic_usage_black"
-            android:title="@string/usage_fragment_controls" />
+            android:title="@string/drawerMenu_fragment_controls" />
 
         <item
             android:id="@+id/menu_elecUsage"
             android:icon="@drawable/ic_usage_black"
-            android:title="@string/usage_fragment_elecUsage" />
+            android:title="@string/graph_usage_fragment_elecUsage" />
 
         <item
             android:id="@+id/menu_gasUsage"
             android:icon="@drawable/ic_usage_black"
-            android:title="@string/usage_fragment_gasUsage" />
+            android:title="@string/graph_usage_fragment_gasUsage" />
     </group>
 
     <group
@@ -38,7 +38,7 @@
         <item
             android:id="@+id/menu_openSource"
             android:icon="@drawable/ic_info"
-            android:title="@string/menu_openSource" />
+            android:title="@string/drawerMenu_openSource" />
         <item
             android:id="@+id/menu_info"
             android:icon="@drawable/ic_info"

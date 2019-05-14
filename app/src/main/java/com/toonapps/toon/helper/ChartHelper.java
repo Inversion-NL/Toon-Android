@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.toonapps.toon.R;
 
 import java.util.ArrayList;
@@ -66,5 +67,12 @@ public class ChartHelper {
         }
 
         return set1;
+    }
+
+    public static ArrayList<ILineDataSet> getDataSets(Context context, ArrayList<Entry> values1, String graphTitle) {
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(getDefaultLineDataSet(context, values1, graphTitle));
+
+        return dataSets;
     }
 }

@@ -11,6 +11,9 @@
     <string name="pref_appSettings_refresh_useAutoRefresh_title">Auto refresh</string>
     <string name="pref_appSettings_refresh_useAutoRefresh_summary">Automatically refresh data while the app is in use</string>
     <string name="pref_appSettings_refresh_autoRefreshPeriod_title">Set the auto refresh interval</string>
+    <string name="pref_meterSettings_category_title">Meter settings</string>
+    <string name="pref_meterSettings_doubleTariff_title">Double tariff</string>
+    <string name="pref_meterSettings_doubleTariff_summary">Meter is a double tariff meter</string>
     <string name="pref_network_category_title">Network settings</string>
     <string name="pref_network_setupConnection_title">Set up connection</string>
     <string name="pref_network_setupConnection_summary">Click here to set up the connection to Toon</string>
@@ -31,17 +34,22 @@
     <string name="temperature_setting_comfort">Comfort</string>
     <string name="temperature_setting_vacation">Vacation</string>
 
-    <string name="card_powerUsage_title">Power usage</string>
-    <string name="card_gasUsage_gasUsage_title">Gas usage</string>
-    <string name="card_powerUsage_img_current_power">Image current power usage</string>
-    <string name="card_GasUsage_img_current_gas">Image current gas usage</string>
-    <string name="nextProgramText_noData">No data</string>
-    <string name="nextProgramValue">At {0} on {1}</string>
-    <string name="fire_description_img">Image fire</string>
-    <string name="card_gasUsage_gasValue" translatable="false">0.0 liter</string>
-    <string name="card_powerUsage_powerValue" translatable="false">0.0 watt</string>
-    <string name="temperature_setting_sign_min" translatable="false">-</string>
-    <string name="temperature_setting_sign_plus" translatable="false">+</string>
+    <string name="controls_card_powerUsage_title">Power usage</string>
+    <string name="controls_card_gasUsage_gasUsage_title">Gas usage</string>
+    <string name="controls_card_powerUsage_img_current_power">Image current power usage</string>
+    <string name="controls_card_GasUsage_img_current_gas">Image current gas usage</string>
+    <string name="controls_nextProgramText_noData">No data</string>
+    <string name="controls_nextProgramValue">At {0} on {1}</string>
+    <string name="controls_fire_description_img">Image fire</string>
+    <string name="controls_card_gasUsage_gasValue" translatable="false">0.0 liter</string>
+    <string name="controls_card_powerUsage_powerValue" translatable="false">0.0 watt</string>
+    <string name="controls_temperature_setting_sign_min" translatable="false">-</string>
+    <string name="controls_temperature_setting_sign_plus" translatable="false">+</string>
+    <string name="controls_gas_used_today">Gas used today</string>
+    <string name="controls_power_used_today">Power used today</string>
+    <string name="controls_txtvTotalPowerUseValue">%.2f kWh</string>
+    <string name="controls_txtvTotalGasUseValue">%.2f m3</string>
+    <string name="controls_message_errorOtCommError">There is an OpenTherm communication error: %d</string>
 
     <string name="connectionWizard_login_msg_loginSuccessful">Login successful</string>
     <string name="connectionWizard_login_msg_loading_title">Please wait</string>
@@ -56,6 +64,8 @@
     <string name="connectionWizard_login_error_enterValidPortNumber">Enter a valid port number</string>
     <string name="connectionWizard_login_error_pleaseOnlyUseNumbers">Please only use numbers</string>
     <string name="connectionWizard_intro_title">Toon app</string>
+    <string name="connectionWizard_login_protocol_http">HTTP</string>
+    <string name="connectionWizard_login_protocol_https">HTTPS</string>
     <string name="connectionWizard_intro_text">Unofficial Toon app to connect to your (rooted) Toon.</string>
     <string name="connectionWizard_intro_text2">You can use the app to connect to your Toon thermostat when you don\'t have an subscription with Eneco.</string>
     <string name="connectionWizard_intro_text3">Or just because you love our app!</string>
@@ -75,30 +85,24 @@
     <string name="exception_message_connectionRefused">Connection refused by your Toon. Are you sure it is rooted?</string>
     <string name="exception_message_unsupported">Toon did not support the request</string>
 
-    <string name="graph_firstToggle">6 hour</string>
-    <string name="graph_secondToggle">12 hour</string>
-    <string name="graph_thirdToggle">1 day</string>
-    <string name="elec_usage_used">On %s you used %.0fWatt</string>
-    <string name="gas_usage_used">On %s you used %.0fm3</string>
-    <string name="message_updatingData">Updating data</string>
+    <string name="graph_timeSpan_firstToggle">6 hour</string>
+    <string name="graph_timeSpan_secondToggle">12 hour</string>
+    <string name="graph_timeSpan_thirdToggle">1 day</string>
+    <string name="graph_elec_usage_used">On %s you used %.0fWatt</string>
+    <string name="graph_gas_usage_used">On %s you used %.0fm3</string>
+    <string name="graph_message_updatingData">Updating data</string>
+    <string name="graph_message_error_updatingGraphData_txt">Error while updating data:</string>
     <string name="graph_label_electricity">Electricity usage</string>
-    <string name="message_error_updatingGraphData_txt">Error while updating data:</string>
-    <string name="flow_elecUsage_clickForMoreInfo">Click on a dot for more info</string>
-    <string name="usage_fragment_controls">Thermostat</string>
-    <string name="usage_fragment_elecUsage">Electricity usage</string>
-    <string name="usage_fragment_gasUsage">Gas usage</string>
-    <string name="usage_fragment_thirdFragment">Third Fragment</string>
-    <string name="gasUsage_formatted">%.00f liter</string>
-    <string name="powerUsage_formatted">%.00f watt</string>
-    <string name="temp_formatted">%.01f°</string>
-    <string name="protocol_http">HTTP</string>
-    <string name="protocol_https">HTTPS</string>
-    <string name="gas_used_today">Gas used today</string>
-    <string name="power_used_today">Power used today</string>
-    <string name="txtvTotalPowerUseValue">%.2f kWh</string>
-    <string name="txtvTotalGasUseValue">%.2f m3</string>
+    <string name="graph_flow_elecUsage_clickForMoreInfo">Click on a dot for more info</string>
+    <string name="graph_usage_fragment_elecUsage">Electricity usage</string>
+    <string name="graph_usage_fragment_gasUsage">Gas usage</string>
+    <string name="graph_usage_fragment_thirdFragment">Third Fragment</string>
+    <string name="graph_gasUsage_formatted">%.00f liter</string>
+    <string name="graph_powerUsage_formatted">%.00f watt</string>
+    <string name="graph_temp_formatted">%.01f°</string>
 
-    <string name="drawer_app_version">Version %s</string>
-    <string name="menu_openSource">Open Source</string>
+    <string name="drawerMenu_fragment_controls">Thermostat</string>
+    <string name="drawerMenu_appVersion">Version %s</string>
+    <string name="drawerMenu_openSource">Open Source</string>
 
 </resources>

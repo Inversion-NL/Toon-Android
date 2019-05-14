@@ -2,6 +2,7 @@ package com.toonapps.toon.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -49,6 +50,11 @@ public class MainActivity extends AppCompatActivity
         AppSettings.getInstance().initialize(this.getApplicationContext());
 
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if (AppSettings.getInstance().isFirstStart()) {
             Intent intent = new Intent(this, ConnectionWizardActivity.class);
@@ -62,11 +68,35 @@ public class MainActivity extends AppCompatActivity
             NavigationUI.setupWithNavController(navigationView, navController);
             navigationView.setNavigationItemSelectedListener(this);
 
-            String version = String.format(getString(R.string.drawer_app_version), BuildConfig.VERSION_NAME);
+            String version = String.format(getString(R.string.drawerMenu_appVersion), BuildConfig.VERSION_NAME);
             Menu nav = navigationView.getMenu();
             MenuItem menuInfo = nav.findItem(R.id.menu_info);
             menuInfo.setTitle(version);
+
+            if (!AppSettings.getInstance().hasDrawerPeeked()) peekDrawer();
         }
+    }
+
+    private void peekDrawer() {
+
+        int startDelay = 3000;
+        int openTime = 1000;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        }, startDelay );
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        }, startDelay + openTime );
+
+        AppSettings.getInstance().setDrawerHasPeeked(true);
     }
 
     @Override
@@ -155,9 +185,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START);
-        else super.onBackPressed();
+        if (drawerLayout != null) {
+
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                drawerLayout.closeDrawer(GravityCompat.START);
+            else super.onBackPressed();
+
+        } else super.onBackPressed();
     }
 
     @Override

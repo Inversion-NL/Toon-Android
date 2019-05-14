@@ -145,8 +145,8 @@ public class LoginFragment extends SlideFragment {
     }
 
     private String getProtocolFromRadioButtons() {
-        if (rb_protocol_https.isChecked()) return context.getString(R.string.protocol_https);
-        else return context.getString(R.string.protocol_http);
+        if (rb_protocol_https.isChecked()) return context.getString(R.string.connectionWizard_login_protocol_https);
+        else return context.getString(R.string.connectionWizard_login_protocol_http);
     }
 
     private void showProgressDialog() {

@@ -71,7 +71,7 @@ public class RestClient {
 
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_flow&rra=5min&readableTime=UsageInfo.TARIFF.NULL&nullForNaN=1&from=" + startTime + "&to=" + endTime;
+        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_flow&rra=5min&readableTime=0&nullForNaN=1&from=" + startTime + "&to=" + endTime;
 
         StringRequest request =
             new StringRequest(

@@ -30,12 +30,20 @@ public class TimerHelper {
         }
     };
 
-    public void start() {
+    public void startWithDelay() {
         if(timer != null) {
             return;
         }
         timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, delay, delay);
+    }
+
+    public void startImmediatelyAndOnlyOnce() {
+        if(timer != null) {
+            return;
+        }
+        timer = new Timer();
+        timer.schedule(timerTask, 0, delay);
     }
 
     public void stop() {

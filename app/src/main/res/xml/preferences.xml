@@ -31,6 +31,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/pref_meterSettings_category_title">
+        <CheckBoxPreference
+            android:key="pref_key_isDoubleTariffMeter"
+            android:title="@string/pref_meterSettings_doubleTariff_title"
+            android:summary="@string/pref_meterSettings_doubleTariff_summary"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_network_category_title"
         android:key="pref_key_network">
 

@@ -52,7 +52,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:contentDescription="@string/fire_description_img"
+                    android:contentDescription="@string/controls_fire_description_img"
                     android:src="@drawable/ic_flame0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -121,12 +121,12 @@
             <Button
                 android:id="@+id/btnPlus"
                 style="@style/btnChangeTemp"
-                android:text="@string/temperature_setting_sign_plus" />
+                android:text="@string/controls_temperature_setting_sign_plus" />
 
             <Button
                 android:id="@+id/btnMin"
                 style="@style/btnChangeTemp"
-                android:text="@string/temperature_setting_sign_min" />
+                android:text="@string/controls_temperature_setting_sign_min" />
 
         </GridLayout>
 
@@ -150,7 +150,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:maxLines="1"
-                android:text="@string/nextProgramText_noData"
+                android:text="@string/controls_nextProgramText_noData"
                 android:textSize="16sp"
                 android:paddingEnd="14dp"
                 android:paddingRight="14dp"
@@ -202,18 +202,18 @@
 
                 <TextView
                     style="@style/txtvPowerGasTitle"
-                    android:text="@string/card_powerUsage_title" />
+                    android:text="@string/controls_card_powerUsage_title" />
 
                 <ImageView
                     android:id="@+id/imgvCurrentPower"
                     style="@style/style_img_meter"
-                    android:contentDescription="@string/card_powerUsage_img_current_power"
+                    android:contentDescription="@string/controls_card_powerUsage_img_current_power"
                     android:src="@drawable/power1_10" />
 
                 <TextView
                     android:id="@+id/txtvCurrentPowerUse"
                     style="@style/style_card_txtvPowerGasDescription"
-                    android:text="@string/card_powerUsage_powerValue"
+                    android:text="@string/controls_card_powerUsage_powerValue"
                     tools:text="1000 Watt"/>
 
             </androidx.cardview.widget.CardView>
@@ -226,18 +226,18 @@
 
                 <TextView
                     style="@style/txtvPowerGasTitle"
-                    android:text="@string/card_gasUsage_gasUsage_title" />
+                    android:text="@string/controls_card_gasUsage_gasUsage_title" />
 
                 <ImageView
                     android:id="@+id/imgvCurrentGas"
                     style="@style/style_img_meter"
-                    android:contentDescription="@string/card_GasUsage_img_current_gas"
+                    android:contentDescription="@string/controls_card_GasUsage_img_current_gas"
                     android:src="@drawable/gas1_10" />
 
                 <TextView
                     android:id="@+id/txtvCurrentGasUse"
                     style="@style/style_card_txtvPowerGasDescription"
-                    android:text="@string/card_gasUsage_gasValue"
+                    android:text="@string/controls_card_gasUsage_gasValue"
                     tools:text="1000 liter"/>
 
             </androidx.cardview.widget.CardView>
@@ -249,7 +249,7 @@
 
                 <TextView
                     style="@style/txtvPowerGasTitle"
-                    android:text="@string/power_used_today" />
+                    android:text="@string/controls_power_used_today" />
 
                 <TextView
                     android:id="@+id/txtvTotalPowerUse"
@@ -266,7 +266,7 @@
 
                 <TextView
                     style="@style/txtvPowerGasTitle"
-                    android:text="@string/gas_used_today" />
+                    android:text="@string/controls_gas_used_today" />
 
                 <TextView
                     android:id="@+id/txtvTotalGasUse"

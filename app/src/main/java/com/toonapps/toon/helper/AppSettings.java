@@ -9,34 +9,38 @@ import com.toonapps.toon.R;
 public class AppSettings {
 
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_URL = "pref_key_url";
+    private final String PREF_KEY_URL = "pref_key_url";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_PROTOCOL = "pref_key_protocol";
+    private final String PREF_KEY_PROTOCOL = "pref_key_protocol";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_PORT = "pref_key_port";
+    private final String PREF_KEY_PORT = "pref_key_port";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_TOKEN = "pref_key_token";
+    private final String PREF_KEY_TOKEN = "pref_key_token";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_IS_FIRST_START = "pref_key_isFirstStart";
+    private final String PREF_KEY_IS_FIRST_START = "pref_key_isFirstStart";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_USE_REDIRECTION_SERVICE = "pref_key_use_redirection_service";
+    private final String PREF_KEY_USE_REDIRECTION_SERVICE = "pref_key_use_redirection_service";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_TEMP_SET_VALUE = "pref_key_tempSetValue";
+    private final String PREF_KEY_TEMP_SET_VALUE = "pref_key_tempSetValue";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_IS_USAGE_INFO_AVAILABLE = "pref_key_isCurrentUsageInfoAvailable";
+    private final String PREF_KEY_IS_USAGE_INFO_AVAILABLE = "pref_key_isCurrentUsageInfoAvailable";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_TRIED_USAGE_INFO_ONCE = "pref_key_triedCurrentUsageInfoOnce";
+    private final String PREF_KEY_TRIED_USAGE_INFO_ONCE = "pref_key_triedCurrentUsageInfoOnce";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_USE_AUTO_REFRESH = "pref_key_autoRefresh";
+    private final String PREF_KEY_USE_AUTO_REFRESH = "pref_key_autoRefresh";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_AUTO_REFRESH_PERIOD = "pref_key_autoRefreshPeriod";
+    private final String PREF_KEY_AUTO_REFRESH_PERIOD = "pref_key_autoRefreshPeriod";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_NEXT_PROGRAM_OR_TEMP = "pref_key_nextProgramOrTemp";
+    private final String PREF_KEY_NEXT_PROGRAM_OR_TEMP = "pref_key_nextProgramOrTemp";
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String PREF_KEY_ADDRESS = "pref_key_address";
+    private final String PREF_KEY_ADDRESS = "pref_key_address";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private final String PREF_KEY_IS_DOUBLE_TARIFF_METER = "pref_key_isDoubleTariffMeter";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private final String PREF_KEY_HAS_DRAWER_PEEKED = "pref_key_hasDrawerPeeked";
 
     private static AppSettings instance;
-    private  SharedPreferences sharedPref;
+    private SharedPreferences sharedPref;
     private Context context;
 
     private AppSettings() {
@@ -59,7 +63,7 @@ public class AppSettings {
     }
 
     public String getProtocol(){
-        return sharedPref.getString(PREF_KEY_PROTOCOL, context.getString(R.string.protocol_http));
+        return sharedPref.getString(PREF_KEY_PROTOCOL, context.getString(R.string.connectionWizard_login_protocol_http));
     }
 
     public void setPort(int port) {
@@ -176,5 +180,21 @@ public class AppSettings {
         String value = sharedPref.getString(PREF_KEY_AUTO_REFRESH_PERIOD, "15");
         if(value == null) value = "15"; // To circumvent null pointer exception
         return Long.valueOf(value) * 1000; // in milliseconds
+    }
+
+    public boolean isMeterDoubleTariff() {
+        return sharedPref.getBoolean(PREF_KEY_IS_DOUBLE_TARIFF_METER, false);
+    }
+
+    public void setMeterIsDoubleTariff(boolean meterIsDoubleTariff) {
+        sharedPref.edit().putBoolean(PREF_KEY_IS_DOUBLE_TARIFF_METER, meterIsDoubleTariff).apply();
+    }
+
+    public void setDrawerHasPeeked(boolean drawerHasPeeked) {
+        sharedPref.edit().putBoolean(PREF_KEY_HAS_DRAWER_PEEKED, drawerHasPeeked).apply();
+    }
+
+    public boolean hasDrawerPeeked() {
+        return sharedPref.getBoolean(PREF_KEY_HAS_DRAWER_PEEKED, false);
     }
 }

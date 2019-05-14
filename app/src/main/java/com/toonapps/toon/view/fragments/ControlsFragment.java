@@ -137,11 +137,14 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         GasAndElecFlowController.getInstance().getTodayGasUsage();
 
         // Try to fetch current usage info once to see if it's available (e.g. rooted Toon)
+        // Disable for now an find out later on a non-rooted Toon
+        /*
         if (!AppSettings.getInstance().triedCurrentUsageInfoOnce()
                 || !AppSettings.getInstance().isCurrentUsageInfoAvailable()) {
             AppSettings.getInstance().setTriedCurrentUsageInfoOnce(true);
             DeviceController.getInstance().updateDeviceInfo();
         }
+        */
     }
 
     private final View.OnClickListener onButtonClicked = new View.OnClickListener() {
@@ -247,10 +250,8 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                     updateData(true);
                 }
             });
-            timerHelper.start();
-        } else {
-            if (timerHelper != null) timerHelper.stop();
-        }
+            timerHelper.startWithDelay();
+        } else if (timerHelper != null) timerHelper.stop();
     }
 
     private void switchButtonState(ThermostatInfo.TemperatureMode mode, boolean programChangesButton) {
@@ -301,7 +302,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
     private void setGasMeter(double currentGasUsage) {
 
-        String text = String.format(Locale.getDefault(), getString(R.string.gasUsage_formatted), currentGasUsage);
+        String text = String.format(Locale.getDefault(), getString(R.string.graph_gasUsage_formatted), currentGasUsage);
         txtvCurrentGasUse.setText(text);
 
         if(currentGasUsage >= 0.0 && currentGasUsage < 450.00){
@@ -323,7 +324,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
     private void setPowerMeter(double currentPowerUsage, double avgPower) {
 
-        String text = String.format(Locale.getDefault(), getString(R.string.powerUsage_formatted), currentPowerUsage);
+        String text = String.format(Locale.getDefault(), getString(R.string.graph_powerUsage_formatted), currentPowerUsage);
         txtvCurrentPowerUse.setText(text);
 
         if (avgPower > 0 && currentPowerUsage > 0) {
@@ -407,18 +408,20 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
         String text = String.format(
                 Locale.getDefault(),
-                getString(R.string.temp_formatted),
+                getString(R.string.graph_temp_formatted),
                 aThermostatInfo.getCurrentTemp() / 100
         );
         txtvTemperature.setText(text);
 
-        text = String.format(Locale.getDefault(), getString(R.string.temp_formatted), aThermostatInfo.getCurrentSetpoint() / 100);
-
+        text = String.format(Locale.getDefault(), getString(R.string.graph_temp_formatted), aThermostatInfo.getCurrentSetpoint() / 100);
         txtvSetPoint.setText(text);
 
+        if (aThermostatInfo.getErrorFound() != 255) {
+            // TODO show fragment with error
+        }
+
         if (aThermostatInfo.getOtCommError() > 0) {
-            ImageView burnerInfo = view.findViewById(R.id.burnerInfo);
-            burnerInfo.setImageResource(R.drawable.ic_flame_error);
+            // TODO show fragment with error
         } else {
             // Only show info when there is no OpenTherm comm error
             if (aThermostatInfo.getBurnerInfo() > -1) { // Minus one meaning the value isn't retrieved from Toon
@@ -457,23 +460,23 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
             if (AppSettings.getInstance().whatValueToUseOnNextProgram().equals("Temperature")){
                 Object[] args = {
                         simpleDateFormat.format(aThermostatInfo.getNextTime()),
-                        String.format(Locale.getDefault(), getString(R.string.temp_formatted), aThermostatInfo.getNextSetpoint() / 100)
+                        String.format(Locale.getDefault(), getString(R.string.graph_temp_formatted), aThermostatInfo.getNextSetpoint() / 100)
                 };
-                MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue));
+                MessageFormat fmt = new MessageFormat(getString(R.string.controls_nextProgramValue));
                 txtvNextProgram.setText(fmt.format(args));
             } else {
                 Object[] args = {
                         simpleDateFormat.format(aThermostatInfo.getNextTime()),
                         aThermostatInfo.getNextStateString(context)
                 };
-                MessageFormat fmt = new MessageFormat(getString(R.string.nextProgramValue));
+                MessageFormat fmt = new MessageFormat(getString(R.string.controls_nextProgramValue));
                 txtvNextProgram.setText(fmt.format(args));
             }
         } else {
             // No Toon temperature programming used
             text = String.format(
                     Locale.getDefault(),
-                    getString(R.string.temp_formatted),
+                    getString(R.string.graph_temp_formatted),
                     aThermostatInfo.getCurrentSetpoint() / 100
             );
             txtvNextProgram.setText(text);
@@ -505,7 +508,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                     txtvTotalPowerUse.setText(
                             String.format(
                                     Locale.getDefault(),
-                                    getString(R.string.txtvTotalPowerUseValue),
+                                    getString(R.string.controls_txtvTotalPowerUseValue),
                                     total
                             )
                     );
@@ -520,7 +523,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
                 float todayGasUsage = usageInfo.getTodayUsage();
                 txtvTotalGasUse.setText(
-                        String.format(Locale.getDefault(), getString(R.string.txtvTotalGasUseValue), todayGasUsage)
+                        String.format(Locale.getDefault(), getString(R.string.controls_txtvTotalGasUseValue), todayGasUsage)
                 );
             }
         } catch (JSONException e) {

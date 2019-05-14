@@ -142,22 +142,22 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
         });
     }
 
-    private String getOnValueSelectedText(String dateAndTime, float e) {
+    private String getOnValueSelectedText(String dateAndTime, float value) {
         switch (type) {
             case TYPE.ELEC:
-                return String.format(Locale.getDefault(), getString(R.string.elec_usage_used), dateAndTime, e);
+                return String.format(Locale.getDefault(), getString(R.string.graph_elec_usage_used), dateAndTime, value);
 
             case TYPE.GAS:
-                return String.format(Locale.getDefault(), getString(R.string.gas_usage_used), dateAndTime, e);
+                return String.format(Locale.getDefault(), getString(R.string.graph_gas_usage_used), dateAndTime, value);
         }
-        return "" + e;
+        return "" + value;
     }
 
     /**
      * Method which can be used by the underlying activity to update the data
      */
     public void updateGraphData(){
-        Toast.makeText(mContext, getString(R.string.message_updatingData), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, getString(R.string.graph_message_updatingData), Toast.LENGTH_SHORT).show();
         updateData();
     }
 
@@ -185,6 +185,7 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
 
             } else set1 =
                     ChartHelper.getDefaultLineDataSet(mContext, values1, getString(R.string.graph_label_electricity));
+
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
 
@@ -199,7 +200,7 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
 
     @Override
     public void onUsageError(Exception e) {
-        Toast.makeText(mContext, getString(R.string.message_error_updatingGraphData_txt) + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, getString(R.string.graph_message_error_updatingGraphData_txt) + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -222,10 +223,13 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
 
         switch (activeButton){
             case R.id.firstToggle:
+                firstToggle.setOnCheckedChangeListener(null);
                 secondToggle.setOnCheckedChangeListener(null);
                 thirdToggle.setOnCheckedChangeListener(null);
+                firstToggle.setChecked(true);
                 secondToggle.setChecked(false);
                 thirdToggle.setChecked(false);
+                firstToggle.setOnCheckedChangeListener(this);
                 secondToggle.setOnCheckedChangeListener(this);
                 thirdToggle.setOnCheckedChangeListener(this);
 
@@ -237,10 +241,13 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
 
             case R.id.secondToggle:
                 firstToggle.setOnCheckedChangeListener(null);
+                secondToggle.setOnCheckedChangeListener(null);
                 thirdToggle.setOnCheckedChangeListener(null);
                 firstToggle.setChecked(false);
+                secondToggle.setChecked(true);
                 thirdToggle.setChecked(false);
                 firstToggle.setOnCheckedChangeListener(this);
+                secondToggle.setOnCheckedChangeListener(this);
                 thirdToggle.setOnCheckedChangeListener(this);
 
                 calendar.add(Calendar.HOUR_OF_DAY, -12);
@@ -252,10 +259,13 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
             case R.id.thirdToggle:
                 firstToggle.setOnCheckedChangeListener(null);
                 secondToggle.setOnCheckedChangeListener(null);
+                thirdToggle.setOnCheckedChangeListener(null);
                 firstToggle.setChecked(false);
                 secondToggle.setChecked(false);
+                thirdToggle.setChecked(true);
                 firstToggle.setOnCheckedChangeListener(this);
                 secondToggle.setOnCheckedChangeListener(this);
+                thirdToggle.setOnCheckedChangeListener(this);
 
                 calendar.add(Calendar.DAY_OF_YEAR, -1);
                 startTime = calendar.getTimeInMillis() / 1000;
