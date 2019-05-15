@@ -5,14 +5,6 @@
         <item>0.5</item>
         <item>1.0</item>
     </string-array>
-    <string-array name="showTempOrProgramEntries">
-        <item>Temperature</item>
-        <item>Mode</item>
-    </string-array>
-    <string-array name="showTempOrProgramValues">
-        <item>Temperature</item>
-        <item>Mode</item>
-    </string-array>
     <string-array name="refreshEntries">
         <item>5s</item>
         <item>15s</item>

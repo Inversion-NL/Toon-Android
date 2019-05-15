@@ -69,11 +69,11 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
 
         setChart();
         setResources();
-        checkSavedInstanceState(savedInstanceState);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
             type = arguments.getInt(REQUEST_TYPE, TYPE.ELEC);
+            checkSavedInstanceState(savedInstanceState);
         }
 
         return view;
@@ -84,7 +84,7 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
             activeButton = savedInstanceState.getInt(STATE_ACTIVE_BUTTON);
         } else {
             activeButton = R.id.firstToggle;
-            firstToggle.setChecked(true);
+            firstToggle.setChecked(true);   // This will cause Android to think the button has been set
         }
     }
 
@@ -92,7 +92,6 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
     public void onResume() {
         super.onResume();
         GasAndElecFlowController.getInstance().subscribe(this);
-        updateData();
     }
 
     @Override

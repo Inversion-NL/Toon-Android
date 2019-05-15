@@ -36,7 +36,7 @@
     <string name="controls_card_powerUsage_title">Stroom nu</string>
     <string name="controls_card_gasUsage_gasUsage_title">Gas nu</string>
     <string name="controls_nextProgramText_noData">Geen gegevens</string>
-    <string name="controls_nextProgramValue">Om {0} uur op {1}</string>
+    <string name="controls_nextProgramValue">Op %s op %s (%.01f°)</string>
     <string name="controls_fire_description_img">Afbeelding vuur</string>
     <string name="controls_card_powerUsage_img_current_power">Afbeelding huidig stroom verbruik</string>
     <string name="controls_card_GasUsage_img_current_gas">Afbeelding huidig gas verbruik</string>
@@ -45,6 +45,7 @@
     <string name="controls_txtvTotalPowerUseValue">%.2f kWh</string>
     <string name="controls_txtvTotalGasUseValue">%.2f m3</string>
     <string name="controls_message_errorOtCommError">Er is een OpenTherm communicatie fout: %d</string>
+    <string name="controls_nextProgram_onProgramText">Programma uit (vast op %.01f°)</string>
 
     <string name="connectionWizard_login_msg_loginSuccessful">Aanmelden gelukt</string>
     <string name="connectionWizard_login_msg_loading_title">Even geduld</string>
@@ -97,5 +98,6 @@
     <string name="drawerMenu_fragment_controls">Thermostaat</string>
     <string name="drawerMenu_appVersion">Versie %s</string>
     <string name="drawerMenu_openSource">Open Source</string>
+    <string name="pref_appSettings_tempSetValue_summary">Hoeveel de temperatuur aangepast word in de app</string>
 
 </resources>

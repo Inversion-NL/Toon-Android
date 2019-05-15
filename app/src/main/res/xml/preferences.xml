@@ -5,17 +5,10 @@
         <ListPreference
             android:key="pref_key_tempSetValue"
             android:title="@string/pref_appSettings_tempSetValue_title"
-            android:summary="@string/pref_network_setupConnection_summary"
+            android:summary="@string/pref_appSettings_tempSetValue_summary"
             android:defaultValue="0.5"
             android:entries="@array/tempSetValues"
             android:entryValues="@array/tempSetValues"/>
-        <ListPreference
-            android:key="pref_key_nextProgramOrTemp"
-            android:title="@string/pref_appSettings_nextProgramTempOrProgram_title"
-            android:summary="@string/pref_appSettings_nextProgramTempOrProgram_summary"
-            android:defaultValue="Temperature"
-            android:entries="@array/showTempOrProgramEntries"
-            android:entryValues="@array/showTempOrProgramValues"/>
         <SwitchPreference
             android:key="pref_key_autoRefresh"
             android:title="@string/pref_appSettings_refresh_useAutoRefresh_title"

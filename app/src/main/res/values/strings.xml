@@ -6,6 +6,7 @@
 
     <string name="pref_appSettings_category_title">App settings</string>
     <string name="pref_appSettings_tempSetValue_title">Default temp change setting</string>
+    <string name="pref_appSettings_tempSetValue_summary">Value at which the temperature is changed in the app</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_title">Use temperature or program</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_summary">Show for next program the temperature or the mode</string>
     <string name="pref_appSettings_refresh_useAutoRefresh_title">Auto refresh</string>
@@ -39,7 +40,7 @@
     <string name="controls_card_powerUsage_img_current_power">Image current power usage</string>
     <string name="controls_card_GasUsage_img_current_gas">Image current gas usage</string>
     <string name="controls_nextProgramText_noData">No data</string>
-    <string name="controls_nextProgramValue">At {0} on {1}</string>
+    <string name="controls_nextProgramValue">At %s on %s (%.01f°)</string>
     <string name="controls_fire_description_img">Image fire</string>
     <string name="controls_card_gasUsage_gasValue" translatable="false">0.0 liter</string>
     <string name="controls_card_powerUsage_powerValue" translatable="false">0.0 watt</string>
@@ -50,6 +51,7 @@
     <string name="controls_txtvTotalPowerUseValue">%.2f kWh</string>
     <string name="controls_txtvTotalGasUseValue">%.2f m3</string>
     <string name="controls_message_errorOtCommError">There is an OpenTherm communication error: %d</string>
+    <string name="controls_nextProgram_onProgramText">Program off (Set on %.01f°)</string>
 
     <string name="connectionWizard_login_msg_loginSuccessful">Login successful</string>
     <string name="connectionWizard_login_msg_loading_title">Please wait</string>

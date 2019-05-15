@@ -35,7 +35,6 @@ import com.toonapps.toon.helper.TimerHelper;
 
 import org.json.JSONException;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -456,29 +455,21 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
             }
         }
         if (aThermostatInfo.getNextSetpoint() != 0 || aThermostatInfo.getNextTime() != null) {
-            //noinspection HardCodedStringLiteral
-            if (AppSettings.getInstance().whatValueToUseOnNextProgram().equals("Temperature")){
-                Object[] args = {
-                        simpleDateFormat.format(aThermostatInfo.getNextTime()),
-                        String.format(Locale.getDefault(), getString(R.string.graph_temp_formatted), aThermostatInfo.getNextSetpoint() / 100)
-                };
-                MessageFormat fmt = new MessageFormat(getString(R.string.controls_nextProgramValue));
-                txtvNextProgram.setText(fmt.format(args));
-            } else {
-                Object[] args = {
-                        simpleDateFormat.format(aThermostatInfo.getNextTime()),
-                        aThermostatInfo.getNextStateString(context)
-                };
-                MessageFormat fmt = new MessageFormat(getString(R.string.controls_nextProgramValue));
-                txtvNextProgram.setText(fmt.format(args));
-            }
+            text = String.format(
+                    Locale.getDefault(),
+                    getString(R.string.controls_nextProgramValue),
+                    simpleDateFormat.format(aThermostatInfo.getNextTime()),
+                    aThermostatInfo.getNextStateString(context),
+                    aThermostatInfo.getNextSetpoint() / 100
+            );
+            txtvNextProgram.setText(text);
         } else {
             // No Toon temperature programming used
             text = String.format(
-                    Locale.getDefault(),
-                    getString(R.string.graph_temp_formatted),
-                    aThermostatInfo.getCurrentSetpoint() / 100
-            );
+                        Locale.getDefault(),
+                        getString(R.string.controls_nextProgram_onProgramText),
+                        aThermostatInfo.getCurrentSetpoint() / 100
+                    );
             txtvNextProgram.setText(text);
         }
 
