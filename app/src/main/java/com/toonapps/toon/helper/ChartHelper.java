@@ -34,8 +34,10 @@ public class ChartHelper {
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setEnabled(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelRotationAngle(300);
 
-        // Disable numbers on the right
+        // Disable numbers on the right axes
         chart.getAxisRight().setEnabled(false);
         return chart;
     }
