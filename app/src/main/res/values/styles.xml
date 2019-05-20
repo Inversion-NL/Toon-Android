@@ -10,28 +10,29 @@
 
     <style name="cardTemperature">
         <item name="android:background">@android:color/white</item>
-        <item name="android:layout_width">350dp</item>
-        <item name="android:layout_height">90dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="btnMode">
         <item name="android:background">@drawable/btn_toggle_selector</item>
-        <item name="android:layout_margin">2dp</item>
-        <item name="android:layout_width">125dp</item>
-        <item name="android:layout_height">70dp</item>
+        <item name="android:layout_margin">@dimen/_2sdp</item>
+        <item name="android:layout_width">@dimen/_108sdp</item>
+        <item name="android:layout_height">@dimen/_70sdp</item>
     </style>
 
     <style name="btnChangeTemp" parent="btnMode">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_margin">4dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_width">@dimen/_70sdp</item>
+        <item name="android:layout_height">@dimen/_70sdp</item>
+        <item name="android:layout_marginTop">@dimen/_5sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_10sdp</item>
         <item name="android:textColor">@color/colorTextChangeTemp</item>
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="cardPowerGas">
+    <style name="style_card_PowerGas">
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_width">170dp</item>
+        <item name="android:layout_width">@dimen/_145sdp</item>
         <item name="android:layout_height">180dp</item>
         <item name="android:layout_margin">5dp</item>
     </style>
@@ -39,12 +40,18 @@
     <style name="txtvPowerGasTitle">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
     </style>
 
-    <style name="txtvPowerGasDescription">
+    <style name="style_card_txtvPowerGasDescription">
         <item name="android:layout_gravity">bottom|center_horizontal</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
 </resources>

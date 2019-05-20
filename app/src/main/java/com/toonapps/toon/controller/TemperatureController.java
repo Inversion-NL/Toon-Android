@@ -3,7 +3,9 @@ package com.toonapps.toon.controller;
 import com.toonapps.toon.data.IRestClientResponseHandler;
 import com.toonapps.toon.data.ResponseData;
 import com.toonapps.toon.data.RestClient;
+import com.toonapps.toon.entity.CurrentUsageInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
+import com.toonapps.toon.helper.ToonException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,14 @@ public class TemperatureController implements IRestClientResponseHandler {
         try {
             restClient.getThermostatInfo();
         } catch(Exception e){
+            onError(e);
+        }
+    }
+
+    public void updateCurrentUsageInfo(){
+        try {
+            restClient.getUsageInfo();
+        } catch (Exception e){
             onError(e);
         }
     }
@@ -97,6 +107,12 @@ public class TemperatureController implements IRestClientResponseHandler {
         }
     }
 
+    private void onTemperatureUpdated(CurrentUsageInfo currentUsageInfo){
+        for(ITemperatureListener aListener : tempListenerList){
+            aListener.onTemperatureChanged(currentUsageInfo);
+        }
+    }
+
     private void onError(Exception e){
         for(ITemperatureListener aListener : tempListenerList){
             aListener.onTemperatureError(e);
@@ -106,9 +122,16 @@ public class TemperatureController implements IRestClientResponseHandler {
     @Override
     public void onResponse(ResponseData aResponse) {
         if (aResponse != null) if (aResponse.getThermostatInfo() != null) {
+            // Data retrieved is thermostat information
             currentThermostatInfo = aResponse.getThermostatInfo();
-
             onTemperatureUpdated(currentThermostatInfo);
+        } else if (aResponse.getResultInfo() != null) {
+            // Data retrieved is result information
+            if (!aResponse.getResultInfo().isSuccess())
+                onError(new ToonException(ToonException.UNHANDLED));
+        } else if(aResponse.getCurrentUsageInfo() != null) {
+            // Data retrieved is thermostat information
+            onTemperatureUpdated(aResponse.getCurrentUsageInfo());
         } else onError(new NullPointerException());
     }
 

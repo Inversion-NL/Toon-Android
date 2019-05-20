@@ -9,8 +9,8 @@ android {
         applicationId 'com.toonapps.toon'
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 2
-        versionName "0.5.1"
+        versionCode 7
+        versionName "0.5.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     dataBinding {
@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -42,6 +42,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
 
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.intuit.sdp:sdp-android:1.0.5'
 
     // Using a later commit because of the removal of bindings
     // See https://github.com/heinrichreimer/material-intro/issues/261#issuecomment-451646017

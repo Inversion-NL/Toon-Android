@@ -5,10 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackground">#ECECEC</color>
     <color name="colorTextChangeTemp">#67717B</color>
-    <color name="colorPresetAccent">#F6F6F6</color>
 
-    <color name="white">#FFFFFF</color>
-
-    <color name="black_overlay">#66000000</color>
+    <color name="btnTempActivated">#d2d2d2</color>
 
 </resources>
