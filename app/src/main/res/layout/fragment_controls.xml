@@ -15,7 +15,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/tlTemperature"
-            style="@style/cardTemperature"
+            style="@style/style_card_Temperature"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="@dimen/_4sdp"
@@ -95,37 +95,37 @@
 
             <androidx.appcompat.widget.AppCompatToggleButton
                 android:id="@+id/btnAwayMode"
-                style="@style/btnMode"
+                style="@style/style_btn_Mode"
                 android:textOff="@string/temperature_setting_away"
                 android:textOn="@string/temperature_setting_away"
                 tools:checked="true" />
 
             <androidx.appcompat.widget.AppCompatToggleButton
                 android:id="@+id/btnSleepMode"
-                style="@style/btnMode"
+                style="@style/style_btn_Mode"
                 android:textOff="@string/temperature_setting_sleeping"
                 android:textOn="@string/temperature_setting_sleeping" />
 
             <androidx.appcompat.widget.AppCompatToggleButton
                 android:id="@+id/btnHomeMode"
-                style="@style/btnMode"
+                style="@style/style_btn_Mode"
                 android:textOff="@string/temperature_setting_home"
                 android:textOn="@string/temperature_setting_home" />
 
             <androidx.appcompat.widget.AppCompatToggleButton
                 android:id="@+id/btnComfortMode"
-                style="@style/btnMode"
+                style="@style/style_btn_Mode"
                 android:textOff="@string/temperature_setting_comfort"
                 android:textOn="@string/temperature_setting_comfort" />
 
             <Button
                 android:id="@+id/btnPlus"
-                style="@style/btnChangeTemp"
+                style="@style/style_btn_changeTemp"
                 android:text="@string/controls_temperature_setting_sign_plus" />
 
             <Button
                 android:id="@+id/btnMin"
-                style="@style/btnChangeTemp"
+                style="@style/style_btn_changeTemp"
                 android:text="@string/controls_temperature_setting_sign_min" />
 
         </GridLayout>
@@ -201,7 +201,7 @@
                 app:cardCornerRadius="4dp">
 
                 <TextView
-                    style="@style/txtvPowerGasTitle"
+                    style="@style/style_txtv_powerGasTitle"
                     android:text="@string/controls_card_powerUsage_title" />
 
                 <ImageView
@@ -212,7 +212,7 @@
 
                 <TextView
                     android:id="@+id/txtvCurrentPowerUse"
-                    style="@style/style_card_txtvPowerGasDescription"
+                    style="@style/style_txtv_PowerGasDescription"
                     android:text="@string/controls_card_powerUsage_powerValue"
                     tools:text="1000 Watt"/>
 
@@ -225,7 +225,7 @@
                 app:cardCornerRadius="4dp">
 
                 <TextView
-                    style="@style/txtvPowerGasTitle"
+                    style="@style/style_txtv_powerGasTitle"
                     android:text="@string/controls_card_gasUsage_gasUsage_title" />
 
                 <ImageView
@@ -236,7 +236,7 @@
 
                 <TextView
                     android:id="@+id/txtvCurrentGasUse"
-                    style="@style/style_card_txtvPowerGasDescription"
+                    style="@style/style_txtv_PowerGasDescription"
                     android:text="@string/controls_card_gasUsage_gasValue"
                     tools:text="1000 liter"/>
 
@@ -248,12 +248,12 @@
                 app:cardCornerRadius="4dp">
 
                 <TextView
-                    style="@style/txtvPowerGasTitle"
+                    style="@style/style_txtv_powerGasTitle"
                     android:text="@string/controls_power_used_today" />
 
                 <TextView
                     android:id="@+id/txtvTotalPowerUse"
-                    style="@style/style_card_txtvPowerGasDescription"
+                    style="@style/style_txtv_PowerGasDescription"
                     android:text="0 kWh"
                     tools:text="40 kWh" />
 
@@ -265,12 +265,12 @@
                 app:cardCornerRadius="4dp">
 
                 <TextView
-                    style="@style/txtvPowerGasTitle"
+                    style="@style/style_txtv_powerGasTitle"
                     android:text="@string/controls_gas_used_today" />
 
                 <TextView
                     android:id="@+id/txtvTotalGasUse"
-                    style="@style/style_card_txtvPowerGasDescription"
+                    style="@style/style_txtv_PowerGasDescription"
                     android:text="0 m3"
                     tools:text="2345 m3" />
 

@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private NavController navController;
     private final int REQUEST_CODE_INTRO = 100;
+    @SuppressWarnings("HardCodedStringLiteral")
     private final String REQUEST_TYPE = "type";
 
     @Override

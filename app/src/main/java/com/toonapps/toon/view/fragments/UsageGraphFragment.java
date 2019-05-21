@@ -14,9 +14,12 @@ import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -24,7 +27,9 @@ import com.toonapps.toon.R;
 import com.toonapps.toon.controller.GasAndElecFlowController;
 import com.toonapps.toon.controller.IGasAndElecFlowListener;
 import com.toonapps.toon.entity.UsageInfo;
+import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.ChartHelper;
+import com.toonapps.toon.helper.TimeHelper;
 
 import org.json.JSONException;
 
@@ -169,31 +174,72 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
         }
     }
 
-    private void setChartData(ArrayList<Entry> values1) {
-        LineDataSet set1;
+    private void setChartData(ArrayList<Entry> values) {
 
-        if (values1.size() > 0) {
-            if (chart.getData() != null &&
-                    chart.getData().getDataSetCount() > 0) {
+        boolean doubleTariff = AppSettings.getInstance().isMeterDoubleTariff();
+        LineDataSet normalTariff, lowTariff = null;
+        ArrayList<Entry> normalTariffValues, lowTariffValues = null;
 
-                set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
-                set1.clear();
-                set1.setValues(values1);
-                chart.getData().notifyDataChanged();
-                chart.notifyDataSetChanged();
+        if (doubleTariff && type != TYPE.GAS) {
+            ArrayList[] valuesArray = ChartHelper.getDoubleTariffValues(values);
+            normalTariffValues = valuesArray[0];
+            lowTariffValues = valuesArray[1];
+        } else normalTariffValues = values;
 
-            } else set1 =
-                    ChartHelper.getDefaultLineDataSet(mContext, values1, getString(R.string.graph_label_electricity));
+        if (normalTariffValues.size() < 1) return;
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
 
-            LineData data = new LineData(dataSets);
-            data.setDrawValues(false);
+            normalTariff = (LineDataSet) chart.getData().getDataSetByIndex(0);
+            lowTariff = (LineDataSet) chart.getData().getDataSetByIndex(1);
 
-            chart.setData(data);
-            chart.invalidate();
+            if (lowTariff != null) {
+                lowTariff.clear();
+                lowTariff.setValues(lowTariffValues);
+            }
+
+            normalTariff.clear();
+            normalTariff.setValues(normalTariffValues);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+
+        } else {
+            normalTariff = ChartHelper
+                    .getSingleTariffDataSet(
+                            mContext,
+                            normalTariffValues,
+                            getString(R.string.graph_label_electricity)
+                    );
+
+            if (lowTariffValues != null) lowTariff = ChartHelper
+                    .getLowTariffDataSet(
+                            mContext,
+                            lowTariffValues,
+                            getString(R.string.graph_label_electricity)
+                    );
         }
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        if (normalTariff != null) dataSets.add(normalTariff);
+        if (lowTariff != null) dataSets.add(lowTariff);
+
+        LineData data = new LineData(dataSets);
+        data.setDrawValues(false);
+
+        chart.setData(data);
+
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return TimeHelper.getHumanReadableTime(Locale.getDefault(), (long) value);
+            }
+        };
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setValueFormatter(formatter);
+
+        chart.invalidate();
 
     }
 
