@@ -66,6 +66,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
     private OnFragmentInteractionListener mListener;
     private float lowTariff = 0;
     private float normalTariff = 0;
+    private boolean useGasInfoFromDevices = false;
 
     public ControlsFragment() {
         // Required empty public constructor
@@ -141,7 +142,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         if (!AppSettings.getInstance().triedCurrentUsageInfoOnce()
                 || !AppSettings.getInstance().isCurrentUsageInfoAvailable()) {
             AppSettings.getInstance().setTriedCurrentUsageInfoOnce(true);
-            DeviceController.getInstance().updateDeviceInfo();
+            DeviceController.getInstance().updateZWaveDevices();
         }
         */
     }
@@ -370,18 +371,25 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
     @Override
     public void onDeviceInfoChanged(DeviceInfo aDevicesInfo) {
-        double currentElectricUsage = 0;
 
-        if(aDevicesInfo.getElecUsageFlowHigh() > 0){
-            currentElectricUsage = aDevicesInfo.getElecUsageFlowHigh();
-        } else if(aDevicesInfo.getElecUsageFlowLow() > 0){
-            currentElectricUsage = aDevicesInfo.getElecUsageFlowLow();
-        } else if(aDevicesInfo.getElecUsageFlow() > 0){
-            currentElectricUsage = aDevicesInfo.getElecUsageFlow();
+        if (useGasInfoFromDevices) {
+            // On some Toon's there is no gas flow in the getUsageInfo call
+            // Using the info from the zwave devices info
+            setGasMeter(aDevicesInfo.getGasUsed());
+        } else {
+            double currentElectricUsage = 0;
+
+            if (aDevicesInfo.getElecUsageFlowHigh() > 0) {
+                currentElectricUsage = aDevicesInfo.getElecUsageFlowHigh();
+            } else if (aDevicesInfo.getElecUsageFlowLow() > 0) {
+                currentElectricUsage = aDevicesInfo.getElecUsageFlowLow();
+            } else if (aDevicesInfo.getElecUsageFlow() > 0) {
+                currentElectricUsage = aDevicesInfo.getElecUsageFlow();
+            }
+
+            setPowerMeter(currentElectricUsage, 0);
+            setGasMeter(aDevicesInfo.getGasUsed());
         }
-
-        setPowerMeter(currentElectricUsage, 0);
-        setGasMeter(aDevicesInfo.getGasUsed());
     }
 
     @Override
@@ -393,9 +401,17 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                 aCurrentUsageInfo.getPowerUsage().getValue(),
                 aCurrentUsageInfo.getPowerUsage().getAvgValue()
         );
-        setGasMeter(
-                aCurrentUsageInfo.getGasUsage().getValue()
-        );
+
+        if (aCurrentUsageInfo.getUseGasInfoFromDevices()) {
+            // The gas flow value was 'null'
+            // Using device info to get the gas flow
+            useGasInfoFromDevices = true;
+            DeviceController.getInstance().updateZWaveDevices();
+        } else {
+            // Use the value for gas flow from usage info call
+            useGasInfoFromDevices = false;
+            setGasMeter( aCurrentUsageInfo.getGasUsage().getValue() );
+        }
 
         isUpdatingUI2 = false;
         if (!isUpdatingUI) setRefreshing(false);

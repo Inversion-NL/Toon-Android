@@ -141,7 +141,7 @@ public class LoginFragment extends SlideFragment {
                 }
             }
         });
-        DeviceController.getInstance().updateDeviceInfo();
+        DeviceController.getInstance().updateZWaveDevices();
     }
 
     private String getProtocolFromRadioButtons() {

@@ -99,5 +99,6 @@
     <string name="drawerMenu_appVersion">Versie %s</string>
     <string name="drawerMenu_openSource">Open Source</string>
     <string name="pref_appSettings_tempSetValue_summary">Hoeveel de temperatuur aangepast word in de app</string>
+    <string name="exception_message_getDevicesError">Apparaat informatie kon niet opgehaald worden</string>
 
 </resources>

@@ -37,6 +37,9 @@ public class ErrorMessage {
                 case ToonException.UNSUPPORTED:
                     return context.getString(R.string.exception_message_unsupported);
 
+                case ToonException.GETDEVICESERROR:
+                    return context.getString(R.string.exception_message_getDevicesError) + " " + exception.getMessage();
+
                 case ToonException.UNHANDLED:
                 default:
                     return context.getString(R.string.exception_message_unhandled);

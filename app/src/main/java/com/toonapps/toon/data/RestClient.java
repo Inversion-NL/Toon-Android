@@ -409,8 +409,14 @@ public class RestClient {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ResponseData responseData = Converter.convertFromDeviceInfo(response);
-                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                        ResponseData responseData = null;
+                        try {
+                            responseData = Converter.convertFromDeviceInfo(response);
+                            if (responseHandler != null) responseHandler.onResponse(responseData);
+                        } catch (Exception error) {
+                            errorToResponseHandler(error);
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -491,5 +497,9 @@ public class RestClient {
                 }
             }
         }
+    }
+
+    private void errorToResponseHandler(Exception error) {
+        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.GETDEVICESERROR, error));
     }
 }

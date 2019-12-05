@@ -27,7 +27,7 @@ public class DeviceController implements IRestClientResponseHandler {
         return instance;
     }
 
-    public void updateDeviceInfo() {
+    public void updateZWaveDevices() {
         try {
             restClient.getZWaveDevices();
         } catch (Exception e) {

@@ -10,13 +10,11 @@ android {
         applicationId 'com.toonapps.toon'
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 10
-        versionName "0.5.7"
+        versionCode 11
+        versionName "0.5.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    dataBinding {
-        enabled = true
-    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,7 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0-alpha02', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'
@@ -53,7 +51,5 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-    // Using a later commit because of the removal of bindings
-    // See https://github.com/heinrichreimer/material-intro/issues/261#issuecomment-451646017
-    implementation 'com.github.adrcotfas:material-intro:e1228'
+    implementation 'com.heinrichreimersoftware:material-intro:2.0.0'
 }

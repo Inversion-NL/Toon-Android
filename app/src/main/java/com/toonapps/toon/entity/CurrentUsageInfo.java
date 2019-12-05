@@ -6,10 +6,17 @@ public class CurrentUsageInfo {
     private PowerProduction powerProduction;
     private GasUsage gasUsage;
     private PowerUsage powerUsage;
+    private Boolean useGasInfoFromDevices;
 
+    public Boolean getUseGasInfoFromDevices() {
+        return useGasInfoFromDevices;
+    }
 
+    public void setUseGasInfoFromDevices(Boolean useGasInfoFromDevices) {
+        this.useGasInfoFromDevices = useGasInfoFromDevices;
+    }
 
-    public boolean getResult() {
+    public boolean isSuccess() {
         //noinspection HardCodedStringLiteral
         return result.equals("ok");
     }

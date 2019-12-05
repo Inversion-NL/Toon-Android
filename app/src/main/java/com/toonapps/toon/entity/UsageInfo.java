@@ -51,6 +51,12 @@ public class UsageInfo {
         return tariff;
     }
 
+    /**
+     * Calculates the usage of today
+     * by subtracting the meter value on midnight with the current meter value
+     * @return the usage of today
+     * @throws JSONException
+     */
     public float getTodayUsage() throws JSONException {
         JSONArray jArray = toJSONArray(usageString);
         JSONObject jObject;
@@ -83,6 +89,7 @@ public class UsageInfo {
 
             return (endUsage - beginUsage) / 1000;
         }
+        // Else return 0
         return 0;
     }
 

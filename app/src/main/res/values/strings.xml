@@ -86,6 +86,7 @@
     <string name="exception_message_pageNotFound">Page not found on device</string>
     <string name="exception_message_connectionRefused">Connection refused by your Toon. Are you sure it is rooted?</string>
     <string name="exception_message_unsupported">Toon did not support the request</string>
+    <string name="exception_message_getDevicesError">Unable to get device info from toon</string>
 
     <string name="graph_timeSpan_firstToggle">6 hour</string>
     <string name="graph_timeSpan_secondToggle">12 hour</string>
