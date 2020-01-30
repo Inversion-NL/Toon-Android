@@ -4,6 +4,7 @@ import com.toonapps.toon.entity.CurrentUsageInfo;
 import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.entity.ResultInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
+import com.toonapps.toon.entity.UsageInfo;
 
 public class ResponseData {
 
@@ -11,6 +12,7 @@ public class ResponseData {
     private DeviceInfo deviceInfo;
     private ResultInfo resultInfo;
     private CurrentUsageInfo currentUsageInfo;
+    private UsageInfo usageInfo;
 
     ResponseData(){
     }
@@ -45,5 +47,13 @@ public class ResponseData {
 
     public DeviceInfo getDeviceInfo(){
         return deviceInfo;
+    }
+
+    public void setUsageInfo(UsageInfo usageInfo) {
+        this.usageInfo = usageInfo;
+    }
+
+    public UsageInfo getUsageInfo() {
+        return usageInfo;
     }
 }

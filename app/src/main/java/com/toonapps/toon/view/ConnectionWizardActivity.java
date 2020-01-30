@@ -6,7 +6,7 @@ import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 import com.toonapps.toon.R;
-import com.toonapps.toon.view.Fragments.LoginFragment;
+import com.toonapps.toon.view.fragments.LoginFragment;
 
 public class ConnectionWizardActivity extends IntroActivity {
 

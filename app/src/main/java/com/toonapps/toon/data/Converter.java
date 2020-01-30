@@ -6,6 +6,10 @@ import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.entity.ResultInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 class Converter {
 
     static ResponseData convertFromTemperature(String aJson) {
@@ -18,9 +22,10 @@ class Converter {
         return responseData;
     }
 
-    static ResponseData convertFromDeviceInfo(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
+    static ResponseData convertFromDeviceInfo(String aJson) throws Exception {
         Gson gson = new Gson();
         ResponseData responseData = new ResponseData();
+
         DeviceInfo devicesInfo = gson.fromJson(aJson, DeviceInfo.class);
         responseData.setDeviceInfo(devicesInfo);
 
@@ -42,8 +47,21 @@ class Converter {
         ResponseData responseData = new ResponseData();
 
         CurrentUsageInfo currentUsageInfo = gson.fromJson(aJson, CurrentUsageInfo.class);
-        responseData.setCurrentUsageInfo(currentUsageInfo);
 
+        try {
+            // Test if gasUsage is available
+
+            JSONObject obj = new JSONObject(aJson);
+            JSONObject gasUsage = obj.getJSONObject("gasUsage");
+            if (gasUsage.getString("value").equals("null")) {
+                currentUsageInfo.setUseGasInfoFromDevices(true);
+            } else currentUsageInfo.setUseGasInfoFromDevices(false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            currentUsageInfo.setUseGasInfoFromDevices(false);
+        }
+
+        responseData.setCurrentUsageInfo(currentUsageInfo);
         return responseData;
     }
 }

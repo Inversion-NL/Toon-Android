@@ -2,7 +2,7 @@ package com.toonapps.toon.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "HardCodedStringLiteral"})
 public class DeviceInfo {
     @SerializedName("dev_settings_device")
     private DeviceSettings devSettings;
@@ -28,8 +28,14 @@ public class DeviceInfo {
     @SerializedName(value="dev_2.6", alternate={"dev_3.6"})
     private PowerDevice powerDevice5;
 
+    @SerializedName(value="dev_2.7", alternate={"dev_3.7"})
+    private PowerDevice powerDevice6;
+
+    @SerializedName(value="dev_2.8", alternate={"dev_3.8"})
+    private HeatDevice heatDevice;
+
     public double getGasUsed(){
-        return gasDevice.CurrentGasFlow / 100;
+        return gasDevice.CurrentGasFlow;
     }
 
     public double getGasUsedQuantity(){
@@ -82,15 +88,17 @@ public class DeviceInfo {
         protected String internalAddress;
         protected String type;
         protected int supportsCrc;
+        private String[] nodeFlags;
         protected String location;
+        private String DeviceName;
     }
 
     private class Device extends DeviceSettings {
         private String ccList;
         private String supportedCC;
         private int IsConnected;
-        private String DeviceName;
         private int HealthValue;
+        private String CurrentSensorStatus;
     }
 
     private class GasDevice extends DeviceSettings {
@@ -101,5 +109,9 @@ public class DeviceInfo {
     private class PowerDevice extends DeviceSettings {
         private double CurrentElectricityFlow;
         private double CurrentElectricityQuantity;
+    }
+
+    private class HeatDevice extends DeviceSettings {
+        private double CurrentHeatQuantity;
     }
 }

@@ -1,13 +1,17 @@
 package com.toonapps.toon.data;
 
-import android.os.AsyncTask;
-
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.toonapps.toon.application.AppController;
+import com.toonapps.toon.entity.UsageInfo;
 import com.toonapps.toon.helper.AppSettings;
+import com.toonapps.toon.helper.TimeHelper;
 import com.toonapps.toon.helper.ToonException;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RestClient {
 
@@ -16,25 +20,10 @@ public class RestClient {
     private String url;
     private String token;
     private String seperator;
-    private IRestClientResponseHandler responseHandler;
-
-    public interface TYPE {
-        interface GET {
-            int THERMOSTAT_INFO = 0;
-            int ZWAVE_DEVICES = 1;
-            int USAGE_INFO = 2;
-        }
-        interface SET {
-            int SCHEME_STATE = 10;
-            int SET_POINT = 11;
-        }
-    }
+    private final IRestClientResponseHandler responseHandler;
 
     public RestClient(IRestClientResponseHandler aResponseHandler){
-        url =  AppSettings.getInstance().getUrl();
-        token = AppSettings.getInstance().getApiToken();
-        seperator = AppSettings.getInstance().useRedirectService() ? "?" : "/";
-
+        getDataFromSharedPreferences();
         responseHandler = aResponseHandler;
     }
 
@@ -44,153 +33,473 @@ public class RestClient {
         seperator = AppSettings.getInstance().useRedirectService() ? "?" : "/";
     }
 
-    public RestClient(String anUrl, IRestClientResponseHandler aResponseHandler){
-        url = anUrl;
-        responseHandler = aResponseHandler;
+    public void setSchemeTemperatureState(int aMode) {
+        getDataFromSharedPreferences();
+
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "happ_thermstat?action=changeSchemeState&state=2&temperatureState=" + aMode;
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ResponseData responseData = Converter.convertResultData(response);
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
     }
 
-    public void setSchemeTemperatureState(int aMode){
-        getDataFromSharedPreferences();
-        Request request = new Request.Builder()
-                .url(url + seperator + "happ_thermstat?action=changeSchemeState&state=2&temperatureState=" + aMode)
-                .addHeader(API_KEY,  token)
-                .build();
+    public void getElecFlow(long startTime, long endTime) {
 
-        new RestClientExecutor(request, TYPE.SET.SCHEME_STATE).execute();
+        getDataFromSharedPreferences();
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_flow&rra=5min&readableTime=0&nullForNaN=1&from=" + startTime + "&to=" + endTime;
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        UsageInfo usageInfo =
+                                new UsageInfo(
+                                        response,
+                                        UsageInfo.TYPE.ELEC,
+                                        UsageInfo.TARIFF.NULL,
+                                        UsageInfo.TIME.PERIOD
+                                );
+                        ResponseData responseData = new ResponseData();
+                        responseData.setUsageInfo(usageInfo);
+
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getTodayElecNtUsage() {
+
+        getDataFromSharedPreferences();
+        long midnight = TimeHelper.getMidnight().getTimeInMillis() / 1000;
+        long now = TimeHelper.getNow().getTimeInMillis() / 1000;
+
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_quantity_nt&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        UsageInfo usageInfo =
+                            new UsageInfo(
+                                response,
+                                UsageInfo.TYPE.ELEC,
+                                UsageInfo.TARIFF.NORMAL,
+                                UsageInfo.TIME.TODAY
+                            );
+
+                        ResponseData responseData = new ResponseData();
+                        responseData.setUsageInfo(usageInfo);
+
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getTodayElecLtUsage() {
+
+        getDataFromSharedPreferences();
+        long midnight = TimeHelper.getMidnight().getTimeInMillis() / 1000;
+        long now = TimeHelper.getNow().getTimeInMillis() / 1000;
+
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_quantity_lt&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        UsageInfo usageInfo =
+                            new UsageInfo(
+                                response,
+                                UsageInfo.TYPE.ELEC,
+                                UsageInfo.TARIFF.LOW,
+                                UsageInfo.TIME.TODAY
+                            );
+
+                        ResponseData responseData = new ResponseData();
+                        responseData.setUsageInfo(usageInfo);
+
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getTodayGasUsage() {
+
+        getDataFromSharedPreferences();
+        long midnight = TimeHelper.getMidnight().getTimeInMillis() / 1000;
+        long now = TimeHelper.getNow().getTimeInMillis() / 1000;
+
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=gas_quantity&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
+
+        StringRequest request =
+                new StringRequest(
+                        Request.Method.GET,
+                        url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                UsageInfo usageInfo =
+                                        new UsageInfo(
+                                                response,
+                                                UsageInfo.TYPE.GAS,
+                                                0,
+                                                UsageInfo.TIME.TODAY
+                                        );
+                                ResponseData responseData = new ResponseData();
+                                responseData.setUsageInfo(usageInfo);
+
+                                if (responseHandler != null) responseHandler.onResponse(responseData);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                errorToResponseHandler(error);
+                            }
+                        }
+                ){
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put(API_KEY, token);
+                        return headers;
+                    }
+                };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getGasFlow(long startTime, long endTime) {
+
+        getDataFromSharedPreferences();
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=gas_flow&rra=5min&readableTime=0&nullForNaN=1&from=" + startTime + "&to=" + endTime;
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        UsageInfo usageInfo =
+                                new UsageInfo(
+                                        response,
+                                        UsageInfo.TYPE.GAS,
+                                        0,
+                                        UsageInfo.TIME.PERIOD
+                                );
+                        ResponseData responseData = new ResponseData();
+                        responseData.setUsageInfo(usageInfo);
+
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
     }
 
     public void setSchemeState(boolean anIsProgramOn){
         getDataFromSharedPreferences();
         int isProgramOn = (anIsProgramOn) ? 1 : 0;
 
-        try {
-        Request request = new Request.Builder()
-                .url(url + seperator + "happ_thermstat?action=changeSchemeState&state=" + isProgramOn)
-                .addHeader(API_KEY, token)
-                .build();
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "happ_thermstat?action=changeSchemeState&state=" + isProgramOn;
 
-        new RestClientExecutor(request, TYPE.SET.SCHEME_STATE).execute();
-        } catch (Exception e) {
-            if (responseHandler != null) responseHandler.onResponseError(e);
-        }
+        StringRequest request =
+            new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ResponseData responseData = Converter.convertResultData(response);
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
     }
 
     public void setSetpoint(int aTemperature){
         getDataFromSharedPreferences();
-        Request request = new Request.Builder()
-                .url(url + seperator + "happ_thermstat?action=setSetpoint&Setpoint=" + aTemperature)
-                .addHeader(API_KEY, token)
-                .build();
 
-        new RestClientExecutor(request, TYPE.SET.SET_POINT).execute();
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "happ_thermstat?action=setSetpoint&Setpoint=" + aTemperature;
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ResponseData responseData = Converter.convertResultData(response);
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
     }
 
     public void getThermostatInfo(){
         getDataFromSharedPreferences();
-        Request request = new Request.Builder()
-                .url(url + seperator + "happ_thermstat?action=getThermostatInfo")
-                .addHeader(API_KEY, token)
-                .build();
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "happ_thermstat?action=getThermostatInfo";
 
-        new RestClientExecutor(request, TYPE.GET.THERMOSTAT_INFO).execute();
-    }
-
-    public void getZWaveDevices() throws IllegalArgumentException {
-        getDataFromSharedPreferences();
-        Request request = new Request.Builder()
-                .url(url + seperator + "hdrv_zwave?action=getDevices.json")
-                .addHeader(API_KEY, token)
-                .build();
-
-        new RestClientExecutor(request, TYPE.GET.ZWAVE_DEVICES).execute();
-    }
-
-    public void getUsageInfo() throws IllegalArgumentException {
-        getDataFromSharedPreferences();
-        Request request = new Request.Builder()
-                .url(url + seperator + "happ_pwrusage?action=GetCurrentUsage")
-                .addHeader(API_KEY, token)
-                .build();
-
-        new RestClientExecutor(request, TYPE.GET.USAGE_INFO).execute();
-    }
-
-    public class RestClientExecutor extends AsyncTask{
-
-        private OkHttpClient client;
-        private Request request;
-        private int method;
-
-        RestClientExecutor(Request aRequest, int aMethod){
-            client = new OkHttpClient.Builder()
-                .retryOnConnectionFailure(false)
-                .build();
-            request = aRequest;
-            method = aMethod;
-        }
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-            try {
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) return response.body().string();
-                else return response;
-            } catch (Exception e){
-                // Connection timeouts and such are handled here
-                return e;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            if(o instanceof String) {
-                ResponseData responseData = null;
-
-                switch (method) {
-                    case TYPE.GET.THERMOSTAT_INFO:
-                        responseData = Converter.convertFromTemperature((String) o);
-                        break;
-                    case TYPE.GET.ZWAVE_DEVICES:
-                        responseData = Converter.convertFromDeviceInfo((String) o);
-                        break;
-                    case TYPE.SET.SCHEME_STATE:
-                        responseData = Converter.convertResultData((String) o);
-                        break;
-                    case TYPE.SET.SET_POINT:
-                        responseData = Converter.convertResultData((String) o);
-                        break;
-                    case TYPE.GET.USAGE_INFO:
-                        responseData = Converter.convertCurrentUsageData((String) o);
-                        break;
+        StringRequest request =
+            new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ResponseData responseData = Converter.convertFromTemperature(response);
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
                 }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
 
-                if (responseData != null && responseHandler != null) {
-                    responseHandler.onResponse(responseData);
-                } else if (responseHandler != null)
-                    responseHandler.onResponseError(new NullPointerException("response data or responseHandler is null"));
-            } else if (o instanceof Response) {
+    public void getZWaveDevices() {
+        getDataFromSharedPreferences();
 
-                Response response = (Response) o;
-                switch (response.code()){
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "hdrv_zwave?action=getDevices.json";
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ResponseData responseData = null;
+                        try {
+                            responseData = Converter.convertFromDeviceInfo(response);
+                            if (responseHandler != null) responseHandler.onResponse(responseData);
+                        } catch (Exception error) {
+                            errorToResponseHandler(error);
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getUsageInfo() {
+        getDataFromSharedPreferences();
+
+        //noinspection HardCodedStringLiteral
+        url = url + seperator + "happ_pwrusage?action=GetCurrentUsage";
+
+        StringRequest request =
+            new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ResponseData responseData = Converter.convertCurrentUsageData(response);
+                        if (responseHandler != null) responseHandler.onResponse(responseData);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorToResponseHandler(error);
+                    }
+                }
+            ){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put(API_KEY, token);
+                    return headers;
+                }
+            };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    private void errorToResponseHandler(VolleyError error) {
+        Throwable cause = error.getCause();
+
+        if (responseHandler != null) {
+
+            if (cause instanceof UnsupportedOperationException)
+                responseHandler.onResponseError(new ToonException(ToonException.UNSUPPORTED, error));
+
+            if (error.networkResponse != null) {
+                switch (error.networkResponse.statusCode) {
                     case 401:
-                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.FORBIDDEN));
+                        responseHandler.onResponseError(new ToonException(ToonException.FORBIDDEN, error));
                         break;
 
                     case 403:
-                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.UNAUTHORIZED));
+                        responseHandler.onResponseError(new ToonException(ToonException.UNAUTHORIZED, error));
                         break;
 
                     case 404:
-                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.NOT_FOUND));
+                        responseHandler.onResponseError(new ToonException(ToonException.NOT_FOUND, error));
                         break;
 
                     default:
-                        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.UNHANDLED));
+                        responseHandler.onResponseError(new ToonException(ToonException.UNHANDLED, error));
                 }
-
-            } else if (o instanceof Exception) {
-                if (responseHandler != null) responseHandler.onResponseError((Exception)o);
             }
         }
+    }
+
+    private void errorToResponseHandler(Exception error) {
+        if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.GETDEVICESERROR, error));
     }
 }
