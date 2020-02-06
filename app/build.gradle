@@ -10,7 +10,7 @@ android {
         applicationId 'com.toonapps.toon'
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 11
+        versionCode 12
         versionName "0.5.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
