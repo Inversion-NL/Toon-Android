@@ -10,8 +10,8 @@ import java.util.List;
 
 public class DeviceController implements IRestClientResponseHandler {
 
-    private RestClient restClient;
-    private List<IDeviceListener> devicesListenerList;
+    private final RestClient restClient;
+    private final List<IDeviceListener> devicesListenerList;
 
     private static DeviceController instance = null;
 
@@ -27,7 +27,7 @@ public class DeviceController implements IRestClientResponseHandler {
         return instance;
     }
 
-    public void updateDeviceInfo() {
+    public void updateZWaveDevices() {
         try {
             restClient.getZWaveDevices();
         } catch (Exception e) {

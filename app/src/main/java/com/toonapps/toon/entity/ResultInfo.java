@@ -6,10 +6,12 @@ public class ResultInfo {
 
     private int code;
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @SerializedName(value="result")
     private String result;
 
     public boolean isSuccess() {
+        //noinspection HardCodedStringLiteral
         return result.equals("ok");
     }
 

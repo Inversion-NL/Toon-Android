@@ -2,34 +2,40 @@ package com.toonapps.toon.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "HardCodedStringLiteral"})
 public class DeviceInfo {
     @SerializedName("dev_settings_device")
     private DeviceSettings devSettings;
 
-    @SerializedName(value="dev_2", alternate={"dev_3"})
+    @SerializedName(value="dev_2", alternate={"dev_3", "dev_4", "dev_5", "dev_6", "dev_7"})
     private Device device;
 
-    @SerializedName(value="dev_2.1", alternate={"dev_3.1"})
+    @SerializedName(value="dev_2.1", alternate={"dev_3.1", "dev_4.1", "dev_5.1", "dev_6.1", "dev_7.1"})
     private GasDevice gasDevice;
 
-    @SerializedName(value="dev_2.2", alternate={"dev_3.2"})
+    @SerializedName(value="dev_2.2", alternate={"dev_3.2", "dev_4.2", "dev_5.2", "dev_6.2", "dev_7.2"})
     private PowerDevice powerDevice1;
 
-    @SerializedName(value="dev_2.3", alternate={"dev_3.3"})
+    @SerializedName(value="dev_2.3", alternate={"dev_3.3", "dev_4.3", "dev_5.3", "dev_6.3", "dev_7.3"})
     private PowerDevice powerDevice2;
 
-    @SerializedName(value="dev_2.4", alternate={"dev_3.4"})
+    @SerializedName(value="dev_2.4", alternate={"dev_3.4", "dev_4.4", "dev_5.4", "dev_6.4", "dev_7.4"})
     private PowerDevice powerDevice3;
 
-    @SerializedName(value="dev_2.5", alternate={"dev_3.5"})
+    @SerializedName(value="dev_2.5", alternate={"dev_3.5", "dev_4.5", "dev_5.5", "dev_6.5", "dev_7.5"})
     private PowerDevice powerDevice4;
 
-    @SerializedName(value="dev_2.6", alternate={"dev_3.6"})
+    @SerializedName(value="dev_2.6", alternate={"dev_3.6", "dev_4.6", "dev_5.6", "dev_6.6", "dev_7.6"})
     private PowerDevice powerDevice5;
 
+    @SerializedName(value="dev_2.7", alternate={"dev_3.7", "dev_4.7", "dev_5.7", "dev_6.7", "dev_7.7"})
+    private PowerDevice powerDevice6;
+
+    @SerializedName(value="dev_2.8", alternate={"dev_3.8", "dev_4.8", "dev_5.8", "dev_6.8", "dev_7.8"})
+    private HeatDevice heatDevice;
+
     public double getGasUsed(){
-        return gasDevice.CurrentGasFlow / 100;
+        return gasDevice.CurrentGasFlow;
     }
 
     public double getGasUsedQuantity(){
@@ -82,15 +88,17 @@ public class DeviceInfo {
         protected String internalAddress;
         protected String type;
         protected int supportsCrc;
+        private String[] nodeFlags;
         protected String location;
+        private String DeviceName;
     }
 
     private class Device extends DeviceSettings {
         private String ccList;
         private String supportedCC;
         private int IsConnected;
-        private String DeviceName;
         private int HealthValue;
+        private String CurrentSensorStatus;
     }
 
     private class GasDevice extends DeviceSettings {
@@ -101,5 +109,9 @@ public class DeviceInfo {
     private class PowerDevice extends DeviceSettings {
         private double CurrentElectricityFlow;
         private double CurrentElectricityQuantity;
+    }
+
+    private class HeatDevice extends DeviceSettings {
+        private double CurrentHeatQuantity;
     }
 }

@@ -5,17 +5,10 @@
         <ListPreference
             android:key="pref_key_tempSetValue"
             android:title="@string/pref_appSettings_tempSetValue_title"
-            android:summary="@string/pref_network_setupConnection_summary"
+            android:summary="@string/pref_appSettings_tempSetValue_summary"
             android:defaultValue="0.5"
             android:entries="@array/tempSetValues"
             android:entryValues="@array/tempSetValues"/>
-        <ListPreference
-            android:key="pref_key_nextProgramOrTemp"
-            android:title="@string/pref_appSettings_nextProgramTempOrProgram_title"
-            android:summary="@string/pref_appSettings_nextProgramTempOrProgram_summary"
-            android:defaultValue="Temperature"
-            android:entries="@array/showTempOrProgramEntries"
-            android:entryValues="@array/showTempOrProgramValues"/>
         <SwitchPreference
             android:key="pref_key_autoRefresh"
             android:title="@string/pref_appSettings_refresh_useAutoRefresh_title"
@@ -26,8 +19,17 @@
             android:title="@string/pref_appSettings_refresh_autoRefreshPeriod_title"
             android:dependency="pref_key_autoRefresh"
             android:defaultValue="15"
-            android:entries="@array/refreshValues"
+            android:entries="@array/refreshEntries"
             android:entryValues="@array/refreshValues"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_meterSettings_category_title">
+        <CheckBoxPreference
+            android:key="pref_key_isDoubleTariffMeter"
+            android:title="@string/pref_meterSettings_doubleTariff_title"
+            android:summary="@string/pref_meterSettings_doubleTariff_summary"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -59,5 +61,18 @@
             android:key="pref_key_token"
             android:summary="@string/pref_advanced_token_summary"
             android:title="@string/pref_advanced_token_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_appInfo_category_title"
+        android:key="key_pref_appInfo_category">
+        <Preference
+            android:key="key_pref_appInfo_appVersion"
+            android:title="@string/pref_appInfo_appVersion_title"
+            android:summary="0.0.0"/>
+        <Preference
+            android:key="key_pref_appInfo_appLibraries"
+            android:title="@string/pref_appInfo_appLibraries_title"
+            android:summary="@string/pref_appInfo_appLibraries_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>
