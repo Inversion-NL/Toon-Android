@@ -49,8 +49,6 @@ public class ThermostatInfo {
     @Expose
     private int currentModulationLevel;
 
-    //TODO Do something with error found, otCommError and currentModulationLevel
-
     public String getResult() {
         return result;
     }

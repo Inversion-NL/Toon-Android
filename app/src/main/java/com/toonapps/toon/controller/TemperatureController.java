@@ -12,8 +12,8 @@ import java.util.List;
 
 public class TemperatureController implements IRestClientResponseHandler {
 
-    private List<ITemperatureListener> tempListenerList;
-    private RestClient restClient;
+    private final List<ITemperatureListener> tempListenerList;
+    private final RestClient restClient;
     private ThermostatInfo currentThermostatInfo;
 
     private static TemperatureController instance = null;
@@ -35,62 +35,43 @@ public class TemperatureController implements IRestClientResponseHandler {
     }
 
     public void updateThermostatInfo(){
-        try {
-            restClient.getThermostatInfo();
-        } catch(Exception e){
-            onError(e);
-        }
+        restClient.getThermostatInfo();
     }
 
     public void updateCurrentUsageInfo(){
-        try {
-            restClient.getUsageInfo();
-        } catch (Exception e){
-            onError(e);
-        }
+        restClient.getUsageInfo();
     }
 
     public void setTemperatureHigher(double anAmount){
-
         if (currentThermostatInfo != null) {
             double setPoint = currentThermostatInfo.getCurrentSetpoint();
             setPoint += (anAmount * 100);
-
             setTemperature(setPoint);
         } else onError(new NullPointerException());
     }
 
     public void setTemperatureLower(double anAmount){
-
         if (currentThermostatInfo != null) {
             double setPoint = currentThermostatInfo.getCurrentSetpoint();
             setPoint -= (anAmount * 100);
-
             setTemperature(setPoint);
         } else onError(new NullPointerException());
     }
 
     private void setTemperature(double anAmount){
         restClient.setSetpoint((int)anAmount);
-
-        updateThermostatInfo();
+        //updateThermostatInfo();
     }
 
     public void setTemperatureProgram(boolean isProgramOn){
         restClient.setSchemeState(isProgramOn);
-
-        updateThermostatInfo();
+        //updateThermostatInfo();
     }
 
     public void setTemperatureMode(ThermostatInfo.TemperatureMode aMode){
         int mode = aMode.ordinal();
-
-        try {
-            restClient.setSchemeTemperatureState(mode);
-            updateThermostatInfo();
-        }catch(Exception e){
-            onError(e);
-        }
+        restClient.setSchemeTemperatureState(mode);
+        //updateThermostatInfo();
     }
 
     public void subscribe(ITemperatureListener aListener){
@@ -113,12 +94,6 @@ public class TemperatureController implements IRestClientResponseHandler {
         }
     }
 
-    private void onError(Exception e){
-        for(ITemperatureListener aListener : tempListenerList){
-            aListener.onTemperatureError(e);
-        }
-    }
-
     @Override
     public void onResponse(ResponseData aResponse) {
         if (aResponse != null) if (aResponse.getThermostatInfo() != null) {
@@ -128,7 +103,8 @@ public class TemperatureController implements IRestClientResponseHandler {
         } else if (aResponse.getResultInfo() != null) {
             // Data retrieved is result information
             if (!aResponse.getResultInfo().isSuccess())
-                onError(new ToonException(ToonException.UNHANDLED));
+                onError(new ToonException(ToonException.UNHANDLED, null));
+            else updateThermostatInfo();
         } else if(aResponse.getCurrentUsageInfo() != null) {
             // Data retrieved is thermostat information
             onTemperatureUpdated(aResponse.getCurrentUsageInfo());
@@ -138,5 +114,11 @@ public class TemperatureController implements IRestClientResponseHandler {
     @Override
     public void onResponseError(Exception e) {
         onError(e);
+    }
+
+    private void onError(Exception e){
+        for(ITemperatureListener aListener : tempListenerList){
+            aListener.onTemperatureError(e);
+        }
     }
 }

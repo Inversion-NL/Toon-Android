@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 android {
     signingConfigs {
@@ -9,13 +10,11 @@ android {
         applicationId 'com.toonapps.toon'
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 7
-        versionName "0.5.6"
+        versionCode 12
+        versionName "0.5.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    dataBinding {
-        enabled = true
-    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,23 +27,29 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-alpha03'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
+    implementation "android.arch.navigation:navigation-fragment:1.0.0"
+    implementation "android.arch.navigation:navigation-ui:1.0.0"
+
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.intuit.sdp:sdp-android:1.0.5'
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-    // Using a later commit because of the removal of bindings
-    // See https://github.com/heinrichreimer/material-intro/issues/261#issuecomment-451646017
-    implementation 'com.github.adrcotfas:material-intro:e1228'
+    implementation 'com.heinrichreimersoftware:material-intro:2.0.0'
 }

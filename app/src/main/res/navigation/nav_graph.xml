@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment_controls">
+
+    <fragment
+        android:id="@+id/fragment_controls"
+        android:name="com.toonapps.toon.view.fragments.ControlsFragment"
+        android:label="@string/drawerMenu_fragment_controls"
+        tools:layout="@layout/fragment_controls" />
+
+    <fragment
+        android:id="@+id/fragment_usage_elec"
+        android:name="com.toonapps.toon.view.fragments.UsageGraphFragment"
+        android:label="@string/graph_usage_fragment_elecUsage"
+        tools:layout="@layout/fragment_usage_graph" />
+
+    <fragment
+        android:id="@+id/fragment_usage_gas"
+        android:name="com.toonapps.toon.view.fragments.UsageGraphFragment"
+        android:label="@string/graph_usage_fragment_gasUsage"
+        tools:layout="@layout/fragment_usage_graph" />
+
+</navigation>

@@ -5,18 +5,20 @@
         <item>0.5</item>
         <item>1.0</item>
     </string-array>
-    <string-array name="showTempOrProgramEntries">
-        <item>Temperature</item>
-        <item>Mode</item>
-    </string-array>
-    <string-array name="showTempOrProgramValues">
-        <item>Temperature</item>
-        <item>Mode</item>
+    <string-array name="refreshEntries">
+        <item>5s</item>
+        <item>15s</item>
+        <item>30s</item>
+        <item>60s</item>
+        <item>5m</item>
+        <item>15m</item>
     </string-array>
     <string-array name="refreshValues">
         <item>5</item>
         <item>15</item>
         <item>30</item>
         <item>60</item>
+        <item>300</item>
+        <item>900</item>
     </string-array>
 </resources>
