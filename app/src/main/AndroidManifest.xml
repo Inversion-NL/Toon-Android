@@ -39,7 +39,6 @@
         <activity
             android:name=".view.ConnectionWizardActivity"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.Intro"/>
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
