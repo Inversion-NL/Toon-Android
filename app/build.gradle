@@ -4,14 +4,14 @@ apply plugin: 'com.google.gms.oss.licenses.plugin'
 android {
     signingConfigs {
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId 'com.toonapps.toon'
         minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 13
-        versionName "0.5.10"
+        targetSdkVersion 29
+        versionCode 14
+        versionName "0.5.11"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,7 +35,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-beta01'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.0-rc01'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
