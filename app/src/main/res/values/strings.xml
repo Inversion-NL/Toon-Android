@@ -15,6 +15,8 @@
     <string name="pref_meterSettings_category_title">Meter settings</string>
     <string name="pref_meterSettings_doubleTariff_title">Double tariff</string>
     <string name="pref_meterSettings_doubleTariff_summary">Meter is a double tariff meter</string>
+    <string name="pref_meterSettings_gasMeter_title">Gas meter</string>
+    <string name="pref_meterSettings_gasMeter_summary">Disable this checkbox if your meter doesn\'t have gas values reported</string>
     <string name="pref_network_category_title">Network settings</string>
     <string name="pref_network_setupConnection_title">Set up connection</string>
     <string name="pref_network_setupConnection_summary">Click here to set up the connection to Toon</string>

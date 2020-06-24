@@ -9,7 +9,7 @@
             android:defaultValue="0.5"
             android:entries="@array/tempSetValues"
             android:entryValues="@array/tempSetValues"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="pref_key_autoRefresh"
             android:title="@string/pref_appSettings_refresh_useAutoRefresh_title"
             android:defaultValue="true"
@@ -29,6 +29,11 @@
             android:key="pref_key_isDoubleTariffMeter"
             android:title="@string/pref_meterSettings_doubleTariff_title"
             android:summary="@string/pref_meterSettings_doubleTariff_summary"/>
+        <CheckBoxPreference
+            android:key="pref_key_hasGasMeter"
+            android:title="@string/pref_meterSettings_gasMeter_title"
+            android:summary="@string/pref_meterSettings_gasMeter_summary"
+            android:defaultValue="true"/>
 
     </PreferenceCategory>
 
@@ -69,7 +74,7 @@
         <Preference
             android:key="key_pref_appInfo_appVersion"
             android:title="@string/pref_appInfo_appVersion_title"
-            android:summary="0.0.0"/>
+            android:summary="2.3.4"/>
         <Preference
             android:key="key_pref_appInfo_appLibraries"
             android:title="@string/pref_appInfo_appLibraries_title"

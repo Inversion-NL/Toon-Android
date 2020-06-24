@@ -38,6 +38,8 @@ public class AppSettings {
     private final String PREF_KEY_IS_DOUBLE_TARIFF_METER = "pref_key_isDoubleTariffMeter";
     @SuppressWarnings("HardCodedStringLiteral")
     private final String PREF_KEY_HAS_DRAWER_PEEKED = "pref_key_hasDrawerPeeked";
+    @SuppressWarnings("HardCodedStringLiteral")
+        private final String PREF_KEY_HIDE_GAS_WIDGETS = "pref_key_hasGasMeter";
 
     private static AppSettings instance;
     private SharedPreferences sharedPref;
@@ -87,7 +89,7 @@ public class AppSettings {
         if (url.contains(":")){
             String[] splitted = url.split(":");
             try {
-                port = Integer.valueOf(splitted[1]);
+                port = Integer.parseInt(splitted[1]);
             } catch (NumberFormatException e) {
                 port = 0;
             }
@@ -115,7 +117,7 @@ public class AppSettings {
             String[] splitted = url.split(":");
             address = splitted[0];
             String port = splitted[1];
-            setPort(Integer.valueOf(port));
+            setPort(Integer.parseInt(port));
             setAddress(address);
             return address;
         } else return "";
@@ -132,7 +134,7 @@ public class AppSettings {
     public float getTempSetValue() {
         String value = sharedPref.getString(PREF_KEY_TEMP_SET_VALUE, "0.5");
         if(value == null) value = "0.5"; // To circumvent null pointer exception
-        return Float.valueOf(value);
+        return Float.parseFloat(value);
     }
 
     public String getApiToken(){
@@ -179,7 +181,7 @@ public class AppSettings {
     public long getAutoRefreshValue() {
         String value = sharedPref.getString(PREF_KEY_AUTO_REFRESH_PERIOD, "15");
         if(value == null) value = "15"; // To circumvent null pointer exception
-        return Long.valueOf(value) * 1000; // in milliseconds
+        return Long.parseLong(value) * 1000; // in milliseconds
     }
 
     public boolean isMeterDoubleTariff() {
@@ -196,5 +198,13 @@ public class AppSettings {
 
     public boolean hasDrawerPeeked() {
         return sharedPref.getBoolean(PREF_KEY_HAS_DRAWER_PEEKED, false);
+    }
+
+    public void setShowGasWidgets(boolean hideGasWidgets) {
+        sharedPref.edit().putBoolean(PREF_KEY_HIDE_GAS_WIDGETS, hideGasWidgets).apply();
+    }
+
+    public boolean showGasWidgets() {
+        return sharedPref.getBoolean(PREF_KEY_HIDE_GAS_WIDGETS, true);
     }
 }

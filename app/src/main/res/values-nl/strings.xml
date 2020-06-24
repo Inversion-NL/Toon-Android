@@ -6,6 +6,7 @@
 
     <string name="pref_appSettings_category_title">App instellingen</string>
     <string name="pref_appSettings_tempSetValue_title">Standaard temp instel waarde</string>
+    <string name="pref_appSettings_tempSetValue_summary">Hoeveel de temperatuur aangepast word in de app</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_title">Temperatuur of programma</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_summary">Laat voor het komende programma de temperatuur of de modus zien</string>
     <string name="pref_appSettings_refresh_useAutoRefresh_title">Automatisch verversen</string>
@@ -14,6 +15,8 @@
     <string name="pref_meterSettings_category_title">Meter instellingen</string>
     <string name="pref_meterSettings_doubleTariff_summary">Meter is dubbel tarief</string>
     <string name="pref_meterSettings_doubleTariff_title">Dubbel tarief</string>
+    <string name="pref_meterSettings_gasMeter_title">Gas meter</string>
+    <string name="pref_meterSettings_gasMeter_summary">Schakel deze optie uit als uw meter geen gas waarden heeft</string>
     <string name="pref_network_category_title">Netwerk instellingen</string>
     <string name="pref_network_setupConnection_title">Verbinding instellen</string>
     <string name="pref_network_setupConnection_summary">Klik hier de verbinding in te stellen naar Toon</string>
@@ -78,6 +81,7 @@
     <string name="exception_message_pageNotFound">Pagina niet gevonden op apparaat</string>
     <string name="exception_message_connectionRefused">Verbinding geweigerd door je Toon. Weet je zeker dat hij geroot is?</string>
     <string name="exception_message_unsupported">Toon ondersteund de aanvraag niet</string>
+    <string name="exception_message_getDevicesError">Apparaat informatie kon niet opgehaald worden</string>
 
     <string name="graph_timeSpan_firstToggle">6 uur</string>
     <string name="graph_timeSpan_secondToggle">12 uur</string>
@@ -98,7 +102,5 @@
     <string name="drawerMenu_fragment_controls">Thermostaat</string>
     <string name="drawerMenu_appVersion">Versie %s</string>
     <string name="drawerMenu_openSource">Open Source</string>
-    <string name="pref_appSettings_tempSetValue_summary">Hoeveel de temperatuur aangepast word in de app</string>
-    <string name="exception_message_getDevicesError">Apparaat informatie kon niet opgehaald worden</string>
 
 </resources>
