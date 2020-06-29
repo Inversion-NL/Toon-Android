@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.toonapps.toon.R;
+import com.toonapps.toon.view.fragments.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 

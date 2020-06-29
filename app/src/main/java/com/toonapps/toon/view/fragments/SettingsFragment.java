@@ -1,4 +1,4 @@
-package com.toonapps.toon.view;
+package com.toonapps.toon.view.fragments;
 
 import android.os.Bundle;
 
