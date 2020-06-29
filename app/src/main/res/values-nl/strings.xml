@@ -103,4 +103,9 @@
     <string name="drawerMenu_appVersion">Versie %s</string>
     <string name="drawerMenu_openSource">Open Source</string>
 
+    <string name="ot_error_thermostat_title">Thermostaat fout</string>
+    <string name="ot_error_thermostat_message">Uw thermostaat geeft een foutcode (fout code %1$d)</string>
+    <string name="ot_error_com_title">Opentherm communicatie fout</string>
+    <string name="ot_error_com_message">Uw thermostaat heeft een communicatie fout met uw CV ketel (fout code %1$d)</string>
+
 </resources>

@@ -110,4 +110,9 @@
     <string name="drawerMenu_appVersion">Version %s</string>
     <string name="drawerMenu_openSource">Open Source</string>
 
+    <string name="ot_error_thermostat_title">Thermostat error</string>
+    <string name="ot_error_thermostat_message">Your thermostat is in a error state (error code %1$d)</string>
+    <string name="ot_error_com_title">Opentherm communication error</string>
+    <string name="ot_error_com_message">Your thermostat has an communication error with your boiler (error code %1$d)</string>
+
 </resources>

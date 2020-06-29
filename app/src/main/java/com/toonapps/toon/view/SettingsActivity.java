@@ -13,8 +13,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //TODO start settings fragment instead of starting the welcome wizard
-
         setContentView(R.layout.activity_settings);
 
         getSupportFragmentManager()
