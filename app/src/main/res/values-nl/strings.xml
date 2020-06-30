@@ -6,6 +6,7 @@
 
     <string name="pref_appSettings_category_title">App instellingen</string>
     <string name="pref_appSettings_tempSetValue_title">Standaard temp instel waarde</string>
+    <string name="pref_appSettings_tempSetValue_summary">Hoeveel de temperatuur aangepast word in de app</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_title">Temperatuur of programma</string>
     <string name="pref_appSettings_nextProgramTempOrProgram_summary">Laat voor het komende programma de temperatuur of de modus zien</string>
     <string name="pref_appSettings_refresh_useAutoRefresh_title">Automatisch verversen</string>
@@ -14,6 +15,8 @@
     <string name="pref_meterSettings_category_title">Meter instellingen</string>
     <string name="pref_meterSettings_doubleTariff_summary">Meter is dubbel tarief</string>
     <string name="pref_meterSettings_doubleTariff_title">Dubbel tarief</string>
+    <string name="pref_meterSettings_gasMeter_title">Gas meter</string>
+    <string name="pref_meterSettings_gasMeter_summary">Schakel deze optie uit als uw meter geen gas waarden heeft</string>
     <string name="pref_network_category_title">Netwerk instellingen</string>
     <string name="pref_network_setupConnection_title">Verbinding instellen</string>
     <string name="pref_network_setupConnection_summary">Klik hier de verbinding in te stellen naar Toon</string>
@@ -26,6 +29,8 @@
     <string name="pref_appInfo_category_title">App info</string>
     <string name="pref_appInfo_appLibraries_summary">Informatie over de gebruikte opensource bibliotheken</string>
     <string name="pref_appInfo_appLibraries_title">Gebruikte bibliotheken</string>
+    <string name="pref_appInfo_troubleshooting_title">Probleem oplossing</string>
+    <string name="pref_appInfo_troubleshooting_message">Krijg extra informatie over je Toon om problemen op te lossen </string>
 
     <string name="temperature_setting_away">Weg</string>
     <string name="temperature_setting_home">Thuis</string>
@@ -78,6 +83,7 @@
     <string name="exception_message_pageNotFound">Pagina niet gevonden op apparaat</string>
     <string name="exception_message_connectionRefused">Verbinding geweigerd door je Toon. Weet je zeker dat hij geroot is?</string>
     <string name="exception_message_unsupported">Toon ondersteund de aanvraag niet</string>
+    <string name="exception_message_getDevicesError">Apparaat informatie kon niet opgehaald worden</string>
 
     <string name="graph_timeSpan_firstToggle">6 uur</string>
     <string name="graph_timeSpan_secondToggle">12 uur</string>
@@ -98,7 +104,21 @@
     <string name="drawerMenu_fragment_controls">Thermostaat</string>
     <string name="drawerMenu_appVersion">Versie %s</string>
     <string name="drawerMenu_openSource">Open Source</string>
-    <string name="pref_appSettings_tempSetValue_summary">Hoeveel de temperatuur aangepast word in de app</string>
-    <string name="exception_message_getDevicesError">Apparaat informatie kon niet opgehaald worden</string>
+
+    <string name="ot_error_thermostat_title">Thermostaat fout</string>
+    <string name="ot_error_thermostat_message">Uw thermostaat geeft een foutcode (fout code %1$d)</string>
+    <string name="ot_error_com_title">Opentherm communicatie fout</string>
+    <string name="ot_error_com_message">Uw thermostaat heeft een communicatie fout met uw CV ketel (fout code %1$d)</string>
+
+    <string name="debug_progressDialog_message">Even geduld a.u.b. terwijl de informatie word opgehaald van uw Toon</string>
+    <string name="debug_response_error_message">Er is een fout opgetreden bij het verbinden naar uw Toon</string>
+    <string name="debug_explanation_message1">Gebruik de onderstaande knoppen om de ruwe informatie vanuit uw Toon te halen.</string>
+    <string name="debug_explanation_message2">U kunt deze informatie posten op onderstaand forum om te helpen het probleem op te lossen.</string>
+    <string name="debug_clipboard_label">Toon ruwe gegevens</string>
+    <string name="debug_toast_rawDataCopiedToClipboard">Ruwe gegevens gekopieerd naar klembord</string>
+    <string name="debug_button_zwave">Z-wave</string>
+    <string name="debug_button_thermostat">Therm</string>
+    <string name="debug_button_usage">Usage</string>
+    <string name="debug_switch_format">Format</string>
 
 </resources>

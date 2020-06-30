@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
         android:title="@string/pref_appSettings_category_title">
         <ListPreference
@@ -9,7 +11,7 @@
             android:defaultValue="0.5"
             android:entries="@array/tempSetValues"
             android:entryValues="@array/tempSetValues"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="pref_key_autoRefresh"
             android:title="@string/pref_appSettings_refresh_useAutoRefresh_title"
             android:defaultValue="true"
@@ -29,6 +31,11 @@
             android:key="pref_key_isDoubleTariffMeter"
             android:title="@string/pref_meterSettings_doubleTariff_title"
             android:summary="@string/pref_meterSettings_doubleTariff_summary"/>
+        <CheckBoxPreference
+            android:key="pref_key_hasGasMeter"
+            android:title="@string/pref_meterSettings_gasMeter_title"
+            android:summary="@string/pref_meterSettings_gasMeter_summary"
+            android:defaultValue="true"/>
 
     </PreferenceCategory>
 
@@ -67,9 +74,14 @@
         android:title="@string/pref_appInfo_category_title"
         android:key="key_pref_appInfo_category">
         <Preference
+            app:key="key_pref_appInfo_troubleshooting"
+            app:title="@string/pref_appInfo_troubleshooting_title"
+            app:summary="@string/pref_appInfo_troubleshooting_message"
+            app:fragment="com.toonapps.toon.view.fragments.Troubleshooting"/>
+        <Preference
             android:key="key_pref_appInfo_appVersion"
             android:title="@string/pref_appInfo_appVersion_title"
-            android:summary="0.0.0"/>
+            android:summary="2.3.4"/>
         <Preference
             android:key="key_pref_appInfo_appLibraries"
             android:title="@string/pref_appInfo_appLibraries_title"
