@@ -45,8 +45,14 @@ class Converter {
     static ResponseData convertCurrentUsageData(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
         Gson gson = new Gson();
         ResponseData responseData = new ResponseData();
+        CurrentUsageInfo currentUsageInfo;
 
-        CurrentUsageInfo currentUsageInfo = gson.fromJson(aJson, CurrentUsageInfo.class);
+        try {
+            currentUsageInfo = gson.fromJson(aJson, CurrentUsageInfo.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return responseData;
+        }
 
         try {
             // Test if gasUsage is available

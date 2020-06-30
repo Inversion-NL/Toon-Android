@@ -12,10 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
 
 import com.toonapps.toon.R;
 import com.toonapps.toon.data.IRestClientDebugResponseHandler;
@@ -23,7 +23,6 @@ import com.toonapps.toon.data.RestClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -34,7 +33,6 @@ public class Troubleshooting extends Fragment implements IRestClientDebugRespons
     private View view;
     private int currentAction = -1;
     private TextView debugTV;
-    private TextView explanation;
 
     private interface action {
         int ZWAVE_DEVICES = 0;
@@ -67,7 +65,7 @@ public class Troubleshooting extends Fragment implements IRestClientDebugRespons
         String message1 = getString(R.string.debug_explanation_message1);
         String message2 = getString(R.string.debug_explanation_message2);
         String message3 = getString(R.string.debug_explanation_message3);
-        explanation = view.findViewById(R.id.tv_explanation);
+        TextView explanation = view.findViewById(R.id.tv_explanation);
         explanation.setText(message1.concat("\n").concat(message2).concat("\n").concat(message3));
     }
 
