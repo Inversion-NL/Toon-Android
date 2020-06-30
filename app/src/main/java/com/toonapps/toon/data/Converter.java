@@ -6,7 +6,6 @@ import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.entity.ResultInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
