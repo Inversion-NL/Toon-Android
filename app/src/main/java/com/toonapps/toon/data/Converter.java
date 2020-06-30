@@ -16,30 +16,17 @@ class Converter {
         Gson gson = new Gson();
         ResponseData responseData = new ResponseData();
 
-        ThermostatInfo thermostatInfo = gson.fromJson(aJson, ThermostatInfo.class);
-        responseData.setThermostatInfo(thermostatInfo);
+        try {
 
-        return responseData;
-    }
+            ThermostatInfo thermostatInfo = gson.fromJson(aJson, ThermostatInfo.class);
+            responseData.setThermostatInfo(thermostatInfo);
+            return responseData;
 
-    static ResponseData convertFromDeviceInfo(String aJson) throws Exception {
-        Gson gson = new Gson();
-        ResponseData responseData = new ResponseData();
+        } catch (Exception e) {
 
-        DeviceInfo devicesInfo = gson.fromJson(aJson, DeviceInfo.class);
-        responseData.setDeviceInfo(devicesInfo);
-
-        return responseData;
-    }
-
-    static ResponseData convertResultData(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
-        Gson gson = new Gson();
-        ResponseData responseData = new ResponseData();
-
-        ResultInfo resultInfo = gson.fromJson(aJson, ResultInfo.class);
-        responseData.setResultInfo(resultInfo);
-
-        return responseData;
+            e.printStackTrace();
+            return responseData;
+        }
     }
 
     static ResponseData convertCurrentUsageData(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
@@ -58,7 +45,10 @@ class Converter {
             // Test if gasUsage is available
 
             JSONObject obj = new JSONObject(aJson);
+            @SuppressWarnings("HardCodedStringLiteral")
             JSONObject gasUsage = obj.getJSONObject("gasUsage");
+
+            //noinspection HardCodedStringLiteral
             if (gasUsage.getString("value").equals("null")) {
                 currentUsageInfo.setUseGasInfoFromDevices(true);
             } else currentUsageInfo.setUseGasInfoFromDevices(false);
@@ -68,6 +58,26 @@ class Converter {
         }
 
         responseData.setCurrentUsageInfo(currentUsageInfo);
+        return responseData;
+    }
+
+    static ResponseData convertFromDeviceInfo(String aJson) {
+        Gson gson = new Gson();
+        ResponseData responseData = new ResponseData();
+
+        DeviceInfo devicesInfo = gson.fromJson(aJson, DeviceInfo.class);
+        responseData.setDeviceInfo(devicesInfo);
+
+        return responseData;
+    }
+
+    static ResponseData convertResultData(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
+        Gson gson = new Gson();
+        ResponseData responseData = new ResponseData();
+
+        ResultInfo resultInfo = gson.fromJson(aJson, ResultInfo.class);
+        responseData.setResultInfo(resultInfo);
+
         return responseData;
     }
 }
