@@ -428,6 +428,12 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         isUpdatingUI2 = true;
         AppSettings.getInstance().setCurrentUsageInfoAvailable(true);
 
+        float powerProduction = aCurrentUsageInfo.getPowerProduction().getValue();
+
+        if (powerProduction > 0) {
+            //TODO do something with power production
+        }
+
         setPowerMeter(
                 aCurrentUsageInfo.getPowerUsage().getValue(),
                 aCurrentUsageInfo.getPowerUsage().getAvgValue()
