@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     private final int REQUEST_CODE_INTRO = 100;
     @SuppressWarnings("HardCodedStringLiteral")
     private final String REQUEST_TYPE = "type";
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
         AppSettings.getInstance().initialize(this.getApplicationContext());
 
+        initDrawer();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
     }
 
@@ -62,20 +64,31 @@ public class MainActivity extends AppCompatActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, REQUEST_CODE_INTRO);
         } else {
-            drawerLayout = findViewById(R.id.drawer_layout);
-            NavigationView navigationView = findViewById(R.id.navigationView);
-            navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-            NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
-            NavigationUI.setupWithNavController(navigationView, navController);
-            navigationView.setNavigationItemSelectedListener(this);
-
-            String version = String.format(getString(R.string.drawerMenu_appVersion), BuildConfig.VERSION_NAME);
-            Menu nav = navigationView.getMenu();
-            MenuItem menuInfo = nav.findItem(R.id.menu_info);
-            menuInfo.setTitle(version);
-
+            setDrawerOptions();
             if (!AppSettings.getInstance().hasDrawerPeeked()) peekDrawer();
         }
+    }
+
+    private void initDrawer() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigationView);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
+        NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(this);
+        setDrawerOptions();
+    }
+
+    private void setDrawerOptions() {
+        String version = String.format(getString(R.string.drawerMenu_appVersion), BuildConfig.VERSION_NAME);
+        Menu nav = navigationView.getMenu();
+
+        MenuItem menuInfo = nav.findItem(R.id.menu_info);
+        menuInfo.setTitle(version);
+
+        MenuItem menuGasUsage = nav.findItem(R.id.menu_gasUsage);
+        if (!AppSettings.getInstance().showGasWidgets()) menuGasUsage.setVisible(false);
+        else menuGasUsage.setVisible(true);
     }
 
     private void peekDrawer() {

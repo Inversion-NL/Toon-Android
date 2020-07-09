@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
@@ -57,6 +58,9 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
     //prevent toggle executing onCheckedChanged
     private boolean isUpdatingUI = false;
     private boolean isUpdatingUI2 = false;
+
+    private boolean hasThermostatErrorCodeDialogBeenShownInThisSession;
+    private boolean hasThermostatComErrorCodeDialogBeenShownInThisSession;
     private SwipeRefreshLayout refreshLayout;
     private TimerHelper timerHelper;
     private Context context;
@@ -88,6 +92,10 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
     public void onResume() {
         super.onResume();
 
+        // Set in onResume so the message pop's up every session
+        hasThermostatErrorCodeDialogBeenShownInThisSession = false;
+        hasThermostatComErrorCodeDialogBeenShownInThisSession = false;
+
         // Block rotation
         if (getActivity() != null) getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -99,6 +107,20 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
         if (AppSettings.getInstance().useAutoRefresh()) setTimer(true);
         else setTimer(false);
+
+        CardView cardTotalGas = view.findViewById(R.id.cardTotalGas);
+        if (!AppSettings.getInstance().showGasWidgets() && cardTotalGas.getVisibility() == View.VISIBLE) {
+            cardTotalGas.setVisibility(View.GONE);
+        } else if (AppSettings.getInstance().showGasWidgets() && cardTotalGas.getVisibility() == View.GONE) {
+            cardTotalGas.setVisibility(View.VISIBLE);
+        }
+
+        CardView cardGasUsage = view.findViewById(R.id.cardGasUsage);
+        if (!AppSettings.getInstance().showGasWidgets() && cardGasUsage.getVisibility() == View.VISIBLE) {
+            cardGasUsage.setVisibility(View.GONE);
+        } else if (AppSettings.getInstance().showGasWidgets() && cardGasUsage.getVisibility() == View.GONE) {
+            cardGasUsage.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -134,7 +156,10 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
         GasAndElecFlowController.getInstance().getTodayElecNtUsage();
         GasAndElecFlowController.getInstance().getTodayElecLtUsage();
-        GasAndElecFlowController.getInstance().getTodayGasUsage();
+        if (AppSettings.getInstance().showGasWidgets()) {
+            // Only update if the smart meter has gas (user pref in settings)
+            GasAndElecFlowController.getInstance().getTodayGasUsage();
+        }
 
         // Try to fetch current usage info once to see if it's available (e.g. rooted Toon)
         // Disable for now an find out later on a non-rooted Toon
@@ -206,12 +231,18 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
         CardView cardTotalGas = view.findViewById(R.id.cardTotalGas);
         cardTotalGas.setOnClickListener(onButtonClicked);
+        if (!AppSettings.getInstance().showGasWidgets()) {
+            cardTotalGas.setVisibility(View.GONE);
+        }
 
         CardView cardPowerUsage = view.findViewById(R.id.cardPowerUsage);
         cardPowerUsage.setOnClickListener(onButtonClicked);
 
         CardView cardGasUsage = view.findViewById(R.id.cardGasUsage);
         cardGasUsage.setOnClickListener(onButtonClicked);
+        if (!AppSettings.getInstance().showGasWidgets()) {
+            cardGasUsage.setVisibility(View.GONE);
+        }
 
         btnAwayMode = view.findViewById(R.id.btnAwayMode);
         btnAwayMode.setOnClickListener(onButtonClicked);
@@ -397,6 +428,12 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         isUpdatingUI2 = true;
         AppSettings.getInstance().setCurrentUsageInfoAvailable(true);
 
+        float powerProduction = aCurrentUsageInfo.getPowerProduction().getValue();
+
+        if (powerProduction > 0) {
+            //TODO do something with power production
+        }
+
         setPowerMeter(
                 aCurrentUsageInfo.getPowerUsage().getValue(),
                 aCurrentUsageInfo.getPowerUsage().getAvgValue()
@@ -431,12 +468,16 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         text = String.format(Locale.getDefault(), getString(R.string.graph_temp_formatted), aThermostatInfo.getCurrentSetpoint() / 100);
         txtvSetPoint.setText(text);
 
-        if (aThermostatInfo.getErrorFound() != 255) {
-            // TODO show fragment with error
+        if (aThermostatInfo.getErrorFound() != 255 && !hasThermostatErrorCodeDialogBeenShownInThisSession) {
+            String message = String.format(getResources().getString(R.string.ot_error_thermostat_message), aThermostatInfo.getErrorFound());
+            showErrorDialog(R.string.ot_error_thermostat_title, message);
+            hasThermostatErrorCodeDialogBeenShownInThisSession = true;
         }
 
-        if (aThermostatInfo.getOtCommError() > 0) {
-            // TODO show fragment with error
+        if (aThermostatInfo.getOtCommError() > 0 && !hasThermostatComErrorCodeDialogBeenShownInThisSession) {
+            String message = String.format(getResources().getString(R.string.ot_error_com_message), aThermostatInfo.getErrorFound());
+            showErrorDialog(R.string.ot_error_com_title, message);
+            hasThermostatComErrorCodeDialogBeenShownInThisSession = true;
         } else {
             // Only show info when there is no OpenTherm comm error
             if (aThermostatInfo.getBurnerInfo() > -1) { // Minus one meaning the value isn't retrieved from Toon
@@ -470,6 +511,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                 else view.findViewById(R.id.burnerInfo).setVisibility(View.VISIBLE);
             }
         }
+
         if (aThermostatInfo.getNextSetpoint() != 0 || aThermostatInfo.getNextTime() != null) {
             text = String.format(
                     Locale.getDefault(),
@@ -560,5 +602,14 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         String message = errorMessage.getHumanReadableErrorMessage(e);
         Toast.makeText(context, getString(R.string.exception_message_device_update_error_txt) + ": " +  message, Toast.LENGTH_SHORT).show();
         setRefreshing(false);
+    }
+
+    private void showErrorDialog(int title, String message) {
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

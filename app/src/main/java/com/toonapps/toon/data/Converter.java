@@ -6,7 +6,6 @@ import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.entity.ResultInfo;
 import com.toonapps.toon.entity.ThermostatInfo;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,13 +15,52 @@ class Converter {
         Gson gson = new Gson();
         ResponseData responseData = new ResponseData();
 
-        ThermostatInfo thermostatInfo = gson.fromJson(aJson, ThermostatInfo.class);
-        responseData.setThermostatInfo(thermostatInfo);
+        try {
 
+            ThermostatInfo thermostatInfo = gson.fromJson(aJson, ThermostatInfo.class);
+            responseData.setThermostatInfo(thermostatInfo);
+            return responseData;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return responseData;
+        }
+    }
+
+    static ResponseData convertCurrentUsageData(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
+        Gson gson = new Gson();
+        ResponseData responseData = new ResponseData();
+        CurrentUsageInfo currentUsageInfo;
+
+        try {
+            currentUsageInfo = gson.fromJson(aJson, CurrentUsageInfo.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return responseData;
+        }
+
+        try {
+            // Test if gasUsage is available
+
+            JSONObject obj = new JSONObject(aJson);
+            @SuppressWarnings("HardCodedStringLiteral")
+            JSONObject gasUsage = obj.getJSONObject("gasUsage");
+
+            //noinspection HardCodedStringLiteral
+            if (gasUsage.getString("value").equals("null")) {
+                currentUsageInfo.setUseGasInfoFromDevices(true);
+            } else currentUsageInfo.setUseGasInfoFromDevices(false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            currentUsageInfo.setUseGasInfoFromDevices(false);
+        }
+
+        responseData.setCurrentUsageInfo(currentUsageInfo);
         return responseData;
     }
 
-    static ResponseData convertFromDeviceInfo(String aJson) throws Exception {
+    static ResponseData convertFromDeviceInfo(String aJson) {
         Gson gson = new Gson();
         ResponseData responseData = new ResponseData();
 
@@ -39,29 +77,6 @@ class Converter {
         ResultInfo resultInfo = gson.fromJson(aJson, ResultInfo.class);
         responseData.setResultInfo(resultInfo);
 
-        return responseData;
-    }
-
-    static ResponseData convertCurrentUsageData(String aJson) throws com.google.gson.JsonSyntaxException , IllegalStateException{
-        Gson gson = new Gson();
-        ResponseData responseData = new ResponseData();
-
-        CurrentUsageInfo currentUsageInfo = gson.fromJson(aJson, CurrentUsageInfo.class);
-
-        try {
-            // Test if gasUsage is available
-
-            JSONObject obj = new JSONObject(aJson);
-            JSONObject gasUsage = obj.getJSONObject("gasUsage");
-            if (gasUsage.getString("value").equals("null")) {
-                currentUsageInfo.setUseGasInfoFromDevices(true);
-            } else currentUsageInfo.setUseGasInfoFromDevices(false);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            currentUsageInfo.setUseGasInfoFromDevices(false);
-        }
-
-        responseData.setCurrentUsageInfo(currentUsageInfo);
         return responseData;
     }
 }
