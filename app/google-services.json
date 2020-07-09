@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "239939261082",
+    "firebase_url": "https://toon-for-android.firebaseio.com",
+    "project_id": "toon-for-android",
+    "storage_bucket": "toon-for-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239939261082:android:15d5d941903300eff74523",
+        "android_client_info": {
+          "package_name": "com.toonapps.toon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239939261082-mvo23cigijvhb14lpvtqdhikn1bucnok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr-9U1y2k4WbcQb5Qa-DUth2NPS9PYvXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239939261082-mvo23cigijvhb14lpvtqdhikn1bucnok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

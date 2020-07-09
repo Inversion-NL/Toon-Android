@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+  ~ See the NOTICE file distributed with this work for additional information regarding copyright ownership
+  ~ The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing software distributed under the License is
+  ~ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.  See the License for the specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
+    tools:context="com.toonapps.toon.view.fragments.ControlsFragment"
+    android:background="@color/colorBackground"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/tlTemperature"
+            style="@style/style_card_Temperature"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:cardCornerRadius="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtvTemperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginLeft="18dp"
+                    android:text="0.0"
+                    android:textSize="26sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText"
+                    tools:text="19,4°" />
+
+                <ImageView
+                    android:id="@+id/burnerInfo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:contentDescription="@string/controls_fire_description_img"
+                    android:src="@drawable/ic_flame0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/txtvTemperature"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtvSetPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:text="On 0.0"
+                    android:textSize="26sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText"
+                    tools:text="Op 21,0°" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <GridLayout
+            android:id="@+id/glChangeTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical"
+            android:columnCount="3"
+            android:rowCount="2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tlTemperature">
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnAwayMode"
+                style="@style/style_btn_Mode"
+                android:textOff="@string/temperature_setting_away"
+                android:textOn="@string/temperature_setting_away"
+                tools:checked="true" />
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnSleepMode"
+                style="@style/style_btn_Mode"
+                android:textOff="@string/temperature_setting_sleeping"
+                android:textOn="@string/temperature_setting_sleeping" />
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnHomeMode"
+                style="@style/style_btn_Mode"
+                android:textOff="@string/temperature_setting_home"
+                android:textOn="@string/temperature_setting_home" />
+
+            <androidx.appcompat.widget.AppCompatToggleButton
+                android:id="@+id/btnComfortMode"
+                style="@style/style_btn_Mode"
+                android:textOff="@string/temperature_setting_comfort"
+                android:textOn="@string/temperature_setting_comfort" />
+
+            <Button
+                android:id="@+id/btnPlus"
+                style="@style/style_btn_changeTemp"
+                android:text="@string/controls_temperature_setting_sign_plus" />
+
+            <Button
+                android:id="@+id/btnMin"
+                style="@style/style_btn_changeTemp"
+                android:text="@string/controls_temperature_setting_sign_min" />
+
+        </GridLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rlIsProgramOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/glChangeTemperature">
+
+            <TextView
+                android:id="@+id/txtvNextProgram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp"
+                android:maxLines="1"
+                android:text="@string/controls_nextProgramText_noData"
+                android:textSize="16sp"
+                android:paddingEnd="14dp"
+                android:paddingRight="14dp"
+                android:paddingStart="14dp"
+                android:paddingLeft="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Om 23:00 on Sleep"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swIsProgramOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_25sdp"
+                android:layout_marginBottom="4dp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:switchPadding="10dp"
+                tools:checked="true" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rlIsProgramOn">
+
+            <!-- POWER USE -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPowerUsage"
+                style="@style/style_card_PowerGas"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    style="@style/style_txtv_powerGasTitle"
+                    android:text="@string/controls_card_powerUsage_title" />
+
+                <ImageView
+                    android:id="@+id/imgvCurrentPower"
+                    style="@style/style_img_meter"
+                    android:contentDescription="@string/controls_card_powerUsage_img_current_power"
+                    android:src="@drawable/power1_10"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/txtvCurrentPowerUse"
+                    style="@style/style_txtv_PowerGasDescription"
+                    android:text="@string/controls_card_powerUsage_powerValue"
+                    tools:text="1000 Watt"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- GAS USE -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardGasUsage"
+                style="@style/style_card_PowerGas"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    style="@style/style_txtv_powerGasTitle"
+                    android:text="@string/controls_card_gasUsage_gasUsage_title" />
+
+                <ImageView
+                    android:id="@+id/imgvCurrentGas"
+                    style="@style/style_img_meter"
+                    android:contentDescription="@string/controls_card_GasUsage_img_current_gas"
+                    android:src="@drawable/gas1_10"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/txtvCurrentGasUse"
+                    style="@style/style_txtv_PowerGasDescription"
+                    android:text="@string/controls_card_gasUsage_gasValue"
+                    tools:text="1000 liter"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTotalPower"
+                style="@style/style_card_TotalPowerGas"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    style="@style/style_txtv_powerGasTitle"
+                    android:text="@string/controls_power_used_today" />
+
+                <TextView
+                    android:id="@+id/txtvTotalPowerUse"
+                    style="@style/style_txtv_PowerGasDescription"
+                    android:text="0 kWh"
+                    tools:text="40 kWh"
+                    tools:ignore="HardcodedText" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTotalGas"
+                style="@style/style_card_TotalPowerGas"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    style="@style/style_txtv_powerGasTitle"
+                    android:text="@string/controls_gas_used_today" />
+
+                <TextView
+                    android:id="@+id/txtvTotalGasUse"
+                    style="@style/style_txtv_PowerGasDescription"
+                    android:text="0 m3"
+                    tools:text="2345 m3"
+                    tools:ignore="HardcodedText" />
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPowerProduction"
+                style="@style/style_card_TotalPowerGas"
+                app:cardCornerRadius="4dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/style_txtv_powerGasTitle"
+                    android:text="@string/controls_power_production" />
+
+                <TextView
+                    android:id="@+id/txtvPowerProduction"
+                    style="@style/style_txtv_PowerGasDescription"
+                    android:text="0 KWh"
+                    tools:text="234 KWh"
+                    tools:ignore="HardcodedText" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPowerReturn"
+                style="@style/style_card_TotalPowerGas"
+                app:cardCornerRadius="4dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/style_txtv_powerGasTitle"
+                    android:text="@string/controls_power_return" />
+
+                <TextView
+                    android:id="@+id/txtvPowerReturn"
+                    style="@style/style_txtv_PowerGasDescription"
+                    android:text="0 KWh"
+                    tools:text="15 KWh"
+                    tools:ignore="HardcodedText" />
+            </androidx.cardview.widget.CardView>
+        </GridLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

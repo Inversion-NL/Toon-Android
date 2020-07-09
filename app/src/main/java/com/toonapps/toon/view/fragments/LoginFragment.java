@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.toonapps.toon.view.fragments;
 
 import android.app.ProgressDialog;
@@ -8,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -15,7 +32,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 import com.toonapps.toon.R;
 import com.toonapps.toon.controller.DeviceController;
@@ -23,19 +45,31 @@ import com.toonapps.toon.controller.IDeviceListener;
 import com.toonapps.toon.entity.DeviceInfo;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.ErrorMessage;
+import com.toonapps.toon.helper.FirebaseHelper;
+import com.toonapps.toon.helper.ScreenHelper;
 
 public class LoginFragment extends SlideFragment {
 
     private boolean loggedIn = false;
     private Context context;
-    private EditText address;
-    private EditText port;
+    private EditText et_toonAddress;
+    private EditText et_toonPort;
     private ProgressDialog progressDialog;
     private TextView txt_errorMessage;
     private AppCompatButton btn_login;
+    private RadioButton rb_protocol_https;
+    private AppCompatCheckBox cb_advancedSettings;
+    private ConstraintLayout cl_advancedSettings;
+    private TextInputEditText et_httpHeaderValue;
+    private TextInputEditText et_httpHeaderKey;
 
     private final boolean testing = false;
-    private RadioButton rb_protocol_https;
+    private boolean usingAdvancedSettings = false;
+
+    private interface errorCheckType {
+        int TYPE_STRING = 0;
+        int TYPE_INT = 1;
+    }
 
     public LoginFragment() {
         // Required empty public constructor
@@ -49,28 +83,40 @@ public class LoginFragment extends SlideFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_connect_login, container, false);
 
+        if (getActivity() != null) //noinspection HardCodedStringLiteral
+            FirebaseAnalytics.getInstance(context)
+                .setCurrentScreen(getActivity(), "Login fragment",null);
+
         // Setting to prevent keyboard from changing the layout
-        if (getActivity() != null) getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        if (getActivity() != null) getActivity()
+                .getWindow()
+                .setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         setAndInitWidgets(view);
         return view;
     }
 
-    private void setAndInitWidgets(View view){
-        address = view.findViewById(R.id.et_toonAddress);
-        port = view.findViewById(R.id.et_toonPort);
+    private void setAndInitWidgets(View view) {
+        if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.LOW) {
+            AppCompatImageView img_login = view.findViewById(R.id.img_login);
+            img_login.setVisibility(View.GONE);
+        }
+
+        et_toonAddress = view.findViewById(R.id.et_toonAddress);
+        et_toonPort = view.findViewById(R.id.et_toonPort);
         RadioButton rb_protocol_http = view.findViewById(R.id.rb_protocol_http);
         rb_protocol_https = view.findViewById(R.id.rb_protocol_https);
         txt_errorMessage = view.findViewById(R.id.txt_errorMessage);
         RadioGroup rg = view.findViewById(R.id.rg_protocol);
         rg.setEnabled(false);
 
-        address.setText(AppSettings.getInstance().getAddress());
+        et_toonAddress.setText(AppSettings.getInstance().getAddress());
 
         int portInt = AppSettings.getInstance().getPort();
-        if (portInt == 0) port.setText("");
-        else port.setText(String.valueOf(portInt));
+        if (portInt == 0) et_toonPort.setText("");
+        else et_toonPort.setText(String.valueOf(portInt));
 
         //noinspection HardCodedStringLiteral
         if(AppSettings.getInstance().getProtocol().equals("https")) {
@@ -85,14 +131,45 @@ public class LoginFragment extends SlideFragment {
                 else advancedFieldCheck();
             }
         });
+
+        cl_advancedSettings = view.findViewById(R.id.cl_advancedSettings);
+
+        et_httpHeaderKey = view.findViewById(R.id.et_httpHeaderKey);
+        String httpHeaderKey = AppSettings.getInstance().getHttpHeaderKey();
+        et_httpHeaderKey.setText(httpHeaderKey);
+
+        String httpHeaderValue = AppSettings.getInstance().getHttpHeaderValue();
+        et_httpHeaderValue = view.findViewById(R.id.et_httpHeaderValue);
+        et_httpHeaderValue.setText(httpHeaderValue);
+
+        cb_advancedSettings = view.findViewById(R.id.cb_advancedSettings);
+        if (AppSettings.getInstance().useHttpHeader()) {
+            cb_advancedSettings.setChecked(true);
+            cl_advancedSettings.setVisibility(View.VISIBLE);
+        } else {
+            cl_advancedSettings.setVisibility(View.GONE);
+        }
+        cb_advancedSettings.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) cl_advancedSettings.setVisibility(View.VISIBLE);
+                else cl_advancedSettings.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void updateData() {
         showProgressDialog();
 
-        AppSettings.getInstance().setPort(Integer.valueOf(port.getText().toString()));
-        AppSettings.getInstance().setAddress(address.getText().toString());
+        AppSettings.getInstance().setPort(Integer.parseInt(et_toonPort.getText().toString()));
+        AppSettings.getInstance().setAddress(et_toonAddress.getText().toString());
         AppSettings.getInstance().setProtocol(getProtocolFromRadioButtons());
+        AppSettings.getInstance().setUseHttpHeader(usingAdvancedSettings);
+
+        if (usingAdvancedSettings) {
+            AppSettings.getInstance().setHttpHeaderKey(et_httpHeaderKey.getText().toString());
+            AppSettings.getInstance().setHttpHeaderValue(et_httpHeaderValue.getText().toString());
+        }
 
         DeviceController.getInstance().subscribe(new IDeviceListener() {
             @Override
@@ -115,8 +192,7 @@ public class LoginFragment extends SlideFragment {
 
                     if (testing && isAdded()) {
                         txt_errorMessage.setTextColor(getResources().getColor(android.R.color.black));
-                        //noinspection HardCodedStringLiteral
-                        txt_errorMessage.setText("Testing!");
+                        txt_errorMessage.setText(R.string.testing);
                         loggedIn = true;
 
                     } else {
@@ -126,7 +202,7 @@ public class LoginFragment extends SlideFragment {
                         if (e instanceof IllegalArgumentException && isAdded())
                             // If the error has to to with the host name, set error on address widget
                             // rather than setting a generic error
-                            address.setError(getString(R.string.exception_message_incorrectHostname));
+                            et_toonAddress.setError(getString(R.string.exception_message_incorrectHostname));
                         else if (isAdded()){
                             ErrorMessage errorMessage = new ErrorMessage(context);
                             String message = errorMessage.getHumanReadableErrorMessage(e);
@@ -137,6 +213,8 @@ public class LoginFragment extends SlideFragment {
                         loggedIn = false;
                     }
                 } catch (IllegalStateException illegalState) {
+                    //noinspection HardCodedStringLiteral
+                    FirebaseHelper.getInstance().recordExceptionAndLog(illegalState, "Illegal state in LoginFragment onDeviceError");
                     illegalState.printStackTrace();
                 }
             }
@@ -162,26 +240,47 @@ public class LoginFragment extends SlideFragment {
     }
 
     private boolean checkFields() {
-        return !TextUtils.isEmpty(address.getText().toString()) && !TextUtils.isEmpty(port.getText().toString());
+        final boolean textFields = !TextUtils.isEmpty(et_toonAddress.getText().toString()) && !TextUtils.isEmpty(et_toonPort.getText().toString());
+        boolean advancedFields = true;
+
+        usingAdvancedSettings = cb_advancedSettings.isChecked();
+
+        if (usingAdvancedSettings) {
+            advancedFields = !TextUtils.isEmpty(et_httpHeaderValue.getText().toString()) && !TextUtils.isEmpty(et_httpHeaderKey.getText().toString());
+        }
+        return textFields && advancedFields;
     }
 
     private void advancedFieldCheck() {
-        // Address text field checks
-        String addressText = address.getText().toString();
-        if(TextUtils.isEmpty(addressText))
-            address.setError(getString(R.string.connectionWizard_login_error_pleaseEnterAddress));
-        else if (addressText.length() < 2)
-            address.setError(getString(R.string.connectionWizard_login_error_noValidInput));
+        setErrorField(et_toonAddress, errorCheckType.TYPE_STRING);
+        setErrorField(et_toonPort, errorCheckType.TYPE_INT);
+        if (usingAdvancedSettings) {
+            setErrorField(et_httpHeaderKey, errorCheckType.TYPE_STRING);
+            setErrorField(et_httpHeaderValue, errorCheckType.TYPE_STRING);
+        }
+    }
 
-        // Port text field checks
-        String portText = port.getText().toString();
-        if (TextUtils.isEmpty(portText))
-            port.setError(getString(R.string.connectionWizard_login_error_pleaseEnterPortNumber));
-        try {
-            int portNumber = Integer.valueOf(portText);
-            if (portNumber < 1 || portNumber > 65535) port.setError(getString(R.string.connectionWizard_login_error_enterValidPortNumber));
-        } catch (NumberFormatException e) {
-            port.setError(getString(R.string.connectionWizard_login_error_pleaseOnlyUseNumbers));
+    private void setErrorField(EditText editText, int type) {
+        switch (type){
+            case errorCheckType.TYPE_STRING:
+                String addressText = editText.getText().toString();
+                if(TextUtils.isEmpty(addressText))
+                    editText.setError(getString(R.string.connectionWizard_login_error_pleaseEnterAddress));
+                else if (addressText.length() < 2)
+                    editText.setError(getString(R.string.connectionWizard_login_error_noValidInput));
+                break;
+
+            case errorCheckType.TYPE_INT:
+                String portText = editText.getText().toString();
+                if (TextUtils.isEmpty(portText))
+                    editText.setError(getString(R.string.connectionWizard_login_error_pleaseEnterNumber));
+                try {
+                    int portNumber = Integer.parseInt(portText);
+                    if (portNumber < 1 || portNumber > 65535) editText.setError(getString(R.string.connectionWizard_login_error_enterValidNumber));
+                } catch (NumberFormatException e) {
+                    editText.setError(getString(R.string.connectionWizard_login_error_pleaseOnlyUseNumbers));
+                }
+                break;
         }
 
     }
