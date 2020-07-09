@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.toonapps.toon.helper;
 
 import android.content.Context;
@@ -6,6 +22,7 @@ import android.preference.PreferenceManager;
 
 import com.toonapps.toon.R;
 
+@SuppressWarnings("unused")
 public class AppSettings {
 
     @SuppressWarnings("HardCodedStringLiteral")
@@ -13,33 +30,39 @@ public class AppSettings {
     @SuppressWarnings("HardCodedStringLiteral")
     private final String PREF_KEY_PROTOCOL = "pref_key_protocol";
     @SuppressWarnings("HardCodedStringLiteral")
-    private final String PREF_KEY_PORT = "pref_key_port";
+    private final String PREF_KEY_ADDRESS = "pref_key_address";
     @SuppressWarnings("HardCodedStringLiteral")
-    private final String PREF_KEY_TOKEN = "pref_key_token";
+    private final String PREF_KEY_PORT = "pref_key_port";
+    @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
+    private final String PREF_KEY_HTTP_HEADER_VALUE = "pref_key_token";
+    @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
+    private final String PREF_KEY_HTTP_HEADER_KEY = "pref_key_httpHeaderKey";
+    @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
+    private final String PREF_KEY_USE_HTTP_HEADER = "pref_key_use_redirection_service";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private final String PREF_KEY_IS_DOUBLE_TARIFF_METER = "pref_key_isDoubleTariffMeter";
     @SuppressWarnings("HardCodedStringLiteral")
     private final String PREF_KEY_IS_FIRST_START = "pref_key_isFirstStart";
-    @SuppressWarnings("HardCodedStringLiteral")
-    private final String PREF_KEY_USE_REDIRECTION_SERVICE = "pref_key_use_redirection_service";
-    @SuppressWarnings("HardCodedStringLiteral")
+    @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
     private final String PREF_KEY_TEMP_SET_VALUE = "pref_key_tempSetValue";
     @SuppressWarnings("HardCodedStringLiteral")
     private final String PREF_KEY_IS_USAGE_INFO_AVAILABLE = "pref_key_isCurrentUsageInfoAvailable";
     @SuppressWarnings("HardCodedStringLiteral")
     private final String PREF_KEY_TRIED_USAGE_INFO_ONCE = "pref_key_triedCurrentUsageInfoOnce";
-    @SuppressWarnings("HardCodedStringLiteral")
+    @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
     private final String PREF_KEY_USE_AUTO_REFRESH = "pref_key_autoRefresh";
-    @SuppressWarnings("HardCodedStringLiteral")
+    @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
     private final String PREF_KEY_AUTO_REFRESH_PERIOD = "pref_key_autoRefreshPeriod";
-    @SuppressWarnings("HardCodedStringLiteral")
+    @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
     private final String PREF_KEY_NEXT_PROGRAM_OR_TEMP = "pref_key_nextProgramOrTemp";
-    @SuppressWarnings("HardCodedStringLiteral")
-    private final String PREF_KEY_ADDRESS = "pref_key_address";
-    @SuppressWarnings("HardCodedStringLiteral")
-    private final String PREF_KEY_IS_DOUBLE_TARIFF_METER = "pref_key_isDoubleTariffMeter";
     @SuppressWarnings("HardCodedStringLiteral")
     private final String PREF_KEY_HAS_DRAWER_PEEKED = "pref_key_hasDrawerPeeked";
     @SuppressWarnings("HardCodedStringLiteral")
-        private final String PREF_KEY_HIDE_GAS_WIDGETS = "pref_key_hasGasMeter";
+    private final String PREF_KEY_HIDE_GAS_WIDGETS = "pref_key_hasGasMeter";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private final String PREF_KEY_SHOW_POWER_PRODUCTION_WIDGETS = "pref_key_showPowerProductionWidgets";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private final String PREF_KEY_HAS_POWER_PRODUCTION_DIALOG_SHOWN = "pref_key_hasPowerProductionDialogShown";
 
     private static AppSettings instance;
     private SharedPreferences sharedPref;
@@ -91,6 +114,7 @@ public class AppSettings {
             try {
                 port = Integer.parseInt(splitted[1]);
             } catch (NumberFormatException e) {
+                FirebaseHelper.getInstance().recordExceptionAndLog(e, "Exception while parsing the string to an integer in app settings");
                 port = 0;
             }
             setPort(port);
@@ -131,18 +155,35 @@ public class AppSettings {
         return getProtocol() + "://" + getAddress() + ":" + getPort();
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
+    public String getHttpHeaderKey(){
+        return sharedPref.getString(PREF_KEY_HTTP_HEADER_KEY, "apikey");
+    }
+
+    public void setHttpHeaderKey(String httpHeaderKey){
+        sharedPref.edit().putString(PREF_KEY_HTTP_HEADER_KEY, httpHeaderKey).apply();
+    }
+
+    public String getHttpHeaderValue(){
+        return sharedPref.getString(PREF_KEY_HTTP_HEADER_VALUE, "");
+    }
+
+    public void setHttpHeaderValue(String httpHeaderValue){
+        sharedPref.edit().putString(PREF_KEY_HTTP_HEADER_VALUE, httpHeaderValue).apply();
+    }
+
     public float getTempSetValue() {
         String value = sharedPref.getString(PREF_KEY_TEMP_SET_VALUE, "0.5");
         if(value == null) value = "0.5"; // To circumvent null pointer exception
         return Float.parseFloat(value);
     }
 
-    public String getApiToken(){
-        return sharedPref.getString(PREF_KEY_TOKEN, "");
+    public boolean useHttpHeader(){
+        return sharedPref.getBoolean(PREF_KEY_USE_HTTP_HEADER, false);
     }
 
-    public boolean useRedirectService(){
-        return sharedPref.getBoolean(PREF_KEY_USE_REDIRECTION_SERVICE, false);
+    public void setUseHttpHeader(boolean useHttpHeader) {
+        sharedPref.edit().putBoolean(PREF_KEY_USE_HTTP_HEADER, useHttpHeader).apply();
     }
 
     public boolean isFirstStart() {
@@ -206,5 +247,21 @@ public class AppSettings {
 
     public boolean showGasWidgets() {
         return sharedPref.getBoolean(PREF_KEY_HIDE_GAS_WIDGETS, true);
+    }
+
+    public void setShowPowerProductionWidgets(boolean showPowerProductionWidgets) {
+        sharedPref.edit().putBoolean(PREF_KEY_SHOW_POWER_PRODUCTION_WIDGETS, showPowerProductionWidgets).apply();
+    }
+
+    public boolean showPowerProductionWidgets() {
+        return sharedPref.getBoolean(PREF_KEY_SHOW_POWER_PRODUCTION_WIDGETS, false);
+    }
+
+    public void setPowerProductionDialogHasShown(boolean hideGasWidgets) {
+        sharedPref.edit().putBoolean(PREF_KEY_HAS_POWER_PRODUCTION_DIALOG_SHOWN, hideGasWidgets).apply();
+    }
+
+    public boolean hasPowerProductionDialogBeenShown() {
+        return sharedPref.getBoolean(PREF_KEY_HAS_POWER_PRODUCTION_DIALOG_SHOWN, false);
     }
 }

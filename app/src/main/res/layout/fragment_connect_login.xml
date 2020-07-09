@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  ~ Copyright (c) 2020
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+  ~ See the NOTICE file distributed with this work for additional information regarding copyright ownership
+  ~ The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing software distributed under the License is
+  ~ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.  See the License for the specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:background="@android:color/holo_blue_dark"
+    android:animateLayoutChanges="true"
     tools:context="com.toonapps.toon.view.ConnectionWizardActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -12,17 +30,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
         android:adjustViewBounds="true"
         android:maxWidth="150dp"
         android:src="@drawable/login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,15 +55,14 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_protocol"
         android:layout_width="wrap_content"
-        android:layout_height="65dp"
-        android:layout_below="@+id/img_login"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="@dimen/_65sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
         android:gravity="center_vertical"
         android:text="@string/connectionWizard_login_protocol"
         android:textSize="20sp"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/img_login"
         tools:textColor="@android:color/black" />
@@ -58,7 +74,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="8dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/img_login">
 
@@ -80,10 +96,9 @@
         android:id="@+id/tv_toonAddress"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
-        android:layout_below="@+id/img_login"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
         android:gravity="center_vertical"
         android:text="@string/connectionWizard_login_toonAddress_title"
         android:textSize="20sp"
@@ -95,12 +110,11 @@
         android:id="@+id/til_toonAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/img_login"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginLeft="@dimen/_8sdp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/rg_protocol">
@@ -117,12 +131,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_toonPort"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
-        android:layout_below="@+id/tv_toonAddress"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
         android:gravity="center_vertical"
         android:text="@string/connectionWizard_login_toonPort_title"
         android:textSize="20sp"
@@ -136,9 +150,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginLeft="@dimen/_8sdp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/til_toonAddress">
@@ -147,7 +161,6 @@
             android:id="@+id/et_toonPort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/et_toonAddress"
             android:gravity="center_vertical"
             android:hint="@string/connectionWizard_login_toonPort_hint"
             android:inputType="numberSigned"
@@ -155,38 +168,148 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_advancedSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:gravity="center_vertical"
+        android:text="@string/connectionWizard_login_advancedSettings"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tv_toonPort"
+        tools:textColor="@android:color/black" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cb_advancedSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginLeft="@dimen/_8sdp"
+        app:layout_constraintStart_toStartOf="@+id/center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/til_toonPort" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_advancedSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_advancedSettings">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/advancedSettings_center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_httpHeaderKey"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:gravity="center_vertical"
+            android:text="@string/connectionWizard_login_httpHeaderKey"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/advancedSettings_center_vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:textColor="@android:color/black" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_httpHeaderKey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/advancedSettings_center_vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_httpHeaderKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="@string/connectionWizard_login_apikey_hint"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_httpHeaderValue"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:gravity="center_vertical"
+            android:text="@string/connectionWizard_login_httpHeaderValue"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/advancedSettings_center_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/tv_httpHeaderKey"
+            tools:textColor="@android:color/black" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_httpHeaderValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/advancedSettings_center_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/til_httpHeaderKey">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_httpHeaderValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="@string/connectionWizard_login_httpHeaderValue_hint"
+                android:inputType="text"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/txt_errorMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/til_toonPort"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="@dimen/_64sdp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_toonPort"
+        app:layout_constraintTop_toBottomOf="@+id/cl_advancedSettings"
         tools:text="@string/exception_message_device_update_error_txt" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/connectionWizard_login_buttonLogin_loginText"
+        android:layout_marginBottom="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_errorMessage" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

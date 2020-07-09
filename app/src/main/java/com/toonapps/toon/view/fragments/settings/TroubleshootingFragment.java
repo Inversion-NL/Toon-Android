@@ -1,8 +1,25 @@
-package com.toonapps.toon.view.fragments;
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
+package com.toonapps.toon.view.fragments.settings;
 
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -17,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.R;
 import com.toonapps.toon.data.IRestClientDebugResponseHandler;
 import com.toonapps.toon.data.RestClient;
@@ -26,13 +44,14 @@ import org.json.JSONObject;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
-public class Troubleshooting extends Fragment implements IRestClientDebugResponseHandler {
+public class TroubleshootingFragment extends Fragment implements IRestClientDebugResponseHandler {
 
     private RestClient restClient;
     private ProgressDialog progressDialog;
     private View view;
     private int currentAction = -1;
     private TextView debugTV;
+    private Context context;
 
     private interface action {
         int ZWAVE_DEVICES = 0;
@@ -40,7 +59,7 @@ public class Troubleshooting extends Fragment implements IRestClientDebugRespons
         int CURRENT_USAGE = 2;
     }
 
-    public Troubleshooting() {
+    public TroubleshootingFragment() {
     }
 
     @Nullable
@@ -50,6 +69,9 @@ public class Troubleshooting extends Fragment implements IRestClientDebugRespons
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_troubleshooting, container, false);
         restClient = new RestClient(this);
+        if (getActivity() != null) //noinspection HardCodedStringLiteral
+            FirebaseAnalytics.getInstance(context)
+                .setCurrentScreen(getActivity(), "Troubleshooting fragment",null);
 
         initProgressDialog();
         setButtonListeners();
@@ -188,5 +210,11 @@ public class Troubleshooting extends Fragment implements IRestClientDebugRespons
                 Toast.makeText(getContext(), R.string.debug_toast_rawDataCopiedToClipboard, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        this.context = context;
+        super.onAttach(context);
     }
 }
