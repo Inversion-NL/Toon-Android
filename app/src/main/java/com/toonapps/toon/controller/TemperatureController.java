@@ -96,19 +96,21 @@ public class TemperatureController implements IRestClientResponseHandler {
 
     @Override
     public void onResponse(ResponseData aResponse) {
-        if (aResponse != null) if (aResponse.getThermostatInfo() != null) {
-            // Data retrieved is thermostat information
-            currentThermostatInfo = aResponse.getThermostatInfo();
-            onTemperatureUpdated(currentThermostatInfo);
-        } else if (aResponse.getResultInfo() != null) {
-            // Data retrieved is result information
-            if (!aResponse.getResultInfo().isSuccess())
-                onError(new ToonException(ToonException.UNHANDLED, null));
-            else updateThermostatInfo();
-        } else if(aResponse.getCurrentUsageInfo() != null) {
-            // Data retrieved is thermostat information
-            onTemperatureUpdated(aResponse.getCurrentUsageInfo());
-        } else onError(new NullPointerException());
+        if (aResponse != null) {
+            if (aResponse.getThermostatInfo() != null) {
+                // Data retrieved is thermostat information
+                currentThermostatInfo = aResponse.getThermostatInfo();
+                onTemperatureUpdated(currentThermostatInfo);
+            } else if (aResponse.getResultInfo() != null) {
+                // Data retrieved is result information
+                if (!aResponse.getResultInfo().isSuccess())
+                    onError(new ToonException(ToonException.UNHANDLED, null));
+                else updateThermostatInfo();
+            } else if(aResponse.getCurrentUsageInfo() != null) {
+                // Data retrieved is thermostat information
+                onTemperatureUpdated(aResponse.getCurrentUsageInfo());
+            } else onError(new NullPointerException());
+        }
     }
 
     @Override

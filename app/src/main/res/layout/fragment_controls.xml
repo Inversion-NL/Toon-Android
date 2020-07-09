@@ -160,7 +160,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Om 23:00 op Slapen"/>
+                tools:text="Om 23:00 on Sleep"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/swIsProgramOn"
@@ -255,7 +255,8 @@
                     android:id="@+id/txtvTotalPowerUse"
                     style="@style/style_txtv_PowerGasDescription"
                     android:text="0 kWh"
-                    tools:text="40 kWh" />
+                    tools:text="40 kWh"
+                    tools:ignore="HardcodedText" />
 
             </androidx.cardview.widget.CardView>
 
@@ -272,7 +273,8 @@
                     android:id="@+id/txtvTotalGasUse"
                     style="@style/style_txtv_PowerGasDescription"
                     android:text="0 m3"
-                    tools:text="2345 m3" />
+                    tools:text="2345 m3"
+                    tools:ignore="HardcodedText" />
 
             </androidx.cardview.widget.CardView>
         </GridLayout>
