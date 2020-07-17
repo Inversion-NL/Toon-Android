@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.toonapps.toon.data;
 
 import com.android.volley.Request;
@@ -15,29 +31,37 @@ import java.util.Map;
 
 public class RestClient {
 
-    @SuppressWarnings("HardCodedStringLiteral")
-    private static final String API_KEY = "Api-Key";
+    private String httpHeaderKey;
     private String url;
-    private String token;
-    private String seperator;
+    private String httpHeaderValue;
+    private String separator;
     private final IRestClientResponseHandler responseHandler;
+    private final IRestClientDebugResponseHandler responseDebugHandler;
 
     public RestClient(IRestClientResponseHandler aResponseHandler){
         getDataFromSharedPreferences();
         responseHandler = aResponseHandler;
+        responseDebugHandler = null;
+    }
+
+    public RestClient(IRestClientDebugResponseHandler aResponseDebugHandler){
+        getDataFromSharedPreferences();
+        responseDebugHandler = aResponseDebugHandler;
+        responseHandler = null;
     }
 
     private void getDataFromSharedPreferences() {
         url =  AppSettings.getInstance().getUrl();
-        token = AppSettings.getInstance().getApiToken();
-        seperator = AppSettings.getInstance().useRedirectService() ? "?" : "/";
+        httpHeaderValue = AppSettings.getInstance().getHttpHeaderValue();
+        httpHeaderKey = AppSettings.getInstance().getHttpHeaderKey();
+        separator = "/";
     }
 
     public void setSchemeTemperatureState(int aMode) {
         getDataFromSharedPreferences();
 
-        //noinspection HardCodedStringLiteral
-        url = url + seperator + "happ_thermstat?action=changeSchemeState&state=2&temperatureState=" + aMode;
+        //noinspection SpellCheckingInspection,HardCodedStringLiteral
+        url = url + separator + "happ_thermstat?action=changeSchemeState&state=2&temperatureState=" + aMode;
 
         StringRequest request =
             new StringRequest(
@@ -60,7 +84,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -71,7 +95,7 @@ public class RestClient {
 
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_flow&rra=5min&readableTime=0&nullForNaN=1&from=" + startTime + "&to=" + endTime;
+        url = url + separator + "hcb_rrd?action=getRrdData&loggerName=elec_flow&rra=5min&readableTime=0&nullForNaN=1&from=" + startTime + "&to=" + endTime;
 
         StringRequest request =
             new StringRequest(
@@ -103,7 +127,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -117,7 +141,7 @@ public class RestClient {
         long now = TimeHelper.getNow().getTimeInMillis() / 1000;
 
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_quantity_nt&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
+        url = url + separator + "hcb_rrd?action=getRrdData&loggerName=elec_quantity_nt&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
 
         StringRequest request =
             new StringRequest(
@@ -151,7 +175,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -165,7 +189,7 @@ public class RestClient {
         long now = TimeHelper.getNow().getTimeInMillis() / 1000;
 
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=elec_quantity_lt&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
+        url = url + separator + "hcb_rrd?action=getRrdData&loggerName=elec_quantity_lt&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
 
         StringRequest request =
             new StringRequest(
@@ -198,7 +222,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -212,7 +236,7 @@ public class RestClient {
         long now = TimeHelper.getNow().getTimeInMillis() / 1000;
 
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=gas_quantity&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
+        url = url + separator + "hcb_rrd?action=getRrdData&loggerName=gas_quantity&rra=5yrhours&readableTime=0&nullForNaN=1&from=" + midnight + "&to=" + now;
 
         StringRequest request =
                 new StringRequest(
@@ -244,7 +268,7 @@ public class RestClient {
                     @Override
                     public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
-                        headers.put(API_KEY, token);
+                        headers.put(httpHeaderKey, httpHeaderValue);
                         return headers;
                     }
                 };
@@ -255,7 +279,7 @@ public class RestClient {
 
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "hcb_rrd?action=getRrdData&loggerName=gas_flow&rra=5min&readableTime=0&nullForNaN=1&from=" + startTime + "&to=" + endTime;
+        url = url + separator + "hcb_rrd?action=getRrdData&loggerName=gas_flow&rra=5min&readableTime=0&nullForNaN=1&from=" + startTime + "&to=" + endTime;
 
         StringRequest request =
             new StringRequest(
@@ -287,7 +311,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -299,7 +323,7 @@ public class RestClient {
         int isProgramOn = (anIsProgramOn) ? 1 : 0;
 
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "happ_thermstat?action=changeSchemeState&state=" + isProgramOn;
+        url = url + separator + "happ_thermstat?action=changeSchemeState&state=" + isProgramOn;
 
         StringRequest request =
             new StringRequest(
@@ -322,7 +346,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -333,7 +357,7 @@ public class RestClient {
         getDataFromSharedPreferences();
 
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "happ_thermstat?action=setSetpoint&Setpoint=" + aTemperature;
+        url = url + separator + "happ_thermstat?action=setSetpoint&Setpoint=" + aTemperature;
 
         StringRequest request =
             new StringRequest(
@@ -356,7 +380,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -366,7 +390,7 @@ public class RestClient {
     public void getThermostatInfo(){
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "happ_thermstat?action=getThermostatInfo";
+        url = url + separator + "happ_thermstat?action=getThermostatInfo";
 
         StringRequest request =
             new StringRequest(
@@ -389,10 +413,106 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getDebugThermostatInfo(){
+        getDataFromSharedPreferences();
+        //noinspection HardCodedStringLiteral
+        url = url + separator + "happ_thermstat?action=getThermostatInfo";
+
+        StringRequest request =
+                new StringRequest(
+                        Request.Method.GET,
+                        url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                responseDebugHandler.onResponseError(error);
+                            }
+                        }
+                ){
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put(httpHeaderKey, httpHeaderValue);
+                        return headers;
+                    }
+                };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getDebugZwaveDevices(){
+        getDataFromSharedPreferences();
+        //noinspection HardCodedStringLiteral
+        url = url + separator + "hdrv_zwave?action=getDevices.json";
+
+        StringRequest request =
+                new StringRequest(
+                        Request.Method.GET,
+                        url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                responseDebugHandler.onResponseError(error);
+                            }
+                        }
+                ){
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put(httpHeaderKey, httpHeaderValue);
+                        return headers;
+                    }
+                };
+        AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    public void getDebugCurrentUsage(){
+        getDataFromSharedPreferences();
+        //noinspection HardCodedStringLiteral
+        url = url + separator + "happ_pwrusage?action=GetCurrentUsage";
+
+        StringRequest request =
+                new StringRequest(
+                        Request.Method.GET,
+                        url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                responseDebugHandler.onResponseError(error);
+                            }
+                        }
+                ){
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put(httpHeaderKey, httpHeaderValue);
+                        return headers;
+                    }
+                };
         AppController.getInstance().getRequestQueue().add(request);
     }
 
@@ -400,7 +520,7 @@ public class RestClient {
         getDataFromSharedPreferences();
 
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "hdrv_zwave?action=getDevices.json";
+        url = url + separator + "hdrv_zwave?action=getDevices.json";
 
         StringRequest request =
             new StringRequest(
@@ -409,7 +529,7 @@ public class RestClient {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ResponseData responseData = null;
+                        ResponseData responseData;
                         try {
                             responseData = Converter.convertFromDeviceInfo(response);
                             if (responseHandler != null) responseHandler.onResponse(responseData);
@@ -429,7 +549,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -440,7 +560,7 @@ public class RestClient {
         getDataFromSharedPreferences();
 
         //noinspection HardCodedStringLiteral
-        url = url + seperator + "happ_pwrusage?action=GetCurrentUsage";
+        url = url + separator + "happ_pwrusage?action=GetCurrentUsage";
 
         StringRequest request =
             new StringRequest(
@@ -463,7 +583,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };

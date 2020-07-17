@@ -1,8 +1,50 @@
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.toonapps.toon.entity;
 
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings({"unused", "HardCodedStringLiteral"})
+
+/*
+    x.1 = gas
+    x.2 (imported analog elec measured)
+    x.3(PV measured zon op toon)
+    x.4(P1 imported elec) NT (Normal Tarif)
+    x.5(P1 exported elec) NT (Normal Tarif)
+    x.6(P1 imported elec) LT (lower Tarif)
+    x.7(P1 exported elec) LT (lower Tarif)
+    x.8 city heat
+    x.9 water meter
+
+    als je P1 hebt aangesloten is x.2 altijd NaN
+
+    owh en powerUsage is dus, indien zon op toon is geconfigureed, gecalculeerd
+    en dus niet wat de P1 zegt wat geimporteerd is
+
+    powerUsage = (P1 powerUsage) +  (PV kWh meter power generated) - (P1 powerProduction)
+
+    en normaal gesproken is altijd een van beide (P1 powerusage of P1 powerproduction) 0 en de andere een waarde (je importeerd of produceerd volgens de P1 meter, nooit tegelijk)
+
+    Ook bij 3 fase is de totaal altijd een van de twee 0. Er zijn een tijdje foute slimme meters geweest die dat fout deden bij 3 fase.
+    De afspraak is namelijk dat de slimme meter intern de fases moet optellen en productie en verbruik tegen elkaar moet afwegen en dat pas rapporteren.
+    als je dus op fase 1 3000 watt produceerd en op fase 2 1000 watt verbruikt dan is je netto levering 2000 watt en netto import 0 watt  (ook al importeer je 1000 watt)
+ */
+
 public class DeviceInfo {
     @SerializedName("dev_settings_device")
     private DeviceSettings devSettings;

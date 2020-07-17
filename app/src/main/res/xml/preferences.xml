@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+  ~ Copyright (c) 2020
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+  ~ See the NOTICE file distributed with this work for additional information regarding copyright ownership
+  ~ The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing software distributed under the License is
+  ~ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.  See the License for the specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
         android:title="@string/pref_appSettings_category_title">
         <ListPreference
@@ -9,7 +27,7 @@
             android:defaultValue="0.5"
             android:entries="@array/tempSetValues"
             android:entryValues="@array/tempSetValues"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="pref_key_autoRefresh"
             android:title="@string/pref_appSettings_refresh_useAutoRefresh_title"
             android:defaultValue="true"
@@ -29,6 +47,16 @@
             android:key="pref_key_isDoubleTariffMeter"
             android:title="@string/pref_meterSettings_doubleTariff_title"
             android:summary="@string/pref_meterSettings_doubleTariff_summary"/>
+        <CheckBoxPreference
+            android:key="pref_key_hasGasMeter"
+            android:title="@string/pref_meterSettings_gasMeter_title"
+            android:summary="@string/pref_meterSettings_gasMeter_summary"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="pref_key_showPowerProductionWidgets"
+            android:title="@string/pref_meterSettings_PowerProduction_title"
+            android:summary="@string/pref_meterSettings_PowerProduction_summary"
+            android:defaultValue="false"/>
 
     </PreferenceCategory>
 
@@ -47,32 +75,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/pref_advanced_category_title"
-        android:key="pref_key_network_advanced">
+        android:key="pref_key_network_advanced"
+        android:title="@string/pref_advanced_category_title" >
+        <Preference
+            app:fragment="com.toonapps.toon.view.fragments.settings.settingsAdvancedFragment"
+            android:key="pref_key_advanced_settings_fragment"
+            android:title="@string/pref_advanced_category_title"
+            android:summary="Click here for advanced settings"
+        />
 
-        <CheckBoxPreference
-            android:key="pref_key_use_redirection_service"
-            android:title="@string/pref_advanced_redirectionService_title"
-            android:summary="@string/pref_advanced_redirectionService_summary" />
-
-        <EditTextPreference
-            android:defaultValue="@string/pref_advanced_token_default"
-            android:dependency="pref_key_use_redirection_service"
-            android:key="pref_key_token"
-            android:summary="@string/pref_advanced_token_summary"
-            android:title="@string/pref_advanced_token_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_appInfo_category_title"
-        android:key="key_pref_appInfo_category">
-        <Preference
-            android:key="key_pref_appInfo_appVersion"
-            android:title="@string/pref_appInfo_appVersion_title"
-            android:summary="0.0.0"/>
-        <Preference
-            android:key="key_pref_appInfo_appLibraries"
-            android:title="@string/pref_appInfo_appLibraries_title"
-            android:summary="@string/pref_appInfo_appLibraries_summary"/>
-    </PreferenceCategory>
 </PreferenceScreen>

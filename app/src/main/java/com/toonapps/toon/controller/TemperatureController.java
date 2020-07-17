@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.toonapps.toon.controller;
 
 import com.toonapps.toon.data.IRestClientResponseHandler;
@@ -96,19 +112,21 @@ public class TemperatureController implements IRestClientResponseHandler {
 
     @Override
     public void onResponse(ResponseData aResponse) {
-        if (aResponse != null) if (aResponse.getThermostatInfo() != null) {
-            // Data retrieved is thermostat information
-            currentThermostatInfo = aResponse.getThermostatInfo();
-            onTemperatureUpdated(currentThermostatInfo);
-        } else if (aResponse.getResultInfo() != null) {
-            // Data retrieved is result information
-            if (!aResponse.getResultInfo().isSuccess())
-                onError(new ToonException(ToonException.UNHANDLED, null));
-            else updateThermostatInfo();
-        } else if(aResponse.getCurrentUsageInfo() != null) {
-            // Data retrieved is thermostat information
-            onTemperatureUpdated(aResponse.getCurrentUsageInfo());
-        } else onError(new NullPointerException());
+        if (aResponse != null) {
+            if (aResponse.getThermostatInfo() != null) {
+                // Data retrieved is thermostat information
+                currentThermostatInfo = aResponse.getThermostatInfo();
+                onTemperatureUpdated(currentThermostatInfo);
+            } else if (aResponse.getResultInfo() != null) {
+                // Data retrieved is result information
+                if (!aResponse.getResultInfo().isSuccess())
+                    onError(new ToonException(ToonException.UNHANDLED, null));
+                else updateThermostatInfo();
+            } else if(aResponse.getCurrentUsageInfo() != null) {
+                // Data retrieved is thermostat information
+                onTemperatureUpdated(aResponse.getCurrentUsageInfo());
+            } else onError(new NullPointerException());
+        }
     }
 
     @Override
