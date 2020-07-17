@@ -1,3 +1,19 @@
+<!--
+  ~ Copyright (c) 2020
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+  ~ See the NOTICE file distributed with this work for additional information regarding copyright ownership
+  ~ The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing software distributed under the License is
+  ~ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.  See the License for the specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
 <resources>
     <string name="app_name">Toon</string>
 
@@ -17,15 +33,20 @@
     <string name="pref_meterSettings_doubleTariff_summary">Meter is a double tariff meter</string>
     <string name="pref_meterSettings_gasMeter_title">Gas meter</string>
     <string name="pref_meterSettings_gasMeter_summary">Disable this checkbox if your meter doesn\'t have gas values reported</string>
+    <string name="pref_meterSettings_PowerProduction_title">Power production</string>
+    <string name="pref_meterSettings_PowerProduction_summary">Enable this checkbox if Toon can measure power production</string>
     <string name="pref_network_category_title">Network settings</string>
     <string name="pref_network_setupConnection_title">Set up connection</string>
     <string name="pref_network_setupConnection_summary">Click here to set up the connection to Toon</string>
-    <string name="pref_advanced_redirectionService_title">Use redirection service</string>
-    <string name="pref_advanced_redirectionService_summary">Use redirect script to prevent the use of a port forward in your router to the Toon thermostat</string>
-    <string name="pref_advanced_token_title">Api token</string>
-    <string name="pref_advanced_token_summary">Enter, if used, the api token. this is send within the http header</string>
-    <string name="pref_advanced_token_default" translatable="false" />
     <string name="pref_advanced_category_title">Advanced settings</string>
+    <string name="pref_advanced_httpHeader_category_title">Use custom HTTP header</string>
+    <string name="pref_advanced_httpHeader_category_summary">Use a custom HTTP header key/value to enhance the security a bit when connecting from internet</string>
+    <string name="pref_advanced_httpHeader_value_title">HTTP header value</string>
+    <string name="pref_advanced_httpHeader_value_summary">Enter the HTTP header value</string>
+    <string name="pref_advanced_httpHeader_value_default" translatable="false" />
+    <string name="pref_advanced_httpHeader_key_title">HTTP header key</string>
+    <string name="pref_advanced_httpHeader_key_summary">Enter the HTTP header key</string>
+    <string name="pref_advanced_httpHeader_key_default" translatable="false">apikey</string>
     <string name="pref_appInfo_category_title">App info</string>
     <string name="pref_appInfo_appVersion_title">App version</string>
     <string name="pref_appInfo_appLibraries_title">Libraries used</string>
@@ -43,6 +64,8 @@
     <string name="controls_card_gasUsage_gasUsage_title">Gas usage</string>
     <string name="controls_card_powerUsage_img_current_power">Image current power usage</string>
     <string name="controls_card_GasUsage_img_current_gas">Image current gas usage</string>
+    <string name="controls_power_production">Power production</string>
+    <string name="controls_power_return">Power return</string>
     <string name="controls_nextProgramText_noData">No data</string>
     <string name="controls_nextProgramValue">At %s on %s (%.01f°)</string>
     <string name="controls_fire_description_img">Image fire</string>
@@ -64,10 +87,10 @@
     <string name="connectionWizard_login_toonPort_title">Toon port</string>
     <string name="connectionWizard_login_buttonLogin_loginText">Login</string>
     <string name="connectionWizard_login_buttonLogin_retryText">Retry</string>
-    <string name="connectionWizard_login_error_pleaseEnterAddress">Please enter address</string>
+    <string name="connectionWizard_login_error_pleaseEnterAddress">Please a value</string>
     <string name="connectionWizard_login_error_noValidInput">Not a valid input</string>
-    <string name="connectionWizard_login_error_pleaseEnterPortNumber">Please enter a port number</string>
-    <string name="connectionWizard_login_error_enterValidPortNumber">Enter a valid port number</string>
+    <string name="connectionWizard_login_error_pleaseEnterNumber">Please enter a number</string>
+    <string name="connectionWizard_login_error_enterValidNumber">Enter a valid number</string>
     <string name="connectionWizard_login_error_pleaseOnlyUseNumbers">Please only use numbers</string>
     <string name="connectionWizard_intro_title">Toon app</string>
     <string name="connectionWizard_login_protocol_http">HTTP</string>
@@ -78,6 +101,11 @@
     <string name="connectionWizard_login_toonAddress_hint" translatable="false">192.168.0.10</string>
     <string name="connectionWizard_login_toonPort_hint" translatable="false">80</string>
     <string name="connectionWizard_login_protocol">Protocol</string>
+    <string name="connectionWizard_login_httpHeaderKey">HTTP header key</string>
+    <string name="connectionWizard_login_apikey_hint">apikey</string>
+    <string name="connectionWizard_login_httpHeaderValue">HTTP header value</string>
+    <string name="connectionWizard_login_httpHeaderValue_hint">mysecretvalue</string>
+    <string name="connectionWizard_login_advancedSettings">Advanced settings</string>
 
     <string name="exception_message_temperature_update_error_txt">Error while updating temperature info</string>
     <string name="exception_message_device_update_error_txt">Error while updating device info</string>
@@ -128,5 +156,16 @@
     <string name="debug_button_thermostat">Therm</string>
     <string name="debug_button_usage">Usage</string>
     <string name="debug_switch_format">Format</string>
+
+    <string name="dialog_button_yes">Yes</string>
+    <string name="dialog_button_no">No</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_powerProduction_askForEnable_title">Enable power production?</string>
+    <string name="dialog_powerProduction_askForEnable_message1">It looks like your Toon reads power production</string>
+    <string name="dialog_powerProduction_askForEnable_message2">Would you like to enable the power production widgets in the app?</string>
+    <string name="dialog_powerProduction_askForEnable_message3">You can always enable this later in the app settings</string>
+
+    <string name="testing">Testing!</string>
 
 </resources>

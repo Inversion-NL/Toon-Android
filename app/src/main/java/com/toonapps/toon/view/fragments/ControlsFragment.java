@@ -1,6 +1,23 @@
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.toonapps.toon.view.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +36,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.R;
 import com.toonapps.toon.controller.DeviceController;
 import com.toonapps.toon.controller.GasAndElecFlowController;
@@ -32,6 +50,8 @@ import com.toonapps.toon.entity.ThermostatInfo;
 import com.toonapps.toon.entity.UsageInfo;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.ErrorMessage;
+import com.toonapps.toon.helper.FirebaseHelper;
+import com.toonapps.toon.helper.ScreenHelper;
 import com.toonapps.toon.helper.TimerHelper;
 
 import org.json.JSONException;
@@ -71,6 +91,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
     private float lowTariff = 0;
     private float normalTariff = 0;
     private boolean useGasInfoFromDevices = false;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public ControlsFragment() {
         // Required empty public constructor
@@ -84,6 +105,12 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         //noinspection HardCodedStringLiteral
         simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         setResources();
+
+        if (getActivity() != null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+            //noinspection HardCodedStringLiteral
+            mFirebaseAnalytics.setCurrentScreen(getActivity(), "Controls fragment",null);
+        }
 
         return view;
     }
@@ -181,33 +208,43 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                 case R.id.btnAwayMode:
                     TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.AWAY);
                     switchButtonState(ThermostatInfo.TemperatureMode.AWAY, false);
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.MODE.BUTTON_MODE_AWAY, null);
                     break;
                 case R.id.btnSleepMode:
                     TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.SLEEP);
                     switchButtonState(ThermostatInfo.TemperatureMode.SLEEP, false);
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.MODE.BUTTON_MODE_SLEEP, null);
                     break;
                 case R.id.btnHomeMode:
                     TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.HOME);
                     switchButtonState(ThermostatInfo.TemperatureMode.HOME, false);
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.MODE.BUTTON_MODE_HOME, null);
                     break;
                 case R.id.btnComfortMode:
                     TemperatureController.getInstance().setTemperatureMode(ThermostatInfo.TemperatureMode.COMFORT);
                     switchButtonState(ThermostatInfo.TemperatureMode.COMFORT, false);
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.MODE.BUTTON_MODE_COMFORT, null);
                     break;
                 case R.id.btnPlus:
                     TemperatureController.getInstance().setTemperatureHigher(tempSetValue);
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.TEMPERATURE.BUTTON_TEMP_PLUS, null);
                     break;
                 case R.id.btnMin:
                     TemperatureController.getInstance().setTemperatureLower(tempSetValue);
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.TEMPERATURE.BUTTON_TEMP_MIN, null);
                     break;
                 case R.id.cardTotalGas:
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.GAS.CARD_GAS_TOTAL, null);
                 case R.id.cardGasUsage:
                     if (mListener != null) {
                         mListener.onFragmentInteraction(OnFragmentInteractionListener.ACTION.START.GAS_USAGE);
+                        mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.GAS.CARD_GAS_USAGE, null);
                     }
                     break;
                 case R.id.cardTotalPower:
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.ELEC.CARD_ELEC_TOTAL, null);
                 case R.id.cardPowerUsage:
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.ELEC.CARD_ELEC_USAGE, null);
                     if (mListener != null) {
                         mListener.onFragmentInteraction(OnFragmentInteractionListener.ACTION.START.ELEC_USAGE);
                     }
@@ -430,9 +467,25 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
         float powerProduction = aCurrentUsageInfo.getPowerProduction().getValue();
 
+        //Random random = new Random();
+        //powerProduction = random.nextInt(30000) / 10f;
+        //AppSettings.getInstance().setPowerProductionDialogHasShown(false);
+
+        /*
         if (powerProduction > 0) {
-            //TODO do something with power production
+
+            if (!AppSettings.getInstance().hasPowerProductionDialogBeenShown()) {
+                showPowerProductionDialog();
+            } else if (AppSettings.getInstance().showPowerProductionWidgets()) {
+                enablePowerProductionFeatures(true);
+                calculatePowerProduction(powerProduction);
+            } else enablePowerProductionFeatures(false);
+
+        }  else if (!AppSettings.getInstance().showPowerProductionWidgets()) {
+            enablePowerProductionFeatures(false);
         }
+
+        */
 
         setPowerMeter(
                 aCurrentUsageInfo.getPowerUsage().getValue(),
@@ -452,6 +505,111 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
         isUpdatingUI2 = false;
         if (!isUpdatingUI) setRefreshing(false);
+    }
+
+    private void calculatePowerProduction(float powerProduction) {
+        // TODO Calculate power production
+        TextView txtvPowerProduction = view.findViewById(R.id.txtvPowerProduction);
+        //noinspection HardCodedStringLiteral
+        txtvPowerProduction.setText(powerProduction + " KWh" );
+    }
+
+    private void enablePowerProductionFeatures(boolean show) {
+        if (show) {
+
+            if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.HIGH) {
+                showPowerBarImages(true);           // Only show on high density screens
+            } else {
+                showPowerBarImages(false);          // Hide power bar images when showing
+            }
+            showPowerProductionWidgets(true);
+
+        } else {
+
+            if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.NORMAL) {
+                showPowerBarImages(true);           // Only show on normal density screens
+            } else if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.LOW){
+                showPowerBarImages(false);          // Never show on small screens
+            }
+            showPowerProductionWidgets(false);
+        }
+    }
+
+    private void showPowerProductionWidgets(boolean show) {
+
+        CardView cardPowerProduction = view.findViewById(R.id.cardPowerProduction);
+        CardView cardPowerReturn = view.findViewById(R.id.cardPowerReturn);
+
+        int isShowingProduction = cardPowerProduction.getVisibility();
+
+        if (show && isShowingProduction != View.VISIBLE) {
+
+            // No point in setting to visible if already visible
+            cardPowerProduction.setVisibility(View.VISIBLE);
+            cardPowerReturn.setVisibility(View.VISIBLE);
+
+        } else if (!show && isShowingProduction != View.GONE) {
+
+            // No point in setting to gone if already gone
+            cardPowerProduction.setVisibility(View.GONE);
+            cardPowerReturn.setVisibility(View.GONE);
+
+        }
+    }
+
+    private void showPowerBarImages(boolean show) {
+
+        if (show) {
+            setCardGasUsageLayoutSize(170);         // Large to be able to show power bar images
+            imgvCurrentGas.setVisibility(View.VISIBLE);
+            imgvCurrentPower.setVisibility(View.VISIBLE);
+        } else {
+            imgvCurrentGas.setVisibility(View.GONE);
+            imgvCurrentPower.setVisibility(View.GONE);
+            setCardGasUsageLayoutSize(70);          // Small because power bar images are gone
+        }
+
+    }
+
+    private void setCardGasUsageLayoutSize(int size) {
+        CardView cardPowerUsage = view.findViewById(R.id.cardPowerUsage);
+        ViewGroup.LayoutParams cardPowerUsageParams = cardPowerUsage.getLayoutParams();
+
+        CardView cardGasUsage = view.findViewById(R.id.cardGasUsage);
+        ViewGroup.LayoutParams cardGasUsageParams = cardGasUsage.getLayoutParams();
+
+        cardGasUsageParams.height = ScreenHelper.convertDpsToPixels(context,size);
+        cardPowerUsageParams.height = ScreenHelper.convertDpsToPixels(context,size);
+
+    }
+
+    private void showPowerProductionDialog() {
+        String message = getString(R.string.dialog_powerProduction_askForEnable_message1).concat("\n")
+                .concat(getString(R.string.dialog_powerProduction_askForEnable_message2)).concat("\n")
+                .concat(getString(R.string.dialog_powerProduction_askForEnable_message3));
+
+        AlertDialog.Builder powerProductionDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.dialog_powerProduction_askForEnable_title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setIcon(android.R.drawable.ic_dialog_info);
+        powerProductionDialog.setPositiveButton(R.string.dialog_button_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                AppSettings.getInstance().setShowPowerProductionWidgets(true);
+                AppSettings.getInstance().setPowerProductionDialogHasShown(true);
+                enablePowerProductionFeatures(true);
+            }
+        });
+        powerProductionDialog.setNegativeButton(R.string.dialog_button_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                AppSettings.getInstance().setShowPowerProductionWidgets(false);
+                AppSettings.getInstance().setPowerProductionDialogHasShown(true);
+                enablePowerProductionFeatures(false);
+            }
+        });
+        powerProductionDialog.show();
     }
 
     @Override
@@ -608,7 +766,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(android.R.string.yes, null)
+                .setPositiveButton(R.string.dialog_button_yes, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
