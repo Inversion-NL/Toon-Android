@@ -241,7 +241,9 @@ public class LoginFragment extends SlideFragment {
     }
 
     private void dismissProgressDialog() {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            if (progressDialog.isShowing()) progressDialog.dismiss();
+        }
     }
 
     private boolean checkFields() {
@@ -299,5 +301,12 @@ public class LoginFragment extends SlideFragment {
     public void onAttach(@NonNull Context context) {
         this.context = context;
         super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        // On detaching the fragment, dismiss the progress dialog
+        dismissProgressDialog();
+        super.onDetach();
     }
 }
