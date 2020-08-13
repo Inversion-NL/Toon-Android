@@ -87,7 +87,7 @@
     <string name="connectionWizard_login_toonPort_title">Toon port</string>
     <string name="connectionWizard_login_buttonLogin_loginText">Login</string>
     <string name="connectionWizard_login_buttonLogin_retryText">Retry</string>
-    <string name="connectionWizard_login_error_pleaseEnterAddress">Please a value</string>
+    <string name="connectionWizard_login_error_pleaseEnterAddress">Please enter a value</string>
     <string name="connectionWizard_login_error_noValidInput">Not a valid input</string>
     <string name="connectionWizard_login_error_pleaseEnterNumber">Please enter a number</string>
     <string name="connectionWizard_login_error_enterValidNumber">Enter a valid number</string>

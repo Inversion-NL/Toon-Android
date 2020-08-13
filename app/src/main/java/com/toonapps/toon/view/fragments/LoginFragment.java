@@ -18,6 +18,7 @@ package com.toonapps.toon.view.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -238,6 +239,12 @@ public class LoginFragment extends SlideFragment {
         progressDialog.setMessage(getString(R.string.connectionWizard_login_msg_loading_text));
         progressDialog.setCancelable(true);
         progressDialog.show();
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                cancelAllRequests();
+            }
+        });
     }
 
     private void dismissProgressDialog() {
@@ -292,6 +299,10 @@ public class LoginFragment extends SlideFragment {
 
     }
 
+    private void cancelAllRequests() {
+        DeviceController.getInstance().cancelAllRequests();
+    }
+
     @Override
     public boolean canGoForward() {
         return loggedIn;
@@ -305,6 +316,9 @@ public class LoginFragment extends SlideFragment {
 
     @Override
     public void onDetach() {
+        // Cancel all pending requests
+        cancelAllRequests();
+
         // On detaching the fragment, dismiss the progress dialog
         dismissProgressDialog();
         super.onDetach();
