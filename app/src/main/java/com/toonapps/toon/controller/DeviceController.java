@@ -24,6 +24,8 @@ import com.toonapps.toon.entity.DeviceInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class DeviceController implements IRestClientResponseHandler {
 
     private final RestClient restClient;
@@ -63,6 +65,14 @@ public class DeviceController implements IRestClientResponseHandler {
         for(IDeviceListener aListener : devicesListenerList){
             aListener.onDeviceInfoChanged(aDeviceInfo);
         }
+    }
+
+    /**
+     * Cancels all pending and ongoing requests in the Volley request que
+     */
+    public void cancelAllRequests() {
+        Timber.d("Cancelling all requests in request queue");
+        restClient.cancelRequestQueue();
     }
 
     private void onError(Exception e){
