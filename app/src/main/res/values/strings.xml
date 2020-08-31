@@ -161,11 +161,14 @@
     <string name="dialog_button_no">No</string>
     <string name="dialog_button_cancel">Cancel</string>
     <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_notNow">Not now</string>
+
     <string name="dialog_powerProduction_askForEnable_title">Enable power production?</string>
     <string name="dialog_powerProduction_askForEnable_message1">It looks like your Toon reads power production</string>
     <string name="dialog_powerProduction_askForEnable_message2">Would you like to enable the power production widgets in the app?</string>
     <string name="dialog_powerProduction_askForEnable_message3">You can always enable this later in the app settings</string>
+    <string name="dialog_appUpdate_available_title">App update available</string>
+    <string name="dialog_appUpdate_available_msg">There is an app update available for more then 30 days. Would you like to update now?</string>
 
     <string name="testing">Testing!</string>
-
 </resources>

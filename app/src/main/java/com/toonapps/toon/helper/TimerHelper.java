@@ -37,12 +37,7 @@ public class TimerHelper {
     private final TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onTime();
-                }
-            });
+            mActivity.runOnUiThread(listener::onTime);
         }
     };
 

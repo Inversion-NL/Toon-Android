@@ -152,11 +152,14 @@
     <string name="dialog_button_no">Nee</string>
     <string name="dialog_button_cancel">Annuleren</string>
     <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_notNow">Niet nu</string>
+
     <string name="dialog_powerProduction_askForEnable_title">Zonnepanelen inschakelen?</string>
     <string name="dialog_powerProduction_askForEnable_message1">Het lijkt er op dat er zonnepanelen verbonden zijn aan Toon</string>
     <string name="dialog_powerProduction_askForEnable_message2">Wil in de app zien hoeveel stroom er opgewekt wordt?</string>
     <string name="dialog_powerProduction_askForEnable_message3">Je kunt dit later altijd nog inschakelen in de instellingen</string>
+    <string name="dialog_appUpdate_available_title">App update available</string>
+    <string name="dialog_appUpdate_available_msg">There is an app update available for more then 30 days. Would you like to update now?</string>
 
     <string name="testing">Testing!</string>
-
 </resources>

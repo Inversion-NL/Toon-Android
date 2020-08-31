@@ -18,14 +18,12 @@ package com.toonapps.toon.view.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -40,6 +38,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
+import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
 import com.toonapps.toon.controller.DeviceController;
 import com.toonapps.toon.controller.IDeviceListener;
@@ -100,14 +99,14 @@ public class LoginFragment extends SlideFragment {
     }
 
     private void setAndInitWidgets(View view) {
-        if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.LOW) {
+        if (ScreenHelper.getDisplayDensityDpi(context, BuildConfig.DEBUG) == ScreenHelper.DISPLAY_DENSITY.LOW) {
             // Hide image for small devices
             AppCompatImageView img_login = view.findViewById(R.id.img_login);
             img_login.setVisibility(View.GONE);
         }
 
         if (AppSettings.getInstance() != null) {
-            // Sometimes either AppSettings or sharedPref in Appsettings is null
+            // Sometimes either AppSettings or sharedPref in App settings is null
 
             et_toonAddress = view.findViewById(R.id.et_toonAddress);
             et_toonPort = view.findViewById(R.id.et_toonPort);
@@ -129,12 +128,9 @@ public class LoginFragment extends SlideFragment {
             } else rb_protocol_http.setChecked(true);
 
             btn_login = view.findViewById(R.id.btn_login);
-            btn_login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (checkFields()) updateData();
-                    else advancedFieldCheck();
-                }
+            btn_login.setOnClickListener(v -> {
+                if (checkFields()) updateData();
+                else advancedFieldCheck();
             });
 
             cl_advancedSettings = view.findViewById(R.id.cl_advancedSettings);
@@ -154,12 +150,9 @@ public class LoginFragment extends SlideFragment {
             } else {
                 cl_advancedSettings.setVisibility(View.GONE);
             }
-            cb_advancedSettings.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) cl_advancedSettings.setVisibility(View.VISIBLE);
-                    else cl_advancedSettings.setVisibility(View.GONE);
-                }
+            cb_advancedSettings.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) cl_advancedSettings.setVisibility(View.VISIBLE);
+                else cl_advancedSettings.setVisibility(View.GONE);
             });
         }
     }
@@ -239,12 +232,7 @@ public class LoginFragment extends SlideFragment {
         progressDialog.setMessage(getString(R.string.connectionWizard_login_msg_loading_text));
         progressDialog.setCancelable(true);
         progressDialog.show();
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                cancelAllRequests();
-            }
-        });
+        progressDialog.setOnCancelListener(dialog -> cancelAllRequests());
     }
 
     private void dismissProgressDialog() {

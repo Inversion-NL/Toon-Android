@@ -63,6 +63,8 @@ public class AppSettings {
     private final String PREF_KEY_SHOW_POWER_PRODUCTION_WIDGETS = "pref_key_showPowerProductionWidgets";
     @SuppressWarnings("HardCodedStringLiteral")
     private final String PREF_KEY_HAS_POWER_PRODUCTION_DIALOG_SHOWN = "pref_key_hasPowerProductionDialogShown";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_APP_UPDATE_DIALOG_SHOWN_DATE = "pref_key_appUpdateDialogShownDate";
 
     private static AppSettings instance;
     private SharedPreferences sharedPref;
@@ -275,5 +277,13 @@ public class AppSettings {
 
     public boolean hasPowerProductionDialogBeenShown() {
         return sharedPref.getBoolean(PREF_KEY_HAS_POWER_PRODUCTION_DIALOG_SHOWN, false);
+    }
+
+    public long getAppUpdateDialogShownDate() {
+        return sharedPref.getLong(PREF_KEY_APP_UPDATE_DIALOG_SHOWN_DATE, 0);
+    }
+
+    public void setAppUpdateDialogShownDate(long time) {
+        sharedPref.edit().putLong(PREF_KEY_APP_UPDATE_DIALOG_SHOWN_DATE, time).apply();
     }
 }

@@ -23,11 +23,10 @@ import java.util.Locale;
 
 public class TimeHelper {
 
-    public static long getLastPeriod(){
-        long time = System.currentTimeMillis();
+    public static long getLastPeriod(int amount){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.MINUTE, -10);
+        calendar.add(Calendar.MINUTE, -amount);
 
         return calendar.getTimeInMillis();
     }
@@ -53,5 +52,18 @@ public class TimeHelper {
 
     public static Calendar getNow() {
         return Calendar.getInstance();
+    }
+
+    public static boolean isMoreThanNumberOfDaysAgoFromNow(long time, int days) {
+        Calendar today = getNow();
+        long todayMillis = today.getTimeInMillis();
+
+        long diff = todayMillis - time;
+        int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
+        int hours = (int) (diff / (1000 * 60 * 60));
+        int minutes = (int) (diff / (1000 * 60));
+        int seconds = (int) (diff / (1000));
+
+        return numOfDays > days;
     }
 }

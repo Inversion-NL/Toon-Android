@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -36,10 +37,12 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.play.core.install.model.ActivityResult;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
 import com.toonapps.toon.helper.AppSettings;
+import com.toonapps.toon.helper.AppUpdateHelper;
 import com.toonapps.toon.helper.FirebaseHelper;
 import com.toonapps.toon.view.fragments.ControlsFragment;
 import com.toonapps.toon.view.fragments.OnFragmentInteractionListener;
@@ -55,10 +58,12 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private NavController navController;
     private final int REQUEST_CODE_INTRO = 100;
+    private final int REQUEST_CODE_APP_UPDATE = 200;
     @SuppressWarnings("HardCodedStringLiteral")
     private final String REQUEST_TYPE = "type";
     private NavigationView navigationView;
     private FirebaseHelper mFirebaseHelper;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,6 @@ public class MainActivity extends AppCompatActivity
 
         AppSettings.getInstance().initialize(this.getApplicationContext());
 
-        initDrawer();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
     }
 
@@ -85,8 +89,12 @@ public class MainActivity extends AppCompatActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, REQUEST_CODE_INTRO);
         } else {
+            initSnackbar();
+            initDrawer();
             setDrawerOptions();
             if (!AppSettings.getInstance().hasDrawerPeeked()) peekDrawer();
+            AppUpdateHelper.checkForAppUpdate(this, REQUEST_CODE_APP_UPDATE);
+            AppUpdateHelper.checkIfAppUpdatedSuccessfully(this, REQUEST_CODE_APP_UPDATE);
         }
     }
 
@@ -117,21 +125,15 @@ public class MainActivity extends AppCompatActivity
         int startDelay = 3000;
         int openTime = 1000;
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        }, startDelay );
+        new Handler().postDelayed(() -> drawerLayout.openDrawer(GravityCompat.START), startDelay );
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
-        }, startDelay + openTime );
+        new Handler().postDelayed(() -> drawerLayout.closeDrawer(GravityCompat.START), startDelay + openTime );
 
         AppSettings.getInstance().setDrawerHasPeeked(true);
+    }
+
+    private void initSnackbar() {
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
     }
 
     @Override
@@ -171,6 +173,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Intro
         if (requestCode == REQUEST_CODE_INTRO) {
             if (resultCode == RESULT_OK) {
                 AppSettings.getInstance().setFirstStart(false);
@@ -178,6 +182,36 @@ public class MainActivity extends AppCompatActivity
             } else {
                 // Cancelled the intro. You can then e.g. finish this activity too.
                 finish();
+            }
+
+        // In app update
+        } else if (requestCode == REQUEST_CODE_APP_UPDATE) {
+            if (resultCode != RESULT_OK) {
+                // If the update is cancelled or fails,
+                // you can request to start the update again.
+                if (resultCode == RESULT_CANCELED) {
+                    FirebaseAnalytics
+                        .getInstance(this)
+                        .logEvent(
+                            FirebaseHelper.EVENT.APP_UPDATE.UPDATE_CANCELED_BY_USERS,
+                            null
+                        );
+                } else if (resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
+                    FirebaseAnalytics
+                        .getInstance(this)
+                        .logEvent(
+                            FirebaseHelper.EVENT.APP_UPDATE.UPDATE_FAILED,
+                            null
+                        );
+            }
+
+            } else {
+                FirebaseAnalytics
+                    .getInstance(this)
+                    .logEvent(
+                        FirebaseHelper.EVENT.APP_UPDATE.UPDATE_SUCCESS,
+                        null
+                    );
             }
         }
     }

@@ -17,7 +17,6 @@
 package com.toonapps.toon.view.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
 import com.toonapps.toon.controller.DeviceController;
 import com.toonapps.toon.controller.GasAndElecFlowController;
@@ -262,12 +262,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
     private void setResources(){
 
         refreshLayout = view.findViewById(R.id.refreshLayout);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                updateData(false);
-            }
-        });
+        refreshLayout.setOnRefreshListener(() -> updateData(false));
 
         CardView cardTotalPower = view.findViewById(R.id.cardTotalPower);
         cardTotalPower.setOnClickListener(onButtonClicked);
@@ -318,12 +313,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
             long refreshRate = AppSettings.getInstance().getAutoRefreshValue();
 
             if (timerHelper != null) timerHelper.stop();
-            timerHelper = new TimerHelper(getActivity(), refreshRate, new TimerHelper.TimerInterface() {
-                @Override
-                public void onTime() {
-                    updateData(true);
-                }
-            });
+            timerHelper = new TimerHelper(getActivity(), refreshRate, () -> updateData(true));
             timerHelper.startWithDelay();
         } else if (timerHelper != null) timerHelper.stop();
     }
@@ -367,11 +357,8 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         }
     }
 
-    private final CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(!isUpdatingUI && !isUpdatingUI2) TemperatureController.getInstance().setTemperatureProgram(isChecked);
-        }
+    private final CompoundButton.OnCheckedChangeListener onCheckedChangeListener = (buttonView, isChecked) -> {
+        if(!isUpdatingUI && !isUpdatingUI2) TemperatureController.getInstance().setTemperatureProgram(isChecked);
     };
 
     private void setGasMeter(double currentGasUsage) {
@@ -517,13 +504,13 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         // TODO Calculate power production
         TextView txtvPowerProduction = view.findViewById(R.id.txtvPowerProduction);
         //noinspection HardCodedStringLiteral
-        txtvPowerProduction.setText(powerProduction + " KWh" );
+        txtvPowerProduction.setText(String.format("%s KWh", powerProduction));
     }
 
     private void enablePowerProductionFeatures(boolean show) {
         if (show) {
 
-            if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.HIGH) {
+            if (ScreenHelper.getDisplayDensityDpi(context, BuildConfig.DEBUG) == ScreenHelper.DISPLAY_DENSITY.HIGH) {
                 showPowerBarImages(true);           // Only show on high density screens
             } else {
                 showPowerBarImages(false);          // Hide power bar images when showing
@@ -532,9 +519,9 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
         } else {
 
-            if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.NORMAL) {
+            if (ScreenHelper.getDisplayDensityDpi(context, BuildConfig.DEBUG) == ScreenHelper.DISPLAY_DENSITY.NORMAL) {
                 showPowerBarImages(true);           // Only show on normal density screens
-            } else if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.LOW){
+            } else if (ScreenHelper.getDisplayDensityDpi(context, BuildConfig.DEBUG) == ScreenHelper.DISPLAY_DENSITY.LOW){
                 showPowerBarImages(false);          // Never show on small screens
             }
             showPowerProductionWidgets(false);
@@ -599,21 +586,15 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                 .setMessage(message)
                 .setCancelable(false)
                 .setIcon(android.R.drawable.ic_dialog_info);
-        powerProductionDialog.setPositiveButton(R.string.dialog_button_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                AppSettings.getInstance().setShowPowerProductionWidgets(true);
-                AppSettings.getInstance().setPowerProductionDialogHasShown(true);
-                enablePowerProductionFeatures(true);
-            }
+        powerProductionDialog.setPositiveButton(R.string.dialog_button_yes, (dialog, which) -> {
+            AppSettings.getInstance().setShowPowerProductionWidgets(true);
+            AppSettings.getInstance().setPowerProductionDialogHasShown(true);
+            enablePowerProductionFeatures(true);
         });
-        powerProductionDialog.setNegativeButton(R.string.dialog_button_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                AppSettings.getInstance().setShowPowerProductionWidgets(false);
-                AppSettings.getInstance().setPowerProductionDialogHasShown(true);
-                enablePowerProductionFeatures(false);
-            }
+        powerProductionDialog.setNegativeButton(R.string.dialog_button_no, (dialog, which) -> {
+            AppSettings.getInstance().setShowPowerProductionWidgets(false);
+            AppSettings.getInstance().setPowerProductionDialogHasShown(true);
+            enablePowerProductionFeatures(false);
         });
         powerProductionDialog.show();
     }

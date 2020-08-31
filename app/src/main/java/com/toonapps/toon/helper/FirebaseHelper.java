@@ -34,6 +34,15 @@ public class FirebaseHelper {
     }
 
     public interface EVENT {
+
+        @SuppressWarnings("HardCodedStringLiteral")
+        interface APP_UPDATE {
+            String UPDATE_SUCCESS = "app_update_success";
+            String UPDATE_FAILED = "app_update_failed";
+            String UPDATE_CANCELED_BY_USERS = "app_update_canceled_by_user";
+            String UPDATE_DIALOG_DISMISSED = "app_update_dialog_dismissed";
+        }
+
         @SuppressWarnings("HardCodedStringLiteral")
         interface MODE {
             String BUTTON_MODE_AWAY = "button_mode_away";
@@ -67,6 +76,10 @@ public class FirebaseHelper {
 
     public void recordExceptionAndLog(Throwable t, String log) {
         mFirebaseCrashlytics.recordException(t);
+        mFirebaseCrashlytics.log(log);
+    }
+
+    public void recordLog(String log) {
         mFirebaseCrashlytics.log(log);
     }
 }
