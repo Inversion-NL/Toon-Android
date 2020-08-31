@@ -1,3 +1,19 @@
+<!--
+  ~ Copyright (c) 2020
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+  ~ See the NOTICE file distributed with this work for additional information regarding copyright ownership
+  ~ The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing software distributed under the License is
+  ~ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.  See the License for the specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
 <resources>
     <string name="app_name">Toon</string>
 
@@ -17,20 +33,24 @@
     <string name="pref_meterSettings_doubleTariff_title">Dubbel tarief</string>
     <string name="pref_meterSettings_gasMeter_title">Gas meter</string>
     <string name="pref_meterSettings_gasMeter_summary">Schakel deze optie uit als uw meter geen gas waarden heeft</string>
+    <string name="pref_meterSettings_PowerProduction_title">Stroom opbrengst</string>
+    <string name="pref_meterSettings_PowerProduction_summary">Schakel deze optie in als uw Toon de stroomopbrengst kan meten</string>
     <string name="pref_network_category_title">Netwerk instellingen</string>
     <string name="pref_network_setupConnection_title">Verbinding instellen</string>
     <string name="pref_network_setupConnection_summary">Klik hier de verbinding in te stellen naar Toon</string>
-    <string name="pref_advanced_token_title">Api token</string>
-    <string name="pref_advanced_token_summary">Vul hier, indien nodig, een api token in. Deze wordt meegestuurd in de http header</string>
     <string name="pref_advanced_category_title">Geavanceerde instellingen</string>
-    <string name="pref_advanced_redirectionService_title">Gebruik redirection service</string>
-    <string name="pref_advanced_redirectionService_summary">Maak gebruik van een redirect script om portforwarding in de router naar de Toon thermostaat te voorkomen</string>
+    <string name="pref_advanced_httpHeader_category_title">Gebruik HTTP header waarde</string>
+    <string name="pref_advanced_httpHeader_category_summary">Gebruik een gepersonaliseerde HTTP header waarde om de beveiling naar Toon iets beter te maken wanneer er via internet verbonden wordt.</string>
+    <string name="pref_advanced_httpHeader_key_title">HTTP header key</string>
+    <string name="pref_advanced_httpHeader_key_summary">Vul hier de key voor de HTTP header in</string>
+    <string name="pref_advanced_httpHeader_value_title">HTTP header waarde</string>
+    <string name="pref_advanced_httpHeader_value_summary">Vul hier de waarde voor de HTTP header in</string>
     <string name="pref_appInfo_appVersion_title">App versie</string>
     <string name="pref_appInfo_category_title">App info</string>
     <string name="pref_appInfo_appLibraries_summary">Informatie over de gebruikte opensource bibliotheken</string>
     <string name="pref_appInfo_appLibraries_title">Gebruikte bibliotheken</string>
     <string name="pref_appInfo_troubleshooting_title">Probleem oplossing</string>
-    <string name="pref_appInfo_troubleshooting_message">Krijg extra informatie over je Toon om problemen op te lossen </string>
+    <string name="pref_appInfo_troubleshooting_message">Krijg extra informatie over je Toon om problemen op te lossen</string>
 
     <string name="temperature_setting_away">Weg</string>
     <string name="temperature_setting_home">Thuis</string>
@@ -38,13 +58,15 @@
     <string name="temperature_setting_comfort">Comfort</string>
     <string name="temperature_setting_vacation">Vakantie</string>
 
-    <string name="controls_card_powerUsage_title">Stroom nu</string>
-    <string name="controls_card_gasUsage_gasUsage_title">Gas nu</string>
     <string name="controls_nextProgramText_noData">Geen gegevens</string>
     <string name="controls_nextProgramValue">Op %s op %s (%.01f°)</string>
     <string name="controls_fire_description_img">Afbeelding vuur</string>
+    <string name="controls_card_powerUsage_title">Stroom nu</string>
+    <string name="controls_card_gasUsage_gasUsage_title">Gas nu</string>
     <string name="controls_card_powerUsage_img_current_power">Afbeelding huidig stroom verbruik</string>
     <string name="controls_card_GasUsage_img_current_gas">Afbeelding huidig gas verbruik</string>
+    <string name="controls_power_production">Zonnepanelen nu</string>
+    <string name="controls_power_return">Teruglevering nu</string>
     <string name="controls_gas_used_today">Gas vandaag</string>
     <string name="controls_power_used_today">Stroom vandaag</string>
     <string name="controls_txtvTotalPowerUseValue">%.2f kWh</string>
@@ -59,18 +81,23 @@
     <string name="connectionWizard_login_toonPort_title">Toon poort</string>
     <string name="connectionWizard_login_buttonLogin_loginText">Aanmelden</string>
     <string name="connectionWizard_login_buttonLogin_retryText">Opnieuw</string>
-    <string name="connectionWizard_login_error_pleaseEnterAddress">Geef een adres op a.u.b.</string>
+    <string name="connectionWizard_login_error_pleaseEnterAddress">Geef een waarde op a.u.b.</string>
     <string name="connectionWizard_login_error_noValidInput">Deze waarde klopt niet</string>
-    <string name="connectionWizard_login_error_pleaseEnterPortNumber">Geef een poort nummer op a.u.b.</string>
+    <string name="connectionWizard_login_error_pleaseEnterNumber">Geef een nummer op a.u.b.</string>
     <string name="connectionWizard_login_protocol">Protocol</string>
     <string name="connectionWizard_login_protocol_http">HTTP</string>
     <string name="connectionWizard_login_protocol_https">HTTPS</string>
-    <string name="connectionWizard_login_error_enterValidPortNumber">Deze waarde klopt niet</string>
+    <string name="connectionWizard_login_error_enterValidNumber">Deze waarde klopt niet</string>
     <string name="connectionWizard_login_error_pleaseOnlyUseNumbers">Gebruik alleen nummers, a.u.b.</string>
     <string name="connectionWizard_intro_title">Toon app</string>
     <string name="connectionWizard_intro_text">Onofficiële Toon app om je (rooted) Toon thermostaat te bedienen.</string>
     <string name="connectionWizard_intro_text2">Je kunt deze app gebruiken om je Toon thermostaat te bedienen terwijl je geen abonnement hebt bij Eneco.</string>
     <string name="connectionWizard_intro_text3">Of gewoon omdat je deze app leuk vind!</string>
+    <string name="connectionWizard_login_httpHeaderKey">HTTP header key</string>
+    <string name="connectionWizard_login_apikey_hint">apikey</string>
+    <string name="connectionWizard_login_httpHeaderValue">HTTP header value</string>
+    <string name="connectionWizard_login_httpHeaderValue_hint">geheimewaarde</string>
+    <string name="connectionWizard_login_advancedSettings">Geavanceerd</string>
 
     <string name="exception_message_temperature_update_error_txt">Fout bij het ophalen van temperatuur gegevens</string>
     <string name="exception_message_device_update_error_txt">Fout bij het ophalen van apparaat gegevens</string>
@@ -120,5 +147,16 @@
     <string name="debug_button_thermostat">Therm</string>
     <string name="debug_button_usage">Usage</string>
     <string name="debug_switch_format">Format</string>
+
+    <string name="dialog_button_yes">Ja</string>
+    <string name="dialog_button_no">Nee</string>
+    <string name="dialog_button_cancel">Annuleren</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_powerProduction_askForEnable_title">Zonnepanelen inschakelen?</string>
+    <string name="dialog_powerProduction_askForEnable_message1">Het lijkt er op dat er zonnepanelen verbonden zijn aan Toon</string>
+    <string name="dialog_powerProduction_askForEnable_message2">Wil in de app zien hoeveel stroom er opgewekt wordt?</string>
+    <string name="dialog_powerProduction_askForEnable_message3">Je kunt dit later altijd nog inschakelen in de instellingen</string>
+
+    <string name="testing">Testing!</string>
 
 </resources>

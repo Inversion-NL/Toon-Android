@@ -1,6 +1,23 @@
+/*
+ * Copyright (c) 2020
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
+ * See the NOTICE file distributed with this work for additional information regarding copyright ownership
+ * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.  See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.toonapps.toon.data;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -15,10 +32,9 @@ import java.util.Map;
 
 public class RestClient {
 
-    @SuppressWarnings("HardCodedStringLiteral")
-    private static final String API_KEY = "Api-Key";
+    private String httpHeaderKey;
     private String url;
-    private String token;
+    private String httpHeaderValue;
     private String separator;
     private final IRestClientResponseHandler responseHandler;
     private final IRestClientDebugResponseHandler responseDebugHandler;
@@ -37,14 +53,15 @@ public class RestClient {
 
     private void getDataFromSharedPreferences() {
         url =  AppSettings.getInstance().getUrl();
-        token = AppSettings.getInstance().getApiToken();
-        separator = AppSettings.getInstance().useRedirectService() ? "?" : "/";
+        httpHeaderValue = AppSettings.getInstance().getHttpHeaderValue();
+        httpHeaderKey = AppSettings.getInstance().getHttpHeaderKey();
+        separator = "/";
     }
 
     public void setSchemeTemperatureState(int aMode) {
         getDataFromSharedPreferences();
 
-        //noinspection HardCodedStringLiteral
+        //noinspection SpellCheckingInspection,HardCodedStringLiteral
         url = url + separator + "happ_thermstat?action=changeSchemeState&state=2&temperatureState=" + aMode;
 
         StringRequest request =
@@ -68,7 +85,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -111,7 +128,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -159,7 +176,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -206,7 +223,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -252,7 +269,7 @@ public class RestClient {
                     @Override
                     public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
-                        headers.put(API_KEY, token);
+                        headers.put(httpHeaderKey, httpHeaderValue);
                         return headers;
                     }
                 };
@@ -295,7 +312,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -330,7 +347,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -364,7 +381,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -397,7 +414,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -429,7 +446,7 @@ public class RestClient {
                     @Override
                     public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
-                        headers.put(API_KEY, token);
+                        headers.put(httpHeaderKey, httpHeaderValue);
                         return headers;
                     }
                 };
@@ -461,7 +478,7 @@ public class RestClient {
                     @Override
                     public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
-                        headers.put(API_KEY, token);
+                        headers.put(httpHeaderKey, httpHeaderValue);
                         return headers;
                     }
                 };
@@ -493,7 +510,7 @@ public class RestClient {
                     @Override
                     public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
-                        headers.put(API_KEY, token);
+                        headers.put(httpHeaderKey, httpHeaderValue);
                         return headers;
                     }
                 };
@@ -533,7 +550,7 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
@@ -567,11 +584,23 @@ public class RestClient {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put(API_KEY, token);
+                    headers.put(httpHeaderKey, httpHeaderValue);
                     return headers;
                 }
             };
         AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    /**
+     * Cancels all pending and ongoing requests in the Volley request que
+     */
+    public void cancelRequestQueue() {
+        AppController.getInstance().getRequestQueue().cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
     }
 
     private void errorToResponseHandler(VolleyError error) {
