@@ -45,7 +45,7 @@ public class TimerHelper {
         if(timer != null) {
             return;
         }
-        timer = new Timer();
+        Timer timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, delay, delay);
     }
 

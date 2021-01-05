@@ -26,7 +26,6 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -44,6 +43,7 @@ import com.toonapps.toon.R;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.AppUpdateHelper;
 import com.toonapps.toon.helper.FirebaseHelper;
+import com.toonapps.toon.helper.FirebaseMessagingHelper;
 import com.toonapps.toon.view.fragments.ControlsFragment;
 import com.toonapps.toon.view.fragments.OnFragmentInteractionListener;
 import com.toonapps.toon.view.fragments.UsageGraphFragment;
@@ -63,19 +63,29 @@ public class MainActivity extends AppCompatActivity
     private final String REQUEST_TYPE = "type";
     private NavigationView navigationView;
     private FirebaseHelper mFirebaseHelper;
-    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        AppSettings.getInstance().initialize(this.getApplicationContext());
 
         mFirebaseHelper = FirebaseHelper.getInstance();
+        FirebaseMessagingHelper.getFCMInstanceId();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        AppSettings.getInstance().initialize(this.getApplicationContext());
+        // Get the intent info.
+        // this is used for Firebase Notifications
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                Timber.d("Key: " + key + " Value: " + value);
+                //TODO do something in the UI with this info
+            }
+        }
 
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
     }
@@ -89,7 +99,6 @@ public class MainActivity extends AppCompatActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, REQUEST_CODE_INTRO);
         } else {
-            initSnackbar();
             initDrawer();
             setDrawerOptions();
             if (!AppSettings.getInstance().hasDrawerPeeked()) peekDrawer();
@@ -115,25 +124,25 @@ public class MainActivity extends AppCompatActivity
         MenuItem menuInfo = nav.findItem(R.id.menu_info);
         menuInfo.setTitle(version);
 
+        /*
+
+        Disable since there is no way to get the gas data from Toon anymore
+
         MenuItem menuGasUsage = nav.findItem(R.id.menu_gasUsage);
-        if (!AppSettings.getInstance().showGasWidgets()) menuGasUsage.setVisible(false);
-        else menuGasUsage.setVisible(true);
+        menuGasUsage.setVisible(AppSettings.getInstance().showGasWidgets());
+        */
     }
 
     private void peekDrawer() {
 
         int startDelay = 3000;
-        int openTime = 1000;
+        int openTime = 2000;
 
         new Handler().postDelayed(() -> drawerLayout.openDrawer(GravityCompat.START), startDelay );
 
         new Handler().postDelayed(() -> drawerLayout.closeDrawer(GravityCompat.START), startDelay + openTime );
 
         AppSettings.getInstance().setDrawerHasPeeked(true);
-    }
-
-    private void initSnackbar() {
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
     }
 
     @Override
@@ -218,7 +227,6 @@ public class MainActivity extends AppCompatActivity
 
     private void updateDataInFragment() {
         try {
-            @SuppressWarnings("ConstantConditions")
             Fragment current =
                     getSupportFragmentManager()
                             .findFragmentById(R.id.nav_host_fragment)
@@ -253,10 +261,16 @@ public class MainActivity extends AppCompatActivity
                 startFragment(R.id.fragment_usage_elec, bundle);
                 break;
 
+            /*
+
+            Disable since there is no way to get the gas data anymore
+
             case R.id.menu_gasUsage:
                 bundle.putInt(REQUEST_TYPE, UsageGraphFragment.TYPE.GAS);
                 startFragment(R.id.fragment_usage_gas, bundle);
                 break;
+
+             */
 
             case R.id.menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));

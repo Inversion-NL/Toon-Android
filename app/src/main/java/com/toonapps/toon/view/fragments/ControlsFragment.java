@@ -32,9 +32,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
@@ -75,7 +77,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
     private ImageView imgvCurrentGas;
     private SimpleDateFormat simpleDateFormat;
 
-    //prevent toggle executing onCheckedChanged
+    //prevent toggle executing onCheckedChanged programmatically
     private boolean isUpdatingUI = false;
     private boolean isUpdatingUI2 = false;
 
@@ -92,6 +94,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
     private float normalTariff = 0;
     private boolean useGasInfoFromDevices = false;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private CoordinatorLayout coordinatorLayout;
 
     public ControlsFragment() {
         // Required empty public constructor
@@ -105,6 +108,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         //noinspection HardCodedStringLiteral
         simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         setResources();
+        initSnackbar();
 
         if (getActivity() != null) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
@@ -135,8 +139,7 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
             updateData(false);
         }
 
-        if (AppSettings.getInstance().useAutoRefresh()) setTimer(true);
-        else setTimer(false);
+        setTimer(AppSettings.getInstance().useAutoRefresh());
 
         CardView cardTotalGas = view.findViewById(R.id.cardTotalGas);
         if (!AppSettings.getInstance().showGasWidgets() && cardTotalGas.getVisibility() == View.VISIBLE) {
@@ -180,6 +183,10 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    private void initSnackbar() {
+        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
     }
 
     public void updateData(boolean isTimerTask) {
@@ -242,16 +249,23 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                 case R.id.cardTotalGas:
                     mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.GAS.CARD_GAS_TOTAL, null);
                 case R.id.cardGasUsage:
-                    if (mListener != null) {
-                        mListener.onFragmentInteraction(OnFragmentInteractionListener.ACTION.START.GAS_USAGE);
-                        mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.GAS.CARD_GAS_USAGE, null);
-                    }
+                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.GAS.CARD_GAS_USAGE, null);
+                    Snackbar.make(
+                            coordinatorLayout,
+                            R.string.toast_gasUsage_notAvailableAnymore,
+                            Snackbar.LENGTH_LONG
+                    ).show();
+                    /*
+                        if (mListener != null) {
+                            mListener.onFragmentInteraction(OnFragmentInteractionListener.ACTION.START.GAS_USAGE);
+                        }
+                     */
                     break;
                 case R.id.cardTotalPower:
                     mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.ELEC.CARD_ELEC_TOTAL, null);
                 case R.id.cardPowerUsage:
-                    mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.ELEC.CARD_ELEC_USAGE, null);
                     if (mListener != null) {
+                        mFirebaseAnalytics.logEvent(FirebaseHelper.EVENT.CARD.ELEC.CARD_ELEC_USAGE, null);
                         mListener.onFragmentInteraction(OnFragmentInteractionListener.ACTION.START.ELEC_USAGE);
                     }
                     break;
@@ -665,7 +679,6 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                     aThermostatInfo.getNextStateString(context),
                     aThermostatInfo.getNextSetpoint() / 100
             );
-            txtvNextProgram.setText(text);
         } else {
             // No Toon temperature programming used
             text = String.format(
@@ -673,8 +686,8 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
                         getString(R.string.controls_nextProgram_onProgramText),
                         aThermostatInfo.getCurrentSetpoint() / 100
                     );
-            txtvNextProgram.setText(text);
         }
+        txtvNextProgram.setText(text);
 
         swIsProgramOn.setChecked(aThermostatInfo.getProgramState());
         switchButtonState(aThermostatInfo.getCurrentTempMode(), true);

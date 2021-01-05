@@ -32,10 +32,13 @@
             android:icon="@drawable/ic_usage_black"
             android:title="@string/graph_usage_fragment_elecUsage" />
 
-        <item
-            android:id="@+id/menu_gasUsage"
-            android:icon="@drawable/ic_usage_black"
-            android:title="@string/graph_usage_fragment_gasUsage" />
+        <!--
+            Disable since there is no way to get the gas data anymore from Toon
+            <item
+                android:id="@+id/menu_gasUsage"
+                android:icon="@drawable/ic_usage_black"
+                android:title="@string/graph_usage_fragment_gasUsage" />
+        -->
     </group>
 
     <group

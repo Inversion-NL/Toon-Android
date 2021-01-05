@@ -28,6 +28,10 @@
     <string name="pref_appSettings_refresh_useAutoRefresh_title">Automatisch verversen</string>
     <string name="pref_appSettings_refresh_useAutoRefresh_summary">Ververs automatisch de gegevens terwijl de app in gebruik is</string>
     <string name="pref_appSettings_refresh_autoRefreshPeriod_title">Stel de ververs interval in</string>
+    <string name="pref_appSettings_notification_vibrate_title">Trillen</string>
+    <string name="pref_appSettings_notification_vibrate_summary">Telefoon laten trillen als er een melding is?</string>
+    <string name="pref_appSettings_notification_vibrateExtraOnSmoke_title">Extra trillen bij rook melding</string>
+    <string name="pref_appSettings_notification_vibrateExtraOnSmoke_summary">Moet de telefoon extra lang trillen als er een rook melding is?</string>
     <string name="pref_meterSettings_category_title">Meter instellingen</string>
     <string name="pref_meterSettings_doubleTariff_summary">Meter is dubbel tarief</string>
     <string name="pref_meterSettings_doubleTariff_title">Dubbel tarief</string>
@@ -38,7 +42,10 @@
     <string name="pref_network_category_title">Netwerk instellingen</string>
     <string name="pref_network_setupConnection_title">Verbinding instellen</string>
     <string name="pref_network_setupConnection_summary">Klik hier de verbinding in te stellen naar Toon</string>
+    <string name="pref_network_firebaseCloudMessagingId_title">Firebase Cloud - berichten ID</string>
+    <string name="pref_network_firebaseCloudMessagingId_summary">Als u dit ID toevoegd aan uw Toon, kunt u meldingen ontvangen vanaf uw Toon over de hele wereld!</string>
     <string name="pref_advanced_category_title">Geavanceerde instellingen</string>
+    <string name="pref_advanced_category_summary">Druk hier voor de geavanceerde instellingen</string>
     <string name="pref_advanced_httpHeader_category_title">Gebruik HTTP header waarde</string>
     <string name="pref_advanced_httpHeader_category_summary">Gebruik een gepersonaliseerde HTTP header waarde om de beveiling naar Toon iets beter te maken wanneer er via internet verbonden wordt.</string>
     <string name="pref_advanced_httpHeader_key_title">HTTP header key</string>
@@ -158,8 +165,20 @@
     <string name="dialog_powerProduction_askForEnable_message1">Het lijkt er op dat er zonnepanelen verbonden zijn aan Toon</string>
     <string name="dialog_powerProduction_askForEnable_message2">Wil in de app zien hoeveel stroom er opgewekt wordt?</string>
     <string name="dialog_powerProduction_askForEnable_message3">Je kunt dit later altijd nog inschakelen in de instellingen</string>
-    <string name="dialog_appUpdate_available_title">App update available</string>
-    <string name="dialog_appUpdate_available_msg">There is an app update available for more then 30 days. Would you like to update now?</string>
+
+    <string name="dialog_appUpdate_available_title">App update beschikbaar</string>
+    <string name="dialog_appUpdate_available_msg">Er is een app update beschikbaar. Deze update is meer dan 30 dagen geleden beschikbaar gemaakt. Wil je nu updaten?</string>
+
+    <string name="toast_firebaseICopiedToClipboard">Firebase bericht ID gekopieëerd naar klembord!</string>
+    <string name="toast_gasUsage_notAvailableAnymore">Gas gebruik gegevens zijn niet meer beschikbaar op Toon, sorry</string>
 
     <string name="testing">Testing!</string>
+
+    <string name="fcm_notification_alarmSmokeSensors">Rook alarm!</string>
+    <string name="fcm_notification_unknownSmokeSensor">Onbekende rook sensor</string>
+    <string name="fcm_notification_reportedSmokeAlarm">%s heeft een rook alarm gemeld!</string>
+    <string name="fcm_notification_unknownAlarm">Onbekend alarm</string>
+
+    <string name="notification_channelName_default">Standaard</string>
+    <string name="notification_channelName_alarm">Alarm</string>
 </resources>

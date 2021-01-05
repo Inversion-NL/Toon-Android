@@ -42,11 +42,9 @@ public class SettingsAdvancedFragment extends PreferenceFragmentCompat {
         @SuppressWarnings("HardCodedStringLiteral")
         Preference appLibraries = findPreference("key_pref_appInfo_appLibraries");
         if (appLibraries != null) {
-            appLibraries.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getContext(), OssLicensesMenuActivity.class));
-                    return true;
-                }
+            appLibraries.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getContext(), OssLicensesMenuActivity.class));
+                return true;
             });
         }
 

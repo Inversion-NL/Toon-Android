@@ -15,17 +15,22 @@
   ~ under the License.
   -->
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refreshLayout"
+    android:id="@+id/coordinatorLayout"
     tools:context="com.toonapps.toon.view.fragments.ControlsFragment"
     android:background="@color/colorBackground"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -336,4 +341,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

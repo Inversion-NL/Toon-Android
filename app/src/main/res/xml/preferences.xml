@@ -39,6 +39,17 @@
             android:defaultValue="15"
             android:entries="@array/refreshEntries"
             android:entryValues="@array/refreshValues"/>
+        <SwitchPreferenceCompat
+            android:key="pref_key_notification_smokeSensor_vibrate"
+            android:title="@string/pref_appSettings_notification_vibrate_title"
+            android:summary="@string/pref_appSettings_notification_vibrate_summary"
+            android:defaultValue="true"/>
+        <SwitchPreferenceCompat
+            android:key="pref_key_notification_smokeSensor_vibrate"
+            android:dependency="pref_key_notification_smokeSensor_vibrate"
+            android:title="@string/pref_appSettings_notification_vibrateExtraOnSmoke_title"
+            android:summary="@string/pref_appSettings_notification_vibrateExtraOnSmoke_summary"
+            android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -72,6 +83,10 @@
                 android:targetClass="com.toonapps.toon.view.ConnectionWizardActivity"
                 android:targetPackage="com.toonapps.toon"/>
         </PreferenceScreen>
+        <Preference
+            android:key="pref_key_firebaseInstanceId"
+            android:title="@string/pref_network_firebaseCloudMessagingId_title"
+            android:summary="@string/pref_network_firebaseCloudMessagingId_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -81,7 +96,7 @@
             app:fragment="com.toonapps.toon.view.fragments.settings.settingsAdvancedFragment"
             android:key="pref_key_advanced_settings_fragment"
             android:title="@string/pref_advanced_category_title"
-            android:summary="Click here for advanced settings"
+            android:summary="@string/pref_advanced_category_summary"
         />
 
     </PreferenceCategory>

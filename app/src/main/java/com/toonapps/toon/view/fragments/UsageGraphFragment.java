@@ -77,6 +77,7 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
     private AppCompatToggleButton thirdToggle;
     private int activeButton;
     private int type;
+    private int counter = 0;
 
     public UsageGraphFragment() {
         // Required empty public constructor
@@ -204,7 +205,8 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
     @Override
     public void onUsageChanged(UsageInfo usageInfo) {
         try {
-            setChartData(usageInfo.getChartDataPoints());
+            counter++;
+            if (counter == 1) setChartData(usageInfo.getChartDataPoints());
         } catch (JSONException e) {
             onUsageError(e);
         }
@@ -292,6 +294,7 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        counter = 0;
         activeButton = buttonView.getId();
         updateData();
     }

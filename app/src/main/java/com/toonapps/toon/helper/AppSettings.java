@@ -65,13 +65,18 @@ public class AppSettings {
     private final String PREF_KEY_HAS_POWER_PRODUCTION_DIALOG_SHOWN = "pref_key_hasPowerProductionDialogShown";
     @SuppressWarnings("HardCodedStringLiteral")
     private static final String PREF_KEY_APP_UPDATE_DIALOG_SHOWN_DATE = "pref_key_appUpdateDialogShownDate";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private static final String PREF_KEY_FIREBASE_INSTANCE_ID = "pref_key_firebaseInstanceId";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private String PREF_KEY_NOTIFICATION_SMOKESENSOR_VIBRATE = "pref_key_notification_smokeSensor_vibrate";
+    @SuppressWarnings("HardCodedStringLiteral")
+    private String PREF_KEY_NOTIFICATION_VIBRATE = "pref_key_notification_vibrate";
 
     private static AppSettings instance;
     private SharedPreferences sharedPref;
     private Context context;
 
-    private AppSettings() {
-    }
+    private AppSettings() {}
 
     public static AppSettings getInstance() {
         if (instance == null) {
@@ -90,7 +95,13 @@ public class AppSettings {
     }
 
     public String getProtocol(){
-        return sharedPref.getString(PREF_KEY_PROTOCOL, context.getString(R.string.connectionWizard_login_protocol_http));
+        if (sharedPref != null && sharedPref.contains(PREF_KEY_PROTOCOL))
+            return sharedPref.getString(PREF_KEY_PROTOCOL, context.getString(R.string.connectionWizard_login_protocol_http));
+        else {
+            //noinspection HardCodedStringLiteral
+            FirebaseHelper.getInstance().recordExceptionAndLog(null, "Error while getting protocol from shared preferences: key did not exist");
+            return context.getString(R.string.connectionWizard_login_protocol_http);
+        }
     }
 
     public void setPort(int port) {
@@ -99,30 +110,35 @@ public class AppSettings {
 
     @SuppressWarnings("HardCodedStringLiteral")
     public int getPort() {
-        int port = sharedPref.getInt(PREF_KEY_PORT, 0);
-        if (port != 0) return port;
+        if (sharedPref != null && sharedPref.contains(PREF_KEY_PORT)) {
+            int port = sharedPref.getInt(PREF_KEY_PORT, 0);
+            if (port != 0) return port;
 
-        // Migrate from old settings
-        String url = sharedPref.getString(PREF_KEY_URL, "");
-        if (url == null) return 0;
-        if (url.isEmpty()) return 0;
-        if (url.startsWith("http://")) {
-            url = url.substring(7); // Strip http://
-        } else if (url.startsWith("https://")) {
-            url = url.substring(8); // Strip https://
-        } else return 0;
-        if (url.contains(":")){
-            String[] splitted = url.split(":");
-            try {
-                port = Integer.parseInt(splitted[1]);
-            } catch (NumberFormatException e) {
-                FirebaseHelper.getInstance().recordExceptionAndLog(e, "Exception while parsing the string to an integer in app settings");
-                port = 0;
-            }
-            setPort(port);
-            setAddress(splitted[0]);
-            return port;
-        } else return 0;
+            // Migrate from old settings
+            String url = sharedPref.getString(PREF_KEY_URL, "");
+            if (url == null) return 0;
+            if (url.isEmpty()) return 0;
+            if (url.startsWith("http://")) {
+                url = url.substring(7); // Strip http://
+            } else if (url.startsWith("https://")) {
+                url = url.substring(8); // Strip https://
+            } else return 0;
+            if (url.contains(":")){
+                String[] splitted = url.split(":");
+                try {
+                    port = Integer.parseInt(splitted[1]);
+                } catch (NumberFormatException e) {
+                    FirebaseHelper.getInstance().recordExceptionAndLog(e, "Exception while parsing the string to an integer in app settings");
+                    port = 0;
+                }
+                setPort(port);
+                setAddress(splitted[0]);
+                return port;
+            } else return 0;
+        } else {
+            FirebaseHelper.getInstance().recordExceptionAndLog(null, "Error while getting port from shared preferences: key did not exist");
+            return 0;
+        }
     }
 
     @SuppressWarnings("HardCodedStringLiteral")
@@ -285,5 +301,29 @@ public class AppSettings {
 
     public void setAppUpdateDialogShownDate(long time) {
         sharedPref.edit().putLong(PREF_KEY_APP_UPDATE_DIALOG_SHOWN_DATE, time).apply();
+    }
+
+    public void setFirebaseInstanceId(String id) {
+        sharedPref.edit().putString(PREF_KEY_FIREBASE_INSTANCE_ID, id).apply();
+    }
+
+    public String getFirebaseInstanceId() {
+        return sharedPref.getString(PREF_KEY_FIREBASE_INSTANCE_ID, "");
+    }
+
+    public void setSmokeSensorNotificationShouldVibrate(boolean vibrate) {
+        sharedPref.edit().putBoolean(PREF_KEY_NOTIFICATION_SMOKESENSOR_VIBRATE, vibrate).apply();
+    }
+
+    public boolean getSmokeSensorNotificationShouldVibrate() {
+        return sharedPref.getBoolean(PREF_KEY_NOTIFICATION_SMOKESENSOR_VIBRATE, true);
+    }
+
+    public void setNotificationShouldVibrate(boolean vibrate) {
+        sharedPref.edit().putBoolean(PREF_KEY_NOTIFICATION_VIBRATE, vibrate).apply();
+    }
+
+    public boolean getNotificationShouldVibrate() {
+        return sharedPref.getBoolean(PREF_KEY_NOTIFICATION_VIBRATE, true);
     }
 }

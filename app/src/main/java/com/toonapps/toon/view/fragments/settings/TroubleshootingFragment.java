@@ -93,28 +93,13 @@ public class TroubleshootingFragment extends Fragment implements IRestClientDebu
 
     private void setButtonListeners() {
         Button getZwaveDebugInfo = view.findViewById(R.id.btn_getZwaveDebugInfo);
-        getZwaveDebugInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getZwaveDevices();
-            }
-        });
+        getZwaveDebugInfo.setOnClickListener(v -> getZwaveDevices());
 
         final Button getDebugThermostatInfo = view.findViewById(R.id.btn_getDebugThermostatInfo);
-        getDebugThermostatInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getThermostatInfo();
-            }
-        });
+        getDebugThermostatInfo.setOnClickListener(v -> getThermostatInfo());
 
         Button getCurrentUsageDebugInfo = view.findViewById(R.id.btn_getCurrentUsageDebugInfo);
-        getCurrentUsageDebugInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getCurrentUsage();
-            }
-        });
+        getCurrentUsageDebugInfo.setOnClickListener(v -> getCurrentUsage());
     }
 
     private void initProgressDialog() {
