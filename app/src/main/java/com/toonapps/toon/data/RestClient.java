@@ -16,6 +16,8 @@
 
 package com.toonapps.toon.data;
 
+import android.content.Context;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -38,6 +40,7 @@ public class RestClient {
     private String separator;
     private final IRestClientResponseHandler responseHandler;
     private final IRestClientDebugResponseHandler responseDebugHandler;
+    private Context context;
 
     public RestClient(IRestClientResponseHandler aResponseHandler){
         getDataFromSharedPreferences();
@@ -52,6 +55,7 @@ public class RestClient {
     }
 
     private void getDataFromSharedPreferences() {
+        if (context != null) AppSettings.getInstance().initialize(context);
         url =  AppSettings.getInstance().getUrl();
         httpHeaderValue = AppSettings.getInstance().getHttpHeaderValue();
         httpHeaderKey = AppSettings.getInstance().getHttpHeaderKey();
@@ -634,5 +638,9 @@ public class RestClient {
 
     private void errorToResponseHandler(Exception error) {
         if (responseHandler != null) responseHandler.onResponseError(new ToonException(ToonException.GETDEVICESERROR, error));
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

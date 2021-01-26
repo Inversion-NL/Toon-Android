@@ -69,6 +69,8 @@ public class TroubleshootingFragment extends Fragment implements IRestClientDebu
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_troubleshooting, container, false);
         restClient = new RestClient(this);
+        restClient.setContext(getContext());
+
         if (getActivity() != null) //noinspection HardCodedStringLiteral
             FirebaseAnalytics.getInstance(context)
                 .setCurrentScreen(getActivity(), "Troubleshooting fragment",null);

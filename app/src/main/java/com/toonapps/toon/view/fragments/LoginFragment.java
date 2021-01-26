@@ -105,6 +105,8 @@ public class LoginFragment extends SlideFragment {
             img_login.setVisibility(View.GONE);
         }
 
+        AppSettings.getInstance().initialize(getContext());
+
         if (AppSettings.getInstance() != null) {
             // Sometimes either AppSettings or sharedPref in App settings is null
 

@@ -68,9 +68,9 @@ public class AppSettings {
     @SuppressWarnings("HardCodedStringLiteral")
     private static final String PREF_KEY_FIREBASE_INSTANCE_ID = "pref_key_firebaseInstanceId";
     @SuppressWarnings("HardCodedStringLiteral")
-    private String PREF_KEY_NOTIFICATION_SMOKESENSOR_VIBRATE = "pref_key_notification_smokeSensor_vibrate";
+    private static final String PREF_KEY_NOTIFICATION_SMOKESENSOR_VIBRATE = "pref_key_notification_smokeSensor_vibrate";
     @SuppressWarnings("HardCodedStringLiteral")
-    private String PREF_KEY_NOTIFICATION_VIBRATE = "pref_key_notification_vibrate";
+    private static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_key_notification_vibrate";
 
     private static AppSettings instance;
     private SharedPreferences sharedPref;
