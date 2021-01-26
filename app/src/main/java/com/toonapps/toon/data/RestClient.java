@@ -17,6 +17,7 @@
 package com.toonapps.toon.data;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -588,6 +589,18 @@ public class RestClient {
                 }
             };
         AppController.getInstance().getRequestQueue().add(request);
+    }
+
+    /**
+     * Cancels all pending and ongoing requests in the Volley request que
+     */
+    public void cancelRequestQueue() {
+        AppController.getInstance().getRequestQueue().cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
     }
 
     private void errorToResponseHandler(VolleyError error) {

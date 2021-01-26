@@ -18,6 +18,7 @@ package com.toonapps.toon.view.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -100,62 +101,67 @@ public class LoginFragment extends SlideFragment {
 
     private void setAndInitWidgets(View view) {
         if (ScreenHelper.getDisplayDensityDpi(context, false) == ScreenHelper.DISPLAY_DENSITY.LOW) {
+            // Hide image for small devices
             AppCompatImageView img_login = view.findViewById(R.id.img_login);
             img_login.setVisibility(View.GONE);
         }
 
-        et_toonAddress = view.findViewById(R.id.et_toonAddress);
-        et_toonPort = view.findViewById(R.id.et_toonPort);
-        RadioButton rb_protocol_http = view.findViewById(R.id.rb_protocol_http);
-        rb_protocol_https = view.findViewById(R.id.rb_protocol_https);
-        txt_errorMessage = view.findViewById(R.id.txt_errorMessage);
-        RadioGroup rg = view.findViewById(R.id.rg_protocol);
-        rg.setEnabled(false);
+        if (AppSettings.getInstance() != null) {
+            // Sometimes either AppSettings or sharedPref in Appsettings is null
 
-        et_toonAddress.setText(AppSettings.getInstance().getAddress());
+            et_toonAddress = view.findViewById(R.id.et_toonAddress);
+            et_toonPort = view.findViewById(R.id.et_toonPort);
+            RadioButton rb_protocol_http = view.findViewById(R.id.rb_protocol_http);
+            rb_protocol_https = view.findViewById(R.id.rb_protocol_https);
+            txt_errorMessage = view.findViewById(R.id.txt_errorMessage);
+            RadioGroup rg = view.findViewById(R.id.rg_protocol);
+            rg.setEnabled(false);
 
-        int portInt = AppSettings.getInstance().getPort();
-        if (portInt == 0) et_toonPort.setText("");
-        else et_toonPort.setText(String.valueOf(portInt));
+            et_toonAddress.setText(AppSettings.getInstance().getAddress());
 
-        //noinspection HardCodedStringLiteral
-        if(AppSettings.getInstance().getProtocol().equals("https")) {
-            rb_protocol_https.setChecked(true);
-        } else rb_protocol_http.setChecked(true);
+            int portInt = AppSettings.getInstance().getPort();
+            if (portInt == 0) et_toonPort.setText("");
+            else et_toonPort.setText(String.valueOf(portInt));
 
-        btn_login = view.findViewById(R.id.btn_login);
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkFields()) updateData();
-                else advancedFieldCheck();
+            //noinspection HardCodedStringLiteral
+            if (AppSettings.getInstance().getProtocol().equals("https")) {
+                rb_protocol_https.setChecked(true);
+            } else rb_protocol_http.setChecked(true);
+
+            btn_login = view.findViewById(R.id.btn_login);
+            btn_login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (checkFields()) updateData();
+                    else advancedFieldCheck();
+                }
+            });
+
+            cl_advancedSettings = view.findViewById(R.id.cl_advancedSettings);
+
+            et_httpHeaderKey = view.findViewById(R.id.et_httpHeaderKey);
+            String httpHeaderKey = AppSettings.getInstance().getHttpHeaderKey();
+            et_httpHeaderKey.setText(httpHeaderKey);
+
+            String httpHeaderValue = AppSettings.getInstance().getHttpHeaderValue();
+            et_httpHeaderValue = view.findViewById(R.id.et_httpHeaderValue);
+            et_httpHeaderValue.setText(httpHeaderValue);
+
+            cb_advancedSettings = view.findViewById(R.id.cb_advancedSettings);
+            if (AppSettings.getInstance().useHttpHeader()) {
+                cb_advancedSettings.setChecked(true);
+                cl_advancedSettings.setVisibility(View.VISIBLE);
+            } else {
+                cl_advancedSettings.setVisibility(View.GONE);
             }
-        });
-
-        cl_advancedSettings = view.findViewById(R.id.cl_advancedSettings);
-
-        et_httpHeaderKey = view.findViewById(R.id.et_httpHeaderKey);
-        String httpHeaderKey = AppSettings.getInstance().getHttpHeaderKey();
-        et_httpHeaderKey.setText(httpHeaderKey);
-
-        String httpHeaderValue = AppSettings.getInstance().getHttpHeaderValue();
-        et_httpHeaderValue = view.findViewById(R.id.et_httpHeaderValue);
-        et_httpHeaderValue.setText(httpHeaderValue);
-
-        cb_advancedSettings = view.findViewById(R.id.cb_advancedSettings);
-        if (AppSettings.getInstance().useHttpHeader()) {
-            cb_advancedSettings.setChecked(true);
-            cl_advancedSettings.setVisibility(View.VISIBLE);
-        } else {
-            cl_advancedSettings.setVisibility(View.GONE);
+            cb_advancedSettings.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) cl_advancedSettings.setVisibility(View.VISIBLE);
+                    else cl_advancedSettings.setVisibility(View.GONE);
+                }
+            });
         }
-        cb_advancedSettings.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) cl_advancedSettings.setVisibility(View.VISIBLE);
-                else cl_advancedSettings.setVisibility(View.GONE);
-            }
-        });
     }
 
     private void updateData() {
@@ -231,12 +237,20 @@ public class LoginFragment extends SlideFragment {
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle(getString(R.string.connectionWizard_login_msg_loading_title));
         progressDialog.setMessage(getString(R.string.connectionWizard_login_msg_loading_text));
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.show();
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                cancelAllRequests();
+            }
+        });
     }
 
     private void dismissProgressDialog() {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            if (progressDialog.isShowing()) progressDialog.dismiss();
+        }
     }
 
     private boolean checkFields() {
@@ -285,6 +299,10 @@ public class LoginFragment extends SlideFragment {
 
     }
 
+    private void cancelAllRequests() {
+        DeviceController.getInstance().cancelAllRequests();
+    }
+
     @Override
     public boolean canGoForward() {
         return loggedIn;
@@ -294,5 +312,15 @@ public class LoginFragment extends SlideFragment {
     public void onAttach(@NonNull Context context) {
         this.context = context;
         super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        // Cancel all pending requests
+        cancelAllRequests();
+
+        // On detaching the fragment, dismiss the progress dialog
+        dismissProgressDialog();
+        super.onDetach();
     }
 }
