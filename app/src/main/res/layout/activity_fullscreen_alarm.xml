@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_32sdp"
         android:keepScreenOn="true"
-        android:text="Smoke sensor alert"
+        android:text="@string/smoke_sensor_alert"
         android:textAllCaps="true"
         android:textColor="@android:color/background_light"
         android:textSize="25sp"
@@ -90,7 +90,25 @@
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         android:textStyle="bold"
-        tools:text="generated an alert!"
+        tools:text="generated an alert"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:layout_marginRight="@dimen/_25sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_alertDescription"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="in living"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

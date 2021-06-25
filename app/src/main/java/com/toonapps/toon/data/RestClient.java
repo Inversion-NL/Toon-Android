@@ -19,8 +19,6 @@ package com.toonapps.toon.data;
 import android.content.Context;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.toonapps.toon.application.AppController;
@@ -55,11 +53,14 @@ public class RestClient {
     }
 
     private void getDataFromSharedPreferences() {
-        if (context != null) AppSettings.getInstance().initialize(context);
-        url =  AppSettings.getInstance().getUrl();
-        httpHeaderValue = AppSettings.getInstance().getHttpHeaderValue();
-        httpHeaderKey = AppSettings.getInstance().getHttpHeaderKey();
-        separator = "/";
+        if (context != null) {
+            AppSettings mAppSettings = AppSettings.getInstance();
+            mAppSettings.initialize(context);
+            url =  mAppSettings.getUrl();
+            httpHeaderValue = mAppSettings.getHttpHeaderValue();
+            httpHeaderKey = mAppSettings.getHttpHeaderKey();
+            separator = "/";
+        }
     }
 
     public void setSchemeTemperatureState(int aMode) {
@@ -72,19 +73,11 @@ public class RestClient {
             new StringRequest(
                 Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         ResponseData responseData = Converter.convertResultData(response);
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -106,9 +99,7 @@ public class RestClient {
             new StringRequest(
                 Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         UsageInfo usageInfo =
                                 new UsageInfo(
                                         response,
@@ -120,14 +111,8 @@ public class RestClient {
                         responseData.setUsageInfo(usageInfo);
 
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -152,9 +137,7 @@ public class RestClient {
             new StringRequest(
                 Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         UsageInfo usageInfo =
                             new UsageInfo(
                                 response,
@@ -168,14 +151,8 @@ public class RestClient {
 
                         if (responseHandler != null) responseHandler.onResponse(responseData);
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -200,9 +177,7 @@ public class RestClient {
             new StringRequest(
                 Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         UsageInfo usageInfo =
                             new UsageInfo(
                                 response,
@@ -215,14 +190,8 @@ public class RestClient {
                         responseData.setUsageInfo(usageInfo);
 
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -247,28 +216,20 @@ public class RestClient {
                 new StringRequest(
                         Request.Method.GET,
                         url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                UsageInfo usageInfo =
-                                        new UsageInfo(
-                                                response,
-                                                UsageInfo.TYPE.GAS,
-                                                0,
-                                                UsageInfo.TIME.TODAY
-                                        );
-                                ResponseData responseData = new ResponseData();
-                                responseData.setUsageInfo(usageInfo);
+                        response -> {
+                            UsageInfo usageInfo =
+                                    new UsageInfo(
+                                            response,
+                                            UsageInfo.TYPE.GAS,
+                                            0,
+                                            UsageInfo.TIME.TODAY
+                                    );
+                            ResponseData responseData = new ResponseData();
+                            responseData.setUsageInfo(usageInfo);
 
-                                if (responseHandler != null) responseHandler.onResponse(responseData);
-                            }
+                            if (responseHandler != null) responseHandler.onResponse(responseData);
                         },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                errorToResponseHandler(error);
-                            }
-                        }
+                        error -> errorToResponseHandler(error)
                 ){
                     @Override
                     public Map<String, String> getHeaders() {
@@ -290,9 +251,7 @@ public class RestClient {
             new StringRequest(
                 Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         UsageInfo usageInfo =
                                 new UsageInfo(
                                         response,
@@ -304,14 +263,8 @@ public class RestClient {
                         responseData.setUsageInfo(usageInfo);
 
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -334,19 +287,11 @@ public class RestClient {
             new StringRequest(
                 Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         ResponseData responseData = Converter.convertResultData(response);
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -368,19 +313,11 @@ public class RestClient {
             new StringRequest(
                 Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         ResponseData responseData = Converter.convertResultData(response);
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -401,19 +338,11 @@ public class RestClient {
             new StringRequest(
                 Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         ResponseData responseData = Converter.convertFromTemperature(response);
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -434,18 +363,10 @@ public class RestClient {
                 new StringRequest(
                         Request.Method.GET,
                         url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
-                            }
+                        response -> {
+                            if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
                         },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                responseDebugHandler.onResponseError(error);
-                            }
-                        }
+                        error -> responseDebugHandler.onResponseError(error)
                 ){
                     @Override
                     public Map<String, String> getHeaders() {
@@ -466,18 +387,10 @@ public class RestClient {
                 new StringRequest(
                         Request.Method.GET,
                         url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
-                            }
+                        response -> {
+                            if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
                         },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                responseDebugHandler.onResponseError(error);
-                            }
-                        }
+                        error -> responseDebugHandler.onResponseError(error)
                 ){
                     @Override
                     public Map<String, String> getHeaders() {
@@ -498,18 +411,10 @@ public class RestClient {
                 new StringRequest(
                         Request.Method.GET,
                         url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
-                            }
+                        response -> {
+                            if (responseDebugHandler != null) responseDebugHandler.onResponse(response);
                         },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                responseDebugHandler.onResponseError(error);
-                            }
-                        }
+                        error -> responseDebugHandler.onResponseError(error)
                 ){
                     @Override
                     public Map<String, String> getHeaders() {
@@ -531,9 +436,7 @@ public class RestClient {
             new StringRequest(
                 Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         ResponseData responseData;
                         try {
                             responseData = Converter.convertFromDeviceInfo(response);
@@ -542,14 +445,8 @@ public class RestClient {
                             errorToResponseHandler(error);
                         }
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -571,19 +468,11 @@ public class RestClient {
             new StringRequest(
                 Request.Method.GET,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    response -> {
                         ResponseData responseData = Converter.convertCurrentUsageData(response);
                         if (responseHandler != null) responseHandler.onResponse(responseData);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        errorToResponseHandler(error);
-                    }
-                }
+                    },
+                    error -> errorToResponseHandler(error)
             ){
                 @Override
                 public Map<String, String> getHeaders() {
@@ -599,12 +488,7 @@ public class RestClient {
      * Cancels all pending and ongoing requests in the Volley request que
      */
     public void cancelRequestQueue() {
-        AppController.getInstance().getRequestQueue().cancelAll(new RequestQueue.RequestFilter() {
-            @Override
-            public boolean apply(Request<?> request) {
-                return true;
-            }
-        });
+        AppController.getInstance().getRequestQueue().cancelAll(request -> true);
     }
 
     private void errorToResponseHandler(VolleyError error) {

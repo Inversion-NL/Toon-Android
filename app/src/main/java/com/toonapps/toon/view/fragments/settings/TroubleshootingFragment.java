@@ -34,10 +34,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.R;
 import com.toonapps.toon.data.IRestClientDebugResponseHandler;
 import com.toonapps.toon.data.RestClient;
+import com.toonapps.toon.helper.FirebaseHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,8 +72,12 @@ public class TroubleshootingFragment extends Fragment implements IRestClientDebu
         restClient.setContext(getContext());
 
         if (getActivity() != null) //noinspection HardCodedStringLiteral
-            FirebaseAnalytics.getInstance(context)
-                .setCurrentScreen(getActivity(), "Troubleshooting fragment",null);
+            FirebaseHelper
+                    .getInstance(context)
+                    .set2CurrentScreen(
+                            getActivity(),
+                            "Troubleshooting fragment"
+                    );
 
         initProgressDialog();
         setButtonListeners();

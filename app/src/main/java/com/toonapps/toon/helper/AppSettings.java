@@ -85,9 +85,9 @@ public class AppSettings {
         return instance;
     }
 
-    public void initialize(Context aContext){
-        context = aContext;
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(aContext);
+    public void initialize(Context mContext){
+        context = mContext;
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
     public void setProtocol(String protocol){
@@ -99,7 +99,7 @@ public class AppSettings {
             return sharedPref.getString(PREF_KEY_PROTOCOL, context.getString(R.string.connectionWizard_login_protocol_http));
         else {
             //noinspection HardCodedStringLiteral
-            FirebaseHelper.getInstance().recordExceptionAndLog(null, "Error while getting protocol from shared preferences: key did not exist");
+            FirebaseHelper.getInstance(context).recordExceptionAndLog(null, "Error while getting protocol from shared preferences: key did not exist");
             return context.getString(R.string.connectionWizard_login_protocol_http);
         }
     }
@@ -128,7 +128,7 @@ public class AppSettings {
                 try {
                     port = Integer.parseInt(splitted[1]);
                 } catch (NumberFormatException e) {
-                    FirebaseHelper.getInstance().recordExceptionAndLog(e, "Exception while parsing the string to an integer in app settings");
+                    FirebaseHelper.getInstance(context).recordExceptionAndLog(e, "Exception while parsing the string to an integer in app settings");
                     port = 0;
                 }
                 setPort(port);
@@ -136,7 +136,7 @@ public class AppSettings {
                 return port;
             } else return 0;
         } else {
-            FirebaseHelper.getInstance().recordExceptionAndLog(null, "Error while getting port from shared preferences: key did not exist");
+            FirebaseHelper.getInstance(context).recordExceptionAndLog(null, "Error while getting port from shared preferences: key did not exist");
             return 0;
         }
     }
@@ -172,7 +172,7 @@ public class AppSettings {
                 } else return "";
             } else return "";
         } catch (Exception e) {
-            FirebaseHelper.getInstance().recordExceptionAndLog(e, "Error while getting address from shared preferences");
+            FirebaseHelper.getInstance(context).recordExceptionAndLog(e, "Error while getting address from shared preferences");
             return "";
         }
 }

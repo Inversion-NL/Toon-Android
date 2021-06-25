@@ -24,8 +24,12 @@ import android.view.View;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.toonapps.toon.R;
+import com.toonapps.toon.helper.NotificationHelper;
+
+import java.util.HashMap;
 
 public class FullscreenAlarmActivity extends AppCompatActivity {
 
@@ -63,8 +67,21 @@ public class FullscreenAlarmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_fullscreen_alarm);
+
+        @SuppressWarnings("HardCodedStringLiteral")
+        HashMap<String, String> hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("data");
+        if (NotificationHelper.checkNotificationDataForRoomAndSensor(hashMap).size() > 0) {
+
+                AppCompatTextView tv_sensorName = findViewById(R.id.tv_sensorName);
+                tv_sensorName.setText(getSensorName(hashMap));
+
+                AppCompatTextView tv_alertDescription = findViewById(R.id.tv_alertDescription);
+                tv_alertDescription.setText(R.string.notification_generatedAnAlert);
+
+                AppCompatTextView tv_room = findViewById(R.id.tv_room);
+                tv_room.setText(getRoomName(hashMap));
+        }
 
         mVisible = true;
         mContentView = findViewById(R.id.fullscreen_content);
@@ -72,6 +89,14 @@ public class FullscreenAlarmActivity extends AppCompatActivity {
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(view -> toggleFullscreen());
 
+    }
+
+    private String getSensorName(HashMap<String, String> hashMap) {
+        return hashMap.get(NotificationHelper.FCM_NOTIFICATION.SOURCE.SENSOR);
+    }
+
+    private String getRoomName(HashMap<String, String> hashMap) {
+        return hashMap.get(NotificationHelper.FCM_NOTIFICATION.LOCATION.ROOM);
     }
 
     @Override

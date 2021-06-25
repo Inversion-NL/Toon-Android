@@ -16,23 +16,26 @@
 
 package com.toonapps.toon.helper;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+import android.content.Context;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import timber.log.Timber;
 
 public class FirebaseMessagingHelper {
 
-    public static void getFCMInstanceId() {
+    public static void getFCMInstanceId(Context mContext) {
 
         Timber.d("Requesting Firebase Messaging token");
-        FirebaseInstanceId.getInstance().getInstanceId()
-            .addOnCompleteListener(task -> {
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null) {
-                    AppSettings.getInstance().
-                            setFirebaseInstanceId(
-                                    task.getResult().getToken()
+                    AppSettings mAppSettings = AppSettings.getInstance();
+                    mAppSettings.initialize(mContext);
+                    mAppSettings.setFirebaseInstanceId(
+                                    task.getResult()
                             );
-                    Timber.d("Got a Firebase Messaging token: %s", task.getResult().getToken());
+                    Timber.d("Got a Firebase Messaging token: %s", task.getResult());
                 } else {
                     //TODO let user know registration failed
                 }

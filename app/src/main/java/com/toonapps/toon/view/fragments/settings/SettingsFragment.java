@@ -25,30 +25,33 @@ import android.widget.Toast;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.R;
 import com.toonapps.toon.helper.AppSettings;
+import com.toonapps.toon.helper.FirebaseHelper;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
+        AppSettings mAppSettings = AppSettings.getInstance();
+        mAppSettings.initialize(getContext());
 
-        if (getActivity() != null)
+        if (getActivity() != null) {
             //noinspection HardCodedStringLiteral
-            FirebaseAnalytics.getInstance(getActivity())
-                    .setCurrentScreen(getActivity(), "Settings fragment",null);
+            FirebaseHelper.getInstance(getActivity()).set2CurrentScreen(getActivity(), "SettingsFragment");
+        }
 
-        String firebaseId = AppSettings.getInstance().getFirebaseInstanceId();
+        String firebaseId = mAppSettings.getFirebaseInstanceId();
+        @SuppressWarnings("HardCodedStringLiteral")
         Preference appVersion = findPreference("pref_key_firebaseInstanceId");
         if (appVersion != null) {
             appVersion.setOnPreferenceClickListener(preference -> {
 
                 try {
 
-                    @SuppressWarnings("ConstantConditions")
                     ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    @SuppressWarnings("HardCodedStringLiteral")
                     ClipData clip = ClipData.newPlainText("Firebase messaging ID", firebaseId);
                     clipboard.setPrimaryClip(clip);
 

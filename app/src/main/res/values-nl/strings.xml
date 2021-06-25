@@ -174,11 +174,14 @@
 
     <string name="testing">Testing!</string>
 
-    <string name="fcm_notification_alarmSmokeSensors">Rook alarm!</string>
+    <string name="fcm_notification_alarmSmokeSensors">Rook alarm gemeld door een van de rookmelders!</string>
     <string name="fcm_notification_unknownSmokeSensor">Onbekende rook sensor</string>
-    <string name="fcm_notification_reportedSmokeAlarm">%s heeft een rook alarm gemeld!</string>
+    <string name="fcm_notification_reportedSmokeAlarm">%s in %s heeft een rook alarm gemeld!</string>
     <string name="fcm_notification_unknownAlarm">Onbekend alarm</string>
 
     <string name="notification_channelName_default">Standaard</string>
     <string name="notification_channelName_alarm">Alarm</string>
+    <string name="fcm_notification_unknownRoom">kamer onbekend</string>
+    <string name="notification_generatedAnAlert">heeft een melding gegeven in</string>
+    <string name="smoke_sensor_alert">Smoke sensor alert</string>
 </resources>

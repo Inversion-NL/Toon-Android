@@ -23,9 +23,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
+import com.toonapps.toon.helper.FirebaseHelper;
 
 public class SettingsAdvancedFragment extends PreferenceFragmentCompat {
 
@@ -50,7 +50,6 @@ public class SettingsAdvancedFragment extends PreferenceFragmentCompat {
 
         if (getActivity() != null)
             //noinspection HardCodedStringLiteral
-            FirebaseAnalytics.getInstance(getActivity())
-                    .setCurrentScreen(getActivity(), "Advanced settings fragment",null);
+            FirebaseHelper.getInstance(getActivity()).set2CurrentScreen(getActivity(), "Advanced settings fragment");
     }
 }

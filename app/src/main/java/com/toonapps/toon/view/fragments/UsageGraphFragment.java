@@ -39,13 +39,13 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.R;
 import com.toonapps.toon.controller.GasAndElecFlowController;
 import com.toonapps.toon.controller.IGasAndElecFlowListener;
 import com.toonapps.toon.entity.UsageInfo;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.ChartHelper;
+import com.toonapps.toon.helper.FirebaseHelper;
 import com.toonapps.toon.helper.TimeHelper;
 
 import org.json.JSONException;
@@ -63,7 +63,7 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
         int GAS = 1;
     }
 
-    @SuppressWarnings({"FieldCanBeLocal", "HardCodedStringLiteral"})
+    @SuppressWarnings({"FieldCanBeLocal"})
     private final String REQUEST_TYPE = "type";
 
     @SuppressWarnings("HardCodedStringLiteral")
@@ -107,16 +107,16 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
 
         if (getActivity() != null) {
 
-            FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+            FirebaseHelper mFirebaseHelper = FirebaseHelper.getInstance(getContext());
 
             switch (type) {
                 case TYPE.ELEC:
                     //noinspection HardCodedStringLiteral
-                    mFirebaseAnalytics.setCurrentScreen(getActivity(), "Graph fragment - Elec",null);
+                    mFirebaseHelper.set2CurrentScreen(getActivity(), "Graph fragment - Elec");
 
                 case TYPE.GAS:
                     //noinspection HardCodedStringLiteral
-                    mFirebaseAnalytics.setCurrentScreen(getActivity(), "Graph fragment - Gas",null);
+                    mFirebaseHelper.set2CurrentScreen(getActivity(), "Graph fragment - Gas");
             }
         }
     }

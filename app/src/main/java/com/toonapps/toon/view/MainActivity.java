@@ -37,7 +37,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.play.core.install.model.ActivityResult;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
 import com.toonapps.toon.helper.AppSettings;
@@ -59,33 +58,24 @@ public class MainActivity extends AppCompatActivity
     private NavController navController;
     private final int REQUEST_CODE_INTRO = 100;
     private final int REQUEST_CODE_APP_UPDATE = 200;
-    @SuppressWarnings("HardCodedStringLiteral")
     private final String REQUEST_TYPE = "type";
     private NavigationView navigationView;
     private FirebaseHelper mFirebaseHelper;
+    private AppSettings mAppSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        AppSettings.getInstance().initialize(this.getApplicationContext());
+        mAppSettings = AppSettings.getInstance();
+        mAppSettings.initialize(this.getApplicationContext());
 
-        mFirebaseHelper = FirebaseHelper.getInstance();
-        FirebaseMessagingHelper.getFCMInstanceId();
+        mFirebaseHelper = FirebaseHelper.getInstance(this);
+        FirebaseMessagingHelper.getFCMInstanceId(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Get the intent info.
-        // this is used for Firebase Notifications
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                Timber.d("Key: " + key + " Value: " + value);
-                //TODO do something in the UI with this info
-            }
-        }
 
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
     }
@@ -94,14 +84,14 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        if (AppSettings.getInstance().isFirstStart()) {
+        if (mAppSettings.isFirstStart()) {
             Intent intent = new Intent(this, ConnectionWizardActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, REQUEST_CODE_INTRO);
         } else {
             initDrawer();
             setDrawerOptions();
-            if (!AppSettings.getInstance().hasDrawerPeeked()) peekDrawer();
+            if (!mAppSettings.hasDrawerPeeked()) peekDrawer();
             AppUpdateHelper.checkForAppUpdate(this, REQUEST_CODE_APP_UPDATE);
             AppUpdateHelper.checkIfAppUpdatedSuccessfully(this, REQUEST_CODE_APP_UPDATE);
         }
@@ -129,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         Disable since there is no way to get the gas data from Toon anymore
 
         MenuItem menuGasUsage = nav.findItem(R.id.menu_gasUsage);
-        menuGasUsage.setVisible(AppSettings.getInstance().showGasWidgets());
+        menuGasUsage.setVisible(mAppSettings.showGasWidgets());
         */
     }
 
@@ -142,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 
         new Handler().postDelayed(() -> drawerLayout.closeDrawer(GravityCompat.START), startDelay + openTime );
 
-        AppSettings.getInstance().setDrawerHasPeeked(true);
+        mAppSettings.setDrawerHasPeeked(true);
     }
 
     @Override
@@ -159,20 +149,10 @@ public class MainActivity extends AppCompatActivity
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_refresh:
-                if (AppSettings.getInstance().useAutoRefresh()) {
-                    FirebaseAnalytics
-                            .getInstance(this)
-                            .logEvent(
-                                    FirebaseHelper.EVENT.REFRESH.REFRESH_BUTTON_WITH_AUTO_REFRESH_ON,
-                            null
-                            );
+                if (mAppSettings.useAutoRefresh()) {
+                    mFirebaseHelper.logEvent(FirebaseHelper.EVENT.REFRESH.REFRESH_BUTTON_WITH_AUTO_REFRESH_ON);
                 } else
-                    FirebaseAnalytics
-                            .getInstance(this)
-                            .logEvent(
-                                    FirebaseHelper.EVENT.REFRESH.REFRESH_BUTTON_WITH_AUTO_REFRESH_OFF,
-                                    null
-                            );
+                    mFirebaseHelper.logEvent(FirebaseHelper.EVENT.REFRESH.REFRESH_BUTTON_WITH_AUTO_REFRESH_OFF);
                 updateDataInFragment();
                 return true;
         }
@@ -186,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         // Intro
         if (requestCode == REQUEST_CODE_INTRO) {
             if (resultCode == RESULT_OK) {
-                AppSettings.getInstance().setFirstStart(false);
+                mAppSettings.setFirstStart(false);
                 updateDataInFragment();
             } else {
                 // Cancelled the intro. You can then e.g. finish this activity too.
@@ -199,34 +179,20 @@ public class MainActivity extends AppCompatActivity
                 // If the update is cancelled or fails,
                 // you can request to start the update again.
                 if (resultCode == RESULT_CANCELED) {
-                    FirebaseAnalytics
-                        .getInstance(this)
-                        .logEvent(
-                            FirebaseHelper.EVENT.APP_UPDATE.UPDATE_CANCELED_BY_USERS,
-                            null
-                        );
+                    mFirebaseHelper.logEvent(FirebaseHelper.EVENT.APP_UPDATE.UPDATE_CANCELED_BY_USERS);
                 } else if (resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
-                    FirebaseAnalytics
-                        .getInstance(this)
-                        .logEvent(
-                            FirebaseHelper.EVENT.APP_UPDATE.UPDATE_FAILED,
-                            null
-                        );
+                    mFirebaseHelper.logEvent(FirebaseHelper.EVENT.APP_UPDATE.UPDATE_FAILED);
             }
 
             } else {
-                FirebaseAnalytics
-                    .getInstance(this)
-                    .logEvent(
-                        FirebaseHelper.EVENT.APP_UPDATE.UPDATE_SUCCESS,
-                        null
-                    );
+                mFirebaseHelper.logEvent(FirebaseHelper.EVENT.APP_UPDATE.UPDATE_SUCCESS);
             }
         }
     }
 
     private void updateDataInFragment() {
         try {
+            @SuppressWarnings("ConstantConditions")
             Fragment current =
                     getSupportFragmentManager()
                             .findFragmentById(R.id.nav_host_fragment)
@@ -279,6 +245,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_openSource:
                 startActivity(new Intent(this, OssLicensesMenuActivity.class));
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
         }
         return true;
     }

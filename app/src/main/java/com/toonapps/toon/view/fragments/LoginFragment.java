@@ -19,6 +19,7 @@ package com.toonapps.toon.view.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
@@ -50,6 +50,7 @@ import com.toonapps.toon.helper.ScreenHelper;
 
 public class LoginFragment extends SlideFragment {
 
+    private static FirebaseHelper mFirebaseHelper;
     private boolean loggedIn = false;
     private Context context;
     private EditText et_toonAddress;
@@ -76,6 +77,7 @@ public class LoginFragment extends SlideFragment {
     }
 
     public static LoginFragment newInstance() {
+        mFirebaseHelper = FirebaseHelper.getInstance(newInstance().getContext());
         return new LoginFragment();
     }
 
@@ -84,8 +86,7 @@ public class LoginFragment extends SlideFragment {
         View view = inflater.inflate(R.layout.fragment_connect_login, container, false);
 
         if (getActivity() != null) //noinspection HardCodedStringLiteral
-            FirebaseAnalytics.getInstance(context)
-                .setCurrentScreen(getActivity(), "Login fragment",null);
+            mFirebaseHelper.set2CurrentScreen(getActivity(), "Login fragment");
 
         // Setting to prevent keyboard from changing the layout
         if (getActivity() != null) getActivity()
@@ -168,8 +169,17 @@ public class LoginFragment extends SlideFragment {
         AppSettings.getInstance().setUseHttpHeader(usingAdvancedSettings);
 
         if (usingAdvancedSettings) {
-            AppSettings.getInstance().setHttpHeaderKey(et_httpHeaderKey.getText().toString());
-            AppSettings.getInstance().setHttpHeaderValue(et_httpHeaderValue.getText().toString());
+            try {
+                Editable httpHeaderKey = et_httpHeaderKey.getText();
+                if (httpHeaderKey != null) AppSettings.getInstance().setHttpHeaderKey(et_httpHeaderKey.getText().toString());
+
+                Editable httpHeaderValue = et_httpHeaderValue.getText();
+                if (httpHeaderValue != null) AppSettings.getInstance().setHttpHeaderValue(et_httpHeaderValue.getText().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                //noinspection HardCodedStringLiteral
+                FirebaseHelper.getInstance(getContext()).recordExceptionAndLog(e, "LoginFragment - updateData(): HTTP header key and/or HTTP head value was empty");
+            }
         }
 
         DeviceController.getInstance().subscribe(new IDeviceListener() {
@@ -215,7 +225,7 @@ public class LoginFragment extends SlideFragment {
                     }
                 } catch (IllegalStateException illegalState) {
                     //noinspection HardCodedStringLiteral
-                    FirebaseHelper.getInstance().recordExceptionAndLog(illegalState, "Illegal state in LoginFragment onDeviceError");
+                    mFirebaseHelper.recordExceptionAndLog(illegalState, "Illegal state in LoginFragment onDeviceError");
                     illegalState.printStackTrace();
                 }
             }
@@ -250,7 +260,19 @@ public class LoginFragment extends SlideFragment {
         usingAdvancedSettings = cb_advancedSettings.isChecked();
 
         if (usingAdvancedSettings) {
-            advancedFields = !TextUtils.isEmpty(et_httpHeaderValue.getText().toString()) && !TextUtils.isEmpty(et_httpHeaderKey.getText().toString());
+
+            try {
+                Editable httpHeaderKey = et_httpHeaderKey.getText();
+                Editable httpHeaderValue = et_httpHeaderValue.getText();
+
+                if (httpHeaderKey != null && httpHeaderValue != null) {
+                    advancedFields = !TextUtils.isEmpty(et_httpHeaderValue.getText().toString()) && !TextUtils.isEmpty(et_httpHeaderKey.getText().toString());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                //noinspection HardCodedStringLiteral
+                FirebaseHelper.getInstance(getContext()).recordExceptionAndLog(e, "LoginFragment - checkFields(): HTTP header key and/or HTTP head value was empty");
+            }
         }
         return textFields && advancedFields;
     }
