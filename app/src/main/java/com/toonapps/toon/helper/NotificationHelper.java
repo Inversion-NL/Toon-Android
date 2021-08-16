@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -46,7 +46,7 @@ public class NotificationHelper {
     @SuppressWarnings("FieldCanBeLocal")
     private static int FULLSCREEN_INTENT_REQUEST_CODE = 91239123;
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "HardCodedStringLiteral"})
     @RequiresApi(api = Build.VERSION_CODES.N)
     public interface PRIORITY {
         int IMPORTANCE_MAX = NotificationManager.IMPORTANCE_MAX;
@@ -74,6 +74,7 @@ public class NotificationHelper {
                 String HEAT = "heat";
                 String UNKNOWN = "unknown";
             }
+            @SuppressWarnings("unused")
             interface NOTIFICATION {
                 String DATA = "data";
             }
@@ -177,7 +178,6 @@ public class NotificationHelper {
 
         Map<String, String> map = remoteMessage.getData();
         Intent notificationIntent = new Intent(context, MainActivity.class);
-        //noinspection HardCodedStringLiteral
         notificationIntent.putExtra("notificationData", convertToHashMap(map));
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 

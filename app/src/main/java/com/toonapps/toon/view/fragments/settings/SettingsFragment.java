@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -22,13 +22,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.toonapps.toon.BuildConfig;
 import com.toonapps.toon.R;
 import com.toonapps.toon.helper.AppSettings;
 import com.toonapps.toon.helper.FirebaseHelper;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
@@ -38,8 +41,25 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         mAppSettings.initialize(getContext());
 
         if (getActivity() != null) {
-            //noinspection HardCodedStringLiteral
             FirebaseHelper.getInstance(getActivity()).set2CurrentScreen(getActivity(), "SettingsFragment");
+        }
+
+        if (!BuildConfig.DEBUG) {
+
+            Preference productionWidgets = findPreference("pref_key_showPowerProductionWidgets");
+            if (productionWidgets != null) productionWidgets.setVisible(false);
+
+            Preference firebaseInstanceId = findPreference("pref_key_firebaseInstanceId");
+            if (firebaseInstanceId != null) firebaseInstanceId.setVisible(false);
+
+        } else {
+            new AlertDialog.Builder(getActivity())
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Debug version")
+                    .setMessage("'Power production' and 'Firebase messaging' is not ready in the app. \n" +
+                            "Showing settings because this is the debug version of the app...")
+                    .setNegativeButton("Ok", null)
+                    .show();
         }
 
         String firebaseId = mAppSettings.getFirebaseInstanceId();

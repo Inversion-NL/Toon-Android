@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -30,6 +30,7 @@ import com.toonapps.toon.helper.ToonException;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings({"Convert2MethodRef", "SpellCheckingInspection"})
 public class RestClient {
 
     private String httpHeaderKey;
@@ -40,19 +41,22 @@ public class RestClient {
     private final IRestClientDebugResponseHandler responseDebugHandler;
     private Context context;
 
-    public RestClient(IRestClientResponseHandler aResponseHandler){
+    public RestClient(IRestClientResponseHandler aResponseHandler) {
         getDataFromSharedPreferences();
         responseHandler = aResponseHandler;
         responseDebugHandler = null;
     }
 
-    public RestClient(IRestClientDebugResponseHandler aResponseDebugHandler){
+    public RestClient(IRestClientDebugResponseHandler aResponseDebugHandler) {
         getDataFromSharedPreferences();
         responseDebugHandler = aResponseDebugHandler;
         responseHandler = null;
     }
 
     private void getDataFromSharedPreferences() {
+
+        if (context == null) context = AppController.getAppContext();
+
         if (context != null) {
             AppSettings mAppSettings = AppSettings.getInstance();
             mAppSettings.initialize(context);
@@ -60,6 +64,8 @@ public class RestClient {
             httpHeaderValue = mAppSettings.getHttpHeaderValue();
             httpHeaderKey = mAppSettings.getHttpHeaderKey();
             separator = "/";
+        } else {
+            responseHandler.onResponseError(new ToonException(ToonException.UNSUPPORTED, null));
         }
     }
 
@@ -276,7 +282,7 @@ public class RestClient {
         AppController.getInstance().getRequestQueue().add(request);
     }
 
-    public void setSchemeState(boolean anIsProgramOn){
+    public void setSchemeState(boolean anIsProgramOn) {
         getDataFromSharedPreferences();
         int isProgramOn = (anIsProgramOn) ? 1 : 0;
 
@@ -303,7 +309,7 @@ public class RestClient {
         AppController.getInstance().getRequestQueue().add(request);
     }
 
-    public void setSetpoint(int aTemperature){
+    public void setSetpoint(int aTemperature) {
         getDataFromSharedPreferences();
 
         //noinspection HardCodedStringLiteral
@@ -329,7 +335,7 @@ public class RestClient {
         AppController.getInstance().getRequestQueue().add(request);
     }
 
-    public void getThermostatInfo(){
+    public void getThermostatInfo() {
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
         url = url + separator + "happ_thermstat?action=getThermostatInfo";
@@ -354,7 +360,7 @@ public class RestClient {
         AppController.getInstance().getRequestQueue().add(request);
     }
 
-    public void getDebugThermostatInfo(){
+    public void getDebugThermostatInfo() {
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
         url = url + separator + "happ_thermstat?action=getThermostatInfo";
@@ -378,7 +384,7 @@ public class RestClient {
         AppController.getInstance().getRequestQueue().add(request);
     }
 
-    public void getDebugZwaveDevices(){
+    public void getDebugZwaveDevices() {
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
         url = url + separator + "hdrv_zwave?action=getDevices.json";
@@ -402,7 +408,7 @@ public class RestClient {
         AppController.getInstance().getRequestQueue().add(request);
     }
 
-    public void getDebugCurrentUsage(){
+    public void getDebugCurrentUsage() {
         getDataFromSharedPreferences();
         //noinspection HardCodedStringLiteral
         url = url + separator + "happ_pwrusage?action=GetCurrentUsage";
@@ -458,6 +464,7 @@ public class RestClient {
         AppController.getInstance().getRequestQueue().add(request);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void getUsageInfo() {
         getDataFromSharedPreferences();
 

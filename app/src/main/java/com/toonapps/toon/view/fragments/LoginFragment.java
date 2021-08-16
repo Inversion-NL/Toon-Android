@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -77,13 +77,14 @@ public class LoginFragment extends SlideFragment {
     }
 
     public static LoginFragment newInstance() {
-        mFirebaseHelper = FirebaseHelper.getInstance(newInstance().getContext());
         return new LoginFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_connect_login, container, false);
+
+        mFirebaseHelper = FirebaseHelper.getInstance(context);
 
         if (getActivity() != null) //noinspection HardCodedStringLiteral
             mFirebaseHelper.set2CurrentScreen(getActivity(), "Login fragment");
@@ -106,7 +107,7 @@ public class LoginFragment extends SlideFragment {
             img_login.setVisibility(View.GONE);
         }
 
-        AppSettings.getInstance().initialize(getContext());
+        AppSettings.getInstance().initialize(context);
 
         if (AppSettings.getInstance() != null) {
             // Sometimes either AppSettings or sharedPref in App settings is null
@@ -163,9 +164,13 @@ public class LoginFragment extends SlideFragment {
     private void updateData() {
         showProgressDialog();
 
-        AppSettings.getInstance().setPort(Integer.parseInt(et_toonPort.getText().toString()));
-        AppSettings.getInstance().setAddress(et_toonAddress.getText().toString());
-        AppSettings.getInstance().setProtocol(getProtocolFromRadioButtons());
+        int port = Integer.parseInt(et_toonPort.getText().toString());
+        String address = et_toonAddress.getText().toString();
+        String protocol = getProtocolFromRadioButtons();
+
+        AppSettings.getInstance().setPort(port);
+        AppSettings.getInstance().setAddress(address);
+        AppSettings.getInstance().setProtocol(protocol);
         AppSettings.getInstance().setUseHttpHeader(usingAdvancedSettings);
 
         if (usingAdvancedSettings) {
@@ -178,7 +183,7 @@ public class LoginFragment extends SlideFragment {
             } catch (Exception e) {
                 e.printStackTrace();
                 //noinspection HardCodedStringLiteral
-                FirebaseHelper.getInstance(getContext()).recordExceptionAndLog(e, "LoginFragment - updateData(): HTTP header key and/or HTTP head value was empty");
+                FirebaseHelper.getInstance(context).recordExceptionAndLog(e, "LoginFragment - updateData(): HTTP header key and/or HTTP head value was empty");
             }
         }
 
@@ -271,7 +276,7 @@ public class LoginFragment extends SlideFragment {
             } catch (Exception e) {
                 e.printStackTrace();
                 //noinspection HardCodedStringLiteral
-                FirebaseHelper.getInstance(getContext()).recordExceptionAndLog(e, "LoginFragment - checkFields(): HTTP header key and/or HTTP head value was empty");
+                FirebaseHelper.getInstance(context).recordExceptionAndLog(e, "LoginFragment - checkFields(): HTTP header key and/or HTTP head value was empty");
             }
         }
         return textFields && advancedFields;

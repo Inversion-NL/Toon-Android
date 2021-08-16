@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -66,7 +66,6 @@ public class UsageGraphFragment extends Fragment implements IGasAndElecFlowListe
     @SuppressWarnings({"FieldCanBeLocal"})
     private final String REQUEST_TYPE = "type";
 
-    @SuppressWarnings("HardCodedStringLiteral")
     private final String STATE_ACTIVE_BUTTON = "activeButton";
     private LineChart chart;
     private Context mContext;

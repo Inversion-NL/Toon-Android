@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -16,8 +16,9 @@
 
 package com.toonapps.toon.helper;
 
+import static com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE;
+
 import android.app.Activity;
-import android.content.Context;
 import android.content.IntentSender;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,20 +30,16 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.toonapps.toon.R;
 
-import static com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE;
-
 
 public class AppUpdateHelper {
 
     private static final int DAYS_FOR_FLEXIBLE_UPDATE = 31;
-    private static Context context;
 
     @SuppressWarnings("ConstantConditions")
     public static void checkForAppUpdate(
             Activity context,
             int REQUEST_CODE_APP_UPDATE) {
 
-        AppUpdateHelper.context = context;
         AppSettings mAppSettings = AppSettings.getInstance();
         mAppSettings.initialize(context);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -15,6 +15,7 @@
  */
 
 apply plugin: 'com.android.application'
+//noinspection HardCodedStringLiteral
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -30,11 +31,13 @@ android {
         versionCode 19
         versionName "0.7.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
             minifyEnabled false
+            //noinspection HardCodedStringLiteral
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -47,36 +50,61 @@ android {
 }
 
 dependencies {
+    //noinspection HardCodedStringLiteral
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
+    //noinspection HardCodedStringLiteral
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.4.0', {
+        //noinspection HardCodedStringLiteral
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //noinspection HardCodedStringLiteral
     testImplementation 'junit:junit:4.13.2'
 
+    //noinspection HardCodedStringLiteral
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    //noinspection HardCodedStringLiteral
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
+    //noinspection HardCodedStringLiteral
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    //noinspection HardCodedStringLiteral
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
+    //noinspection HardCodedStringLiteral
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    //noinspection HardCodedStringLiteral
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    //noinspection HardCodedStringLiteral
     implementation 'androidx.preference:preference:1.1.1'
 
+    //noinspection HardCodedStringLiteral
     implementation "android.arch.navigation:navigation-fragment:1.0.0"
+    //noinspection HardCodedStringLiteral
     implementation "android.arch.navigation:navigation-ui:1.0.0"
 
-    implementation 'com.google.android.material:material:1.3.0'
+    //noinspection HardCodedStringLiteral
+    implementation 'com.google.android.material:material:1.4.0'
+    //noinspection HardCodedStringLiteral
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+    //noinspection HardCodedStringLiteral
     implementation 'com.google.android.play:core:1.10.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.0.1'
+    //noinspection HardCodedStringLiteral
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
+    //noinspection HardCodedStringLiteral
     implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    //noinspection HardCodedStringLiteral
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    //noinspection HardCodedStringLiteral
+    implementation 'com.google.code.gson:gson:2.8.7'
 
+    //noinspection HardCodedStringLiteral
     implementation 'com.android.volley:volley:1.2.0'
 
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-    implementation 'com.intuit.sdp:sdp-android:1.0.5'
+    //noinspection HardCodedStringLiteral
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+    //noinspection HardCodedStringLiteral
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    //noinspection HardCodedStringLiteral
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //noinspection HardCodedStringLiteral
     implementation 'com.heinrichreimersoftware:material-intro:2.0.0'
 }

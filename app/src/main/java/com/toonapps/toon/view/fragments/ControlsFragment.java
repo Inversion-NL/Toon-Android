@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -142,9 +142,8 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         if (!mAppSettings.isFirstStart()) {
             // Do not update when first start
             updateData(false);
+            setTimer(mAppSettings.useAutoRefresh());
         }
-
-        setTimer(mAppSettings.useAutoRefresh());
 
         CardView cardTotalGas = view.findViewById(R.id.cardTotalGas);
         if (!mAppSettings.showGasWidgets() && cardTotalGas.getVisibility() == View.VISIBLE) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2020
+  ~ Copyright (c) 2021
   ~ Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
   ~ See the NOTICE file distributed with this work for additional information regarding copyright ownership
   ~ The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -45,7 +45,7 @@
             android:summary="@string/pref_appSettings_notification_vibrate_summary"
             android:defaultValue="true"/>
         <SwitchPreferenceCompat
-            android:key="pref_key_notification_smokeSensor_vibrate"
+            android:key="pref_key_notification_smokeSensor_vibrate_extra"
             android:dependency="pref_key_notification_smokeSensor_vibrate"
             android:title="@string/pref_appSettings_notification_vibrateExtraOnSmoke_title"
             android:summary="@string/pref_appSettings_notification_vibrateExtraOnSmoke_summary"

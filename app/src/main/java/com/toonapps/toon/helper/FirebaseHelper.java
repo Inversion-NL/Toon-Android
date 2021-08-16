@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -25,6 +25,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import timber.log.Timber;
 
+@SuppressWarnings({"unused", "HardCodedStringLiteral"})
 public class FirebaseHelper {
 
     private static FirebaseHelper instance;
@@ -88,7 +89,6 @@ public class FirebaseHelper {
         else throw new NullPointerException("FirebaseAnalytics is null. Did you initialize FirebaseHelper with getInstance(Context)?");
     }
 
-    @SuppressWarnings("unused")
     public FirebaseCrashlytics getFirebaseCrashlyticsInstance() {
         if (mFirebaseCrashlytics != null) return mFirebaseCrashlytics;
         else throw new NullPointerException("FirebaseCrashlytics is null. Did you initialize FirebaseHelper with getInstance(Context)?");

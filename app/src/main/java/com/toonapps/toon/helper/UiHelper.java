@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -21,6 +21,7 @@ import android.view.View;
 import com.google.android.material.snackbar.Snackbar;
 import com.toonapps.toon.R;
 
+@SuppressWarnings({"unused", "HardCodedStringLiteral"})
 public class UiHelper {
 
     private void showSnackbarWithLongLength(View coordinatorLayout, String message) {
@@ -31,5 +32,6 @@ public class UiHelper {
     private void showSnackbarWithOkButton(View coordinatorLayout, String message) {
         Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(R.string.dialog_button_ok, null);
+        snackbar.show();
     }
 }

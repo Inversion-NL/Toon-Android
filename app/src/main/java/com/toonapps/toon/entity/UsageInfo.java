@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020
+ * Copyright (c) 2021
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements
  * See the NOTICE file distributed with this work for additional information regarding copyright ownership
  * The ASF licenses this file to you under the Apache License, Version 2.0 (the  "License");
@@ -73,6 +73,7 @@ public class UsageInfo {
      * @return the usage of today
      * @throws JSONException when unable to parse
      */
+    @SuppressWarnings("HardCodedStringLiteral")
     public float getTodayUsage() throws JSONException {
         JSONArray jArray = toJSONArray(usageString);
         JSONObject jObject;
@@ -85,6 +86,7 @@ public class UsageInfo {
                 for (int i = 0; i < jArray.length(); i++) {
                     // Find the first non null value
                     jObject = jArray.getJSONObject(i);
+                    //noinspection ConstantConditions
                     keyString = (String) jObject.names().get(0);
 
                     if (!jObject.getString(keyString).equals("null")) {
@@ -96,6 +98,7 @@ public class UsageInfo {
                 for (int i = jArray.length() - 1; i > 0; i--) {
                     // Find the last non null value
                     jObject = jArray.getJSONObject(jArray.length() - 1);
+                    //noinspection ConstantConditions
                     keyString = (String) jObject.names().get(0);
 
                     if (!jObject.getString(keyString).equals("null")) {
@@ -130,6 +133,7 @@ public class UsageInfo {
                 keyString = (String) jObject.names().get(0);
                 keyFloat = Float.parseFloat(keyString);
 
+                //noinspection HardCodedStringLiteral
                 if (!jObject.getString(keyString).contains("null")){
                     // Sometimes the value = null which can't be converted to float
                     valueFloat = (float) jObject.getInt(keyString);
