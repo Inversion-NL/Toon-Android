@@ -86,18 +86,18 @@ dependencies {
     //noinspection HardCodedStringLiteral
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
     //noinspection HardCodedStringLiteral
-    implementation 'com.google.android.play:core:1.10.0'
+    implementation 'com.google.android.play:core:1.10.2'
     //noinspection HardCodedStringLiteral
     implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
     //noinspection HardCodedStringLiteral
-    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.1'
     //noinspection HardCodedStringLiteral
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
     //noinspection HardCodedStringLiteral
-    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.google.code.gson:gson:2.8.8'
 
     //noinspection HardCodedStringLiteral
-    implementation 'com.android.volley:volley:1.2.0'
+    implementation 'com.android.volley:volley:1.2.1'
 
     //noinspection HardCodedStringLiteral
     implementation 'com.jakewharton.timber:timber:5.0.1'

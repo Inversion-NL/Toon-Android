@@ -23,7 +23,7 @@ buildscript {
     }
     dependencies {
         //noinspection HardCodedStringLiteral
-        classpath 'com.android.tools.build:gradle:7.0.1'
+        classpath 'com.android.tools.build:gradle:7.0.2'
         //noinspection HardCodedStringLiteral
         classpath 'com.google.gms:oss-licenses:0.9.2'
         //noinspection HardCodedStringLiteral

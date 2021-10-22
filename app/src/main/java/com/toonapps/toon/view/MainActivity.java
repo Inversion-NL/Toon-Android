@@ -245,8 +245,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_openSource:
                 startActivity(new Intent(this, OssLicensesMenuActivity.class));
                 break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
         }
         return true;
     }
