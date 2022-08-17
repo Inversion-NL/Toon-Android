@@ -130,7 +130,10 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
         DeviceController.getInstance().subscribe(this);
         GasAndElecFlowController.getInstance().subscribe(this);
 
-        updateData(false);
+        if (!AppSettings.getInstance().isFirstStart()) {
+            // Do not update when first start
+            updateData(false);
+        }
 
         if (AppSettings.getInstance().useAutoRefresh()) setTimer(true);
         else setTimer(false);
@@ -152,16 +155,19 @@ public class ControlsFragment extends Fragment implements ITemperatureListener, 
 
     @Override
     public void onPause() {
-        super.onPause();
-
         // Allow rotation
         if (getActivity() != null) getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+
+        // Cancel all requests
+        DeviceController.getInstance().cancelAllRequests();
 
         TemperatureController.getInstance().unsubscribe(this);
         DeviceController.getInstance().unsubscribe(this);
         GasAndElecFlowController.getInstance().unsubscribe(this);
 
         setTimer(false);
+
+        super.onPause();
     }
 
     @Override

@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity
                                     null
                             );
                 updateDataInFragment();
-                break;
+                return true;
         }
         return true;
     }

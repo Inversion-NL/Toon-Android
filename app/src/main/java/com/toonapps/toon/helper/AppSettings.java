@@ -124,27 +124,39 @@ public class AppSettings {
     }
 
     @SuppressWarnings("HardCodedStringLiteral")
-    public String getAddress(){
-        String address = sharedPref.getString(PREF_KEY_ADDRESS, "");
-        if (address != null && !address.isEmpty()) return address;
+    public String getAddress() {
 
-        // Migrate from old settings
-        String url = sharedPref.getString(PREF_KEY_URL, "");
-        if (url == null) return "";
-        if (url.isEmpty()) return "";
-        if (url.startsWith("http://")) {
-            url = url.substring(7); // Strip http://
-        } else if (url.startsWith("https://")) {
-            url = url.substring(8); // Strip https://
-        } else return "";
-        if (url.contains(":")){
-            String[] splitted = url.split(":");
-            address = splitted[0];
-            String port = splitted[1];
-            setPort(Integer.parseInt(port));
-            setAddress(address);
-            return address;
-        } else return "";
+        try {
+            if (sharedPref != null) {
+                // When started from LoginFragment sometimes sharedPref is null
+
+                String address = sharedPref.getString(PREF_KEY_ADDRESS, "");
+                if (address != null && !address.isEmpty()) return address;
+
+                // Migrate from old settings
+                String url = sharedPref.getString(PREF_KEY_URL, "");
+                if (url == null) return "";
+                if (url.isEmpty()) return "";
+
+                if (url.startsWith("http://")) {
+                    url = url.substring(7); // Strip http://
+                } else if (url.startsWith("https://")) {
+                    url = url.substring(8); // Strip https://
+                } else return "";
+
+                if (url.contains(":")) {
+                    String[] splitted = url.split(":");
+                    address = splitted[0];
+                    String port = splitted[1];
+                    setPort(Integer.parseInt(port));
+                    setAddress(address);
+                    return address;
+                } else return "";
+            } else return "";
+        } catch (Exception e) {
+            FirebaseHelper.getInstance().recordExceptionAndLog(e, "Error while getting address from shared preferences");
+            return "";
+        }
 }
 
     public void setAddress(String address){
